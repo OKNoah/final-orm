@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "pre.js",
+  "sourceRoot": "",
+  "sources": [
+    "pre.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA,IAAA;;AAAA,MAAM,CAAC,OAAP,GAAuB;;;EAEtB,GAAC,CAAA,SAAD,GAAY;;EACZ,GAAC,CAAA,QAAD,GAAW;;EACX,GAAC,CAAA,QAAD,GAAW"
+}

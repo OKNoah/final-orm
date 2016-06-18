@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "html.js",
+  "sourceRoot": "",
+  "sources": [
+    "html.coffee"
+  ],
+  "names": [],
+  "mappings": ""
+}

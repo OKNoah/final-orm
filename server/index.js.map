@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.es6"],"names":[],"mappings":";;AAAA;;AAKA","file":"index.js","sourcesContent":["import 'babel-polyfill'\r\n\r\n// import './collections/users'\r\n// import './collections/sectors'\r\n\r\nimport User from './models/user'\r\n\r\n\r\n"]}

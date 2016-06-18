@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "node-mutation.js",
+  "sourceRoot": "",
+  "sources": [
+    "node-mutation.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA,IAAA;;AAAA,MAAM,CAAC,OAAP,GAAuB;EAGT,sBAAC,IAAD;IACZ,IAAC,CAAA,aAAD,GAAiB;IACjB,IAAC,CAAA,eAAD,GAAmB;AACnB;EAHY;;yBAOb,cAAA,GAAgB,SAAA;IACf,IAAC,CAAA,eAAD,GAAmB;EADJ"
+}

@@ -1,0 +1,50 @@
+:host
+	//background-color red
+	display inline-block
+	margin 0.5em 0.2em
+	cursor pointer
+
+	.container
+		//background-color #006666
+		display inline-flex
+		flex-direction row
+		align-items center
+
+		&.__active
+
+			.checkbox
+				//background-color #bfff8d
+
+				&:before
+					transition transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+					transform scale(1)
+
+		.checkbox
+			background-color white
+			size 1.7em
+			display inline-block
+			position relative
+			border-radius 0.5em
+			margin-right 0.2em
+			border solid 0.15em #555
+
+			&:before
+				content ''
+				absolute top 0 left 0
+				display block
+				size 100%
+				background-image url('icon.png')
+				background-size cover
+				background-origin content-box
+				background-repeat no-repeat
+				//background-color rebeccapurple
+				padding 0.3em
+				transition transform 0.2s
+				transform scale(0)
+
+		.label
+			//background-color white
+			display inline-block
+			line-height 2em
+			padding 0 0.5em
+

@@ -1,0 +1,8 @@
+{
+  "name": "gulp-lazy-task",
+  "version": "0.0.15",
+  "dependencies": {
+    "gulp-load-plugins": "latest",
+    "gulp-plumber": "latest"
+  }
+}

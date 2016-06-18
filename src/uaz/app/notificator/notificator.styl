@@ -1,0 +1,35 @@
+:host
+	absolute bottom 0 right 0
+	z-index 1000
+	display flex
+	flex-direction column
+	align-items flex-end
+
+	.message
+		background-color rgba(white, 0.8)
+		padding 1em 1em
+		margin-bottom 0.5em
+		margin-right 0.5em
+		border-radius 0.5em
+		cursor pointer
+		width auto
+		display inline-block
+		box-shadow 0 0 0.2em rgba(#000, 0.2)
+
+		&.__alert
+			text-shadow 0.03em 0.03em 0 rgba(black, 0.4)
+			background-color #779dff
+			color white
+
+		&.__error
+			text-shadow 0.03em 0.03em 0 rgba(black, 0.4)
+			background-color #ac3e3d
+			color white
+
+		&.__warning
+			text-shadow 0.03em 0.03em 0 rgba(black, 0.4)
+			background-color #fff561
+			color #555
+
+
+

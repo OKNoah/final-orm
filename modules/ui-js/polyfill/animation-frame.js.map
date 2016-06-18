@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "animation-frame.js",
+  "sourceRoot": "",
+  "sources": [
+    "animation-frame.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA,IAAA;;AAAA,MAAM,CAAC,OAAP,sDAA6C,CAAE,IAA9B,CAAmC,MAAnC,WAAA,+DACmB,CAAE,IAApC,CAAyC,MAAzC,WADe,4DAEgB,CAAE,IAAjC,CAAsC,MAAtC,WAFe,0DAGc,CAAE,IAA/B,CAAoC,MAApC,WAHe,2DAIe,CAAE,IAAhC,CAAqC,MAArC,WAJe,IAKf,SAAC,QAAD,EAAW,OAAX;SACC,MAAM,CAAC,UAAP,CAAkB,QAAlB,EAA4B,IAAA,GAAO,EAAnC;AADD"
+}
