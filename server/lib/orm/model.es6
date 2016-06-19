@@ -57,7 +57,6 @@ export default class Model {
 		try {
 			let collection = await this._getCollection()
 			if (!collection[method]) {
-				console.error(`Collection has not method '${method}'`)
 				throw Error(`Collection has not method '${method}'`)
 			}
 			return await collection[method](...args)
@@ -138,8 +137,6 @@ export default class Model {
 		this._validate(model)
 		let document = this._modelToDocument(model)
 		let newHandle = await this._call('update', model._id, document)
-		model._id = newHandle._id
-		model._key = newHandle._key
 		model._rev = newHandle._rev
 		return model
 	}

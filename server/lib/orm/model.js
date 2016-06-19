@@ -260,36 +260,35 @@ var Model = (_temp = _class = function () {
 								collection = _context7.sent;
 
 								if (collection[method]) {
-									_context7.next = 7;
+									_context7.next = 6;
 									break;
 								}
 
-								console.error('Collection has not method \'' + method + '\'');
 								throw Error('Collection has not method \'' + method + '\'');
 
-							case 7:
+							case 6:
 								for (_len = _args7.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
 									args[_key - 1] = _args7[_key];
 								}
 
-								_context7.next = 10;
+								_context7.next = 9;
 								return collection[method].apply(collection, args);
 
-							case 10:
+							case 9:
 								return _context7.abrupt('return', _context7.sent);
 
-							case 13:
-								_context7.prev = 13;
+							case 12:
+								_context7.prev = 12;
 								_context7.t0 = _context7['catch'](0);
 
 								console.error(_context7.t0);
 
-							case 16:
+							case 15:
 							case 'end':
 								return _context7.stop();
 						}
 					}
-				}, _callee7, this, [[0, 13]]);
+				}, _callee7, this, [[0, 12]]);
 			}));
 
 			function _call(_x, _x2) {
@@ -459,12 +458,10 @@ var Model = (_temp = _class = function () {
 							case 4:
 								newHandle = _context11.sent;
 
-								model._id = newHandle._id;
-								model._key = newHandle._key;
 								model._rev = newHandle._rev;
 								return _context11.abrupt('return', model);
 
-							case 9:
+							case 7:
 							case 'end':
 								return _context11.stop();
 						}
