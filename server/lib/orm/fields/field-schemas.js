@@ -7,10 +7,6 @@ exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _validationError = require('../validation-error');
-
-var _validationError2 = _interopRequireDefault(_validationError);
-
 var _schema = require('../schema');
 
 var _schema2 = _interopRequireDefault(_schema);
@@ -30,12 +26,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var FieldSchemas = function (_Field) {
 	_inherits(FieldSchemas, _Field);
 
-	function FieldSchemas(path, userSchema, internal) {
+	function FieldSchemas(basePath, path, userSchema, options, internal) {
 		_classCallCheck(this, FieldSchemas);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FieldSchemas).call(this, path, internal));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FieldSchemas).call(this, basePath, path, options, internal));
 
-		_this.schema = new _schema2.default(userSchema, false);
+		_this.schema = new _schema2.default(userSchema, basePath.concat(path, ['..']), false);
 		return _this;
 	}
 
@@ -48,7 +44,7 @@ var FieldSchemas = function (_Field) {
 			var array = this.getByPath(data);
 
 			if (!Array.isArray(array)) {
-				throw new _validationError2.default([basePath, this.path], Array, array);
+				this.typeError(Array, array);
 			}
 
 			array.forEach(function (value, index) {

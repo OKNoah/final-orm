@@ -9,10 +9,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _validationError = require('../validation-error');
-
-var _validationError2 = _interopRequireDefault(_validationError);
-
 var _fieldType = require('./field-type');
 
 var _fieldType2 = _interopRequireDefault(_fieldType);
@@ -28,10 +24,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var FieldTypes = function (_FieldType) {
 	_inherits(FieldTypes, _FieldType);
 
-	function FieldTypes(path, type, internal) {
+	function FieldTypes(basePath, path, type, options, internal) {
 		_classCallCheck(this, FieldTypes);
 
-		return _possibleConstructorReturn(this, Object.getPrototypeOf(FieldTypes).call(this, path, type, internal));
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(FieldTypes).call(this, basePath, path, type, options, internal));
 	}
 
 	_createClass(FieldTypes, [{
@@ -43,12 +39,12 @@ var FieldTypes = function (_FieldType) {
 			var array = this.getByPath(data);
 
 			if (!Array.isArray(array)) {
-				throw new _validationError2.default([basePath, this.path], Array, array);
+				this.typeError(Array, array);
 			}
 
 			array.forEach(function (value, index) {
 				if (!_this2.validateValue(value)) {
-					throw new _validationError2.default([basePath, _this2.path, [index]], _this2.type, value);
+					_this2.typeError(_this2.type, value, [index]);
 				}
 			});
 		}

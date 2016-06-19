@@ -1,40 +1,46 @@
 import Model from './model'
 import FieldType from './fields/field-type'
 import FieldTypes from './fields/field-types'
-import FieldSchemas from './fields/field-schemas'
 import FieldModel from './fields/field-model'
 import FieldModels from './fields/field-models'
+import FieldSchemas from './fields/field-schemas'
 
 
 export default class Schema {
 
 
-	constructor(userSchema, isRootSchema = true) {
+	constructor(userSchema, basePath = [], isRootSchema = true) {
+		this.basePath = basePath
 		this.fields = this.parseUserSchema(userSchema)
 
 		if (isRootSchema) {
-			this.fields.push(new FieldType(['_id'], String, true))
-			this.fields.push(new FieldType(['_key'], String, true))
-			this.fields.push(new FieldType(['_rev'], String, true))
-			this.fields.push(new FieldType(['_removed'], Boolean, true))
-			// TODO сделать проверку что не может иметь такие то свойства
+			this.fields.push(new FieldType(basePath, ['_id'], String, null, true))
+			this.fields.push(new FieldType(basePath, ['_key'], String, null, true))
+			this.fields.push(new FieldType(basePath, ['_rev'], String, null, true))
+			this.fields.push(new FieldType(basePath, ['_removed'], Boolean, null, true))
+			// TODO сделать проверку что не может иметь свойства save remove и начинающиеся с подчеркивания _
 		}
 
 	}
 
 
-	parseUserSchema(userSchema, basePath = []) {
+	parseUserSchema(userSchema, parentPath = []) {
 		let fields = []
 
 		for (let key in userSchema) if (userSchema.hasOwnProperty(key)) {
+			let path = parentPath.concat([key])
 			let value = userSchema[key]
-			let path = basePath.concat([key])
+
+			if (value.$type) {
+				var options = value
+				value = value.$type
+			}
 
 			if (typeof value === 'function') {
 				if (value.prototype instanceof Model) {
-					fields.push(new FieldModel(path, value))
+					fields.push(new FieldModel(this.basePath, path, value, options))
 				} else {
-					fields.push(new FieldType(path, value))
+					fields.push(new FieldType(this.basePath, path, value, options))
 				}
 
 			} else if (Array.isArray(value)) {
@@ -43,13 +49,13 @@ export default class Schema {
 				if (typeof firstItem === 'function') {
 
 					if (firstItem.prototype instanceof Model) {
-						fields.push(new FieldModels(path, firstItem))
+						fields.push(new FieldModels(this.basePath, path, firstItem, options))
 					} else {
-						fields.push(new FieldTypes(path, firstItem))
+						fields.push(new FieldTypes(this.basePath, path, firstItem, options))
 					}
 
 				} else {
-					fields.push(new FieldSchemas(path, firstItem))
+					fields.push(new FieldSchemas(this.basePath, path, firstItem, options))
 				}
 
 			} else {

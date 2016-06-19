@@ -1,12 +1,11 @@
-import ValidationError from '../validation-error'
 import Field from './field'
 
 
 export default class FieldType extends Field {
 
 
-	constructor(path, type, internal = false) {
-		super(path, internal)
+	constructor(basePath, path, type, options, internal = false) {
+		super(basePath, path, options, internal)
 		this.type = type
 		this.checkType(type)
 	}
@@ -32,28 +31,40 @@ export default class FieldType extends Field {
 		if (this.internal) return
 
 		let value = this.getByPath(data)
-		let isValid = this.validateValue(value)
-
-		if (!isValid) {
-			throw new ValidationError([basePath, this.path], this.type, value)
+		if (!this.validateValue(value, basePath)) {
+			this.typeError(this.type, value)
 		}
 	}
 
 
-	validateValue(value) {
+	validateValue(value, basePath) {
 		let type = this.type
 
 		switch (type) {
 			case String:
 				return typeof value === 'string'
 			case Number:
-				return typeof value === 'number'
+				return this.validateNumber(value, basePath)
 			case Boolean:
 				return typeof value === 'boolean'
 			default:
 				return value instanceof type
 		}
 
+	}
+
+
+	validateNumber(value, basePath) {
+		if (typeof value !== 'number') return false
+		let options = this.options
+
+
+		if ('min' in options) if (value < options.min) {
+			console.log(111111111111111111111)
+			// throw new ValidationRangeError([basePath, this.path], `RANGE`)
+		}
+		// if ('max' in options) if (value > options.max) return false
+		return true
 	}
 
 

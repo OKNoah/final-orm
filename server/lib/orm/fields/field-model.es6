@@ -1,4 +1,3 @@
-import ValidationError from '../validation-error'
 import Field from './field'
 import Model from "../model"
 
@@ -6,8 +5,8 @@ import Model from "../model"
 export default class FieldModel extends Field {
 
 
-	constructor(path, Model, internal = false) {
-		super(path, internal)
+	constructor(basePath, path, Model, options, internal = false) {
+		super(basePath, path, options, internal)
 		this.Model = Model
 		this.symbol = Symbol()
 	}
@@ -19,7 +18,7 @@ export default class FieldModel extends Field {
 		let subModel = this.getByPath(data)
 
 		if (!this.validateValue(subModel)) {
-			throw new ValidationError([basePath, this.path], this.Model, subModel)
+			this.typeError(this.Model, subModel)
 		}
 	}
 
@@ -77,7 +76,7 @@ export default class FieldModel extends Field {
 
 	fieldSetter(model, value) {
 		if (!this.validateValue(value)) {
-			throw new ValidationError([this.path], this.Model, value)
+			this.typeError(this.Model, value)
 		}
 		let id = value._id
 		this.setBySymbol(model, this.symbol, id)

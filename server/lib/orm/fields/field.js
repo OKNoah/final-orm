@@ -3,22 +3,79 @@
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _validationError = require('../errors/validation-error');
+
+var _validationError2 = _interopRequireDefault(_validationError);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/** @abstract Field */
+
 var Field = function () {
-	function Field(path) {
-		var internal = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	function Field() {
+		var basePath = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+		var path = arguments[1];
+		var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+		var internal = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
 
 		_classCallCheck(this, Field);
 
+		this.basePath = basePath;
 		this.path = path;
+		this.options = options;
 		this.internal = internal;
 	}
 
 	_createClass(Field, [{
+		key: 'toPrettyPath',
+		value: function toPrettyPath(subPaths) {
+			var _ref;
+
+			var props = (_ref = []).concat.apply(_ref, _toConsumableArray(subPaths));
+
+			var prettyPath = props.map(function (prop, index) {
+				if (!/^[A-Za-z$_]+$/.test(prop)) return '[' + prop + ']';
+				if (index === 0) return prop;
+				return '.' + prop;
+			}).join('');
+
+			return prettyPath;
+		}
+	}, {
+		key: 'typeError',
+		value: function typeError(type, value) {
+			var subPath = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+			var basePath = arguments.length <= 3 || arguments[3] === undefined ? this.basePath : arguments[3];
+
+			var subPaths = [basePath, this.path, subPath];
+			var pathString = this.toPrettyPath(subPaths);
+			var valueText = value;
+
+			if (Object(value) === value) {
+				valueText = value.constructor.name;
+			} else if (typeof value === 'string') {
+				valueText = '\'' + value + '\'';
+			}
+
+			var message = 'Field \'' + pathString + '\' must be ' + type.name + ', but have ' + valueText;
+			throw new _validationError2.default(message);
+		}
+	}, {
+		key: 'throwError',
+		value: function throwError(message) {
+			var subPath = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+
+			throw new ValidationRangeError();
+		}
+	}, {
 		key: 'documentToModel',
 		value: function documentToModel(model, document) {
 			var value = this.getByPath(document);

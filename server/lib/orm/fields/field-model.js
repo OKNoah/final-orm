@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -7,15 +7,11 @@ exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _validationError = require('../validation-error');
-
-var _validationError2 = _interopRequireDefault(_validationError);
-
-var _field = require('./field');
+var _field = require("./field");
 
 var _field2 = _interopRequireDefault(_field);
 
-var _model = require('../model');
+var _model = require("../model");
 
 var _model2 = _interopRequireDefault(_model);
 
@@ -30,12 +26,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var FieldModel = function (_Field) {
 	_inherits(FieldModel, _Field);
 
-	function FieldModel(path, Model) {
-		var internal = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+	function FieldModel(basePath, path, Model, options) {
+		var internal = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
 
 		_classCallCheck(this, FieldModel);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FieldModel).call(this, path, internal));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FieldModel).call(this, basePath, path, options, internal));
 
 		_this.Model = Model;
 		_this.symbol = Symbol();
@@ -43,30 +39,30 @@ var FieldModel = function (_Field) {
 	}
 
 	_createClass(FieldModel, [{
-		key: 'validate',
+		key: "validate",
 		value: function validate(data, basePath) {
 			if (this.internal) return;
 			if (data instanceof _model2.default) return;
 			var subModel = this.getByPath(data);
 
 			if (!this.validateValue(subModel)) {
-				throw new _validationError2.default([basePath, this.path], this.Model, subModel);
+				this.typeError(this.Model, subModel);
 			}
 		}
 	}, {
-		key: 'validateValue',
+		key: "validateValue",
 		value: function validateValue(value) {
 			return value instanceof this.Model;
 		}
 	}, {
-		key: 'documentToModel',
+		key: "documentToModel",
 		value: function documentToModel(model, document) {
 			var id = this.getByPath(document);
 			this.setBySymbol(model, this.symbol, id);
 			this.setAccessorByPath(model);
 		}
 	}, {
-		key: 'modelToDocument',
+		key: "modelToDocument",
 		value: function modelToDocument(model, document) {
 			if (this.internal) return;
 			if (model instanceof _model2.default) {
@@ -79,7 +75,7 @@ var FieldModel = function (_Field) {
 			}
 		}
 	}, {
-		key: 'setAccessorByPath',
+		key: "setAccessorByPath",
 		value: function setAccessorByPath(model) {
 			var _this2 = this;
 
@@ -125,22 +121,22 @@ var FieldModel = function (_Field) {
 			});
 		}
 	}, {
-		key: 'fieldGetter',
+		key: "fieldGetter",
 		value: function fieldGetter(model) {
 			var id = this.getBySymbol(model, this.symbol);
 			return this.Model.get(id);
 		}
 	}, {
-		key: 'fieldSetter',
+		key: "fieldSetter",
 		value: function fieldSetter(model, value) {
 			if (!this.validateValue(value)) {
-				throw new _validationError2.default([this.path], this.Model, value);
+				this.typeError(this.Model, value);
 			}
 			var id = value._id;
 			this.setBySymbol(model, this.symbol, id);
 		}
 	}, {
-		key: 'getBySymbol',
+		key: "getBySymbol",
 		value: function getBySymbol(context, symbol) {
 			var path = this.path.slice(0, -1);
 
@@ -172,7 +168,7 @@ var FieldModel = function (_Field) {
 			return context[symbol];
 		}
 	}, {
-		key: 'setBySymbol',
+		key: "setBySymbol",
 		value: function setBySymbol(context, symbol, value) {
 			var path = this.path.slice(0, -1);
 

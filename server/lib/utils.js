@@ -22,6 +22,10 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
+var _rmdir = require('rmdir');
+
+var _rmdir2 = _interopRequireDefault(_rmdir);
+
 var _mkdirp = require('mkdirp');
 
 var _mkdirp2 = _interopRequireDefault(_mkdirp);
@@ -29,10 +33,6 @@ var _mkdirp2 = _interopRequireDefault(_mkdirp);
 var _crypto = require('crypto');
 
 var _crypto2 = _interopRequireDefault(_crypto);
-
-var _rmdir = require('rmdir');
-
-var _rmdir2 = _interopRequireDefault(_rmdir);
 
 var _config = require('../config');
 

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -9,15 +9,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _validationError = require('../validation-error');
-
-var _validationError2 = _interopRequireDefault(_validationError);
-
-var _fieldModel = require('./field-model');
+var _fieldModel = require("./field-model");
 
 var _fieldModel2 = _interopRequireDefault(_fieldModel);
 
-var _model = require('../model');
+var _model = require("../model");
 
 var _model2 = _interopRequireDefault(_model);
 
@@ -34,22 +30,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var FieldModels = function (_FieldModel) {
 	_inherits(FieldModels, _FieldModel);
 
-	function FieldModels(path, Model) {
-		var internal = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+	function FieldModels(basePath, path, Model, options) {
+		var internal = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
 
 		_classCallCheck(this, FieldModels);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FieldModels).call(this, path, Model, internal));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FieldModels).call(this, basePath, path, Model, options, internal));
 
 		_this.arraySymbol = Symbol();
 		return _this;
 	}
 
 	_createClass(FieldModels, [{
-		key: 'validate',
+		key: "validate",
 		value: function validate(data, basePath) {
-			var _this2 = this;
-
 			if (this.internal) return;
 
 			if (data instanceof _model2.default) {
@@ -59,25 +53,32 @@ var FieldModels = function (_FieldModel) {
 				array = this.getByPath(data);
 			}
 
+			this.validateRealArray(array, basePath);
+		}
+	}, {
+		key: "validateRealArray",
+		value: function validateRealArray(array, basePath) {
+			var _this2 = this;
+
 			if (!Array.isArray(array)) {
-				throw new _validationError2.default([basePath, this.path], Array, array);
+				this.typeError(Array, array, [], basePath);
 			}
 
 			array.forEach(function (value, index) {
 				if (!_this2.validateValue(value)) {
-					throw new _validationError2.default([basePath, _this2.path, [index]], _this2.Model, value);
+					_this2.typeError(_this2.Model, value, [index], basePath);
 				}
 			});
 		}
 	}, {
-		key: 'documentToModel',
+		key: "documentToModel",
 		value: function documentToModel(model, document) {
 			var arrayIds = this.getByPath(document);
 			this.setBySymbol(model, this.symbol, arrayIds);
 			this.setAccessorByPath(model);
 		}
 	}, {
-		key: 'modelToDocument',
+		key: "modelToDocument",
 		value: function modelToDocument(model, document) {
 			if (this.internal) return;
 
@@ -93,7 +94,7 @@ var FieldModels = function (_FieldModel) {
 			}
 		}
 	}, {
-		key: 'getActualIds',
+		key: "getActualIds",
 		value: function getActualIds(model) {
 			var realArray = this.getBySymbol(model, this.arraySymbol);
 			if (realArray) {
@@ -105,13 +106,13 @@ var FieldModels = function (_FieldModel) {
 			}
 		}
 	}, {
-		key: 'setAccessorByPath',
+		key: "setAccessorByPath",
 		value: function setAccessorByPath(model) {
 			this.setBySymbol(model, this.arraySymbol, null);
-			_get(Object.getPrototypeOf(FieldModels.prototype), 'setAccessorByPath', this).call(this, model);
+			_get(Object.getPrototypeOf(FieldModels.prototype), "setAccessorByPath", this).call(this, model);
 		}
 	}, {
-		key: 'fieldGetter',
+		key: "fieldGetter",
 		value: function () {
 			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(model) {
 				var realArray, arrayIds;
@@ -126,17 +127,17 @@ var FieldModels = function (_FieldModel) {
 									break;
 								}
 
-								return _context.abrupt('return', realArray);
+								return _context.abrupt("return", realArray);
 
 							case 3:
 								arrayIds = this.getBySymbol(model, this.symbol);
 
 								realArray = this.getRealModels(arrayIds);
 								this.setBySymbol(model, this.arraySymbol, realArray);
-								return _context.abrupt('return', realArray);
+								return _context.abrupt("return", realArray);
 
 							case 7:
-							case 'end':
+							case "end":
 								return _context.stop();
 						}
 					}
@@ -150,7 +151,7 @@ var FieldModels = function (_FieldModel) {
 			return fieldGetter;
 		}()
 	}, {
-		key: 'getRealModels',
+		key: "getRealModels",
 		value: function () {
 			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(arrayIds) {
 				var resultModels, subModels;
@@ -168,12 +169,12 @@ var FieldModels = function (_FieldModel) {
 								resultModels.forEach(function (subModel) {
 									subModels[subModel._id] = subModel;
 								});
-								return _context2.abrupt('return', arrayIds.map(function (id) {
+								return _context2.abrupt("return", arrayIds.map(function (id) {
 									return subModels[id];
 								}));
 
 							case 6:
-							case 'end':
+							case "end":
 								return _context2.stop();
 						}
 					}
@@ -187,10 +188,10 @@ var FieldModels = function (_FieldModel) {
 			return getRealModels;
 		}()
 	}, {
-		key: 'fieldSetter',
+		key: "fieldSetter",
 		value: function fieldSetter(model, realArray) {
+			this.validateRealArray(realArray);
 			this.setBySymbol(model, this.arraySymbol, realArray);
-			this.validate(model);
 		}
 	}]);
 

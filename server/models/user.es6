@@ -13,8 +13,9 @@ class Sector extends Model {
 class User extends Model {
 
 	static schema = {
-		name: String,
-		sectors: [Sector]
+		name: {$type: String, test: /^\W+$/},
+		age: {$type: Number, min: 0, max: 200},
+		names: [{name: String}]
 	}
 
 }
@@ -24,32 +25,19 @@ class User extends Model {
 
 	try {
 
-		let sector = await Sector.add({
-			size: 236,
-		})
-		let sector2 = await Sector.add({
-			size: 1005,
-		})
-
 		let user = await User.add({
 			name: 'Ашот',
-			sectors: [sector]
+			age: 3,
+			names: 3
 		})
-
-		let sectors = await user.sectors
-		user.sectors = [sector, sector, sector]
-
-		await user.save()
-		console.log(await user.sectors)
 
 
 	} catch (e) {
 		console.error(e)
 	}
 
+
 }())
-
-
 
 
 

@@ -7,10 +7,6 @@ exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _validationError = require('../validation-error');
-
-var _validationError2 = _interopRequireDefault(_validationError);
-
 var _field = require('./field');
 
 var _field2 = _interopRequireDefault(_field);
@@ -26,12 +22,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var FieldType = function (_Field) {
 	_inherits(FieldType, _Field);
 
-	function FieldType(path, type) {
-		var internal = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+	function FieldType(basePath, path, type, options) {
+		var internal = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
 
 		_classCallCheck(this, FieldType);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FieldType).call(this, path, internal));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FieldType).call(this, basePath, path, options, internal));
 
 		_this.type = type;
 		_this.checkType(type);
@@ -60,27 +56,38 @@ var FieldType = function (_Field) {
 			if (this.internal) return;
 
 			var value = this.getByPath(data);
-			var isValid = this.validateValue(value);
-
-			if (!isValid) {
-				throw new _validationError2.default([basePath, this.path], this.type, value);
+			if (!this.validateValue(value, basePath)) {
+				this.typeError(this.type, value);
 			}
 		}
 	}, {
 		key: 'validateValue',
-		value: function validateValue(value) {
+		value: function validateValue(value, basePath) {
 			var type = this.type;
 
 			switch (type) {
 				case String:
 					return typeof value === 'string';
 				case Number:
-					return typeof value === 'number';
+					return this.validateNumber(value, basePath);
 				case Boolean:
 					return typeof value === 'boolean';
 				default:
 					return value instanceof type;
 			}
+		}
+	}, {
+		key: 'validateNumber',
+		value: function validateNumber(value, basePath) {
+			if (typeof value !== 'number') return false;
+			var options = this.options;
+
+			if ('min' in options) if (value < options.min) {
+				console.log(111111111111111111111);
+				// throw new ValidationRangeError([basePath, this.path], `RANGE`)
+			}
+			// if ('max' in options) if (value > options.max) return false
+			return true;
 		}
 	}, {
 		key: 'convertToModelValue',

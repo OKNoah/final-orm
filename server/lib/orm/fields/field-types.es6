@@ -1,12 +1,11 @@
-import ValidationError from '../validation-error'
 import FieldType from './field-type'
 
 
 export default class FieldTypes extends FieldType {
 
 
-	constructor(path, type, internal) {
-		super(path, type, internal)
+	constructor(basePath, path, type, options, internal) {
+		super(basePath, path, type, options, internal)
 	}
 
 
@@ -15,12 +14,12 @@ export default class FieldTypes extends FieldType {
 		let array = this.getByPath(data)
 
 		if (!Array.isArray(array)) {
-			throw new ValidationError([basePath, this.path], Array, array)
+			this.typeError(Array, array)
 		}
 
 		array.forEach((value, index) => {
 			if (!this.validateValue(value)) {
-				throw new ValidationError([basePath, this.path, [index]], this.type, value)
+				this.typeError(this.type, value, [index])
 			}
 		})
 	}

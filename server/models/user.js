@@ -40,76 +40,43 @@ var User = (_temp2 = _class2 = function (_Model2) {
 
 	return User;
 }(_model2.default), _class2.schema = {
-	name: String,
-	sectors: [Sector]
+	name: { $type: String, test: /^\W+$/ },
+	age: { $type: Number, min: 0, max: 200 },
+	names: [{ name: String }]
 }, _temp2);
 
 
 _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-	var sector, sector2, user, sectors;
+	var user;
 	return regeneratorRuntime.wrap(function _callee$(_context) {
 		while (1) {
 			switch (_context.prev = _context.next) {
 				case 0:
 					_context.prev = 0;
 					_context.next = 3;
-					return Sector.add({
-						size: 236
+					return User.add({
+						name: 'Ашот',
+						age: 3,
+						names: 3
 					});
 
 				case 3:
-					sector = _context.sent;
-					_context.next = 6;
-					return Sector.add({
-						size: 1005
-					});
-
-				case 6:
-					sector2 = _context.sent;
-					_context.next = 9;
-					return User.add({
-						name: 'Ашот',
-						sectors: [sector]
-					});
-
-				case 9:
 					user = _context.sent;
-					_context.next = 12;
-					return user.sectors;
-
-				case 12:
-					sectors = _context.sent;
-
-					user.sectors = [sector, sector, sector];
-
-					_context.next = 16;
-					return user.save();
-
-				case 16:
-					_context.t0 = console;
-					_context.next = 19;
-					return user.sectors;
-
-				case 19:
-					_context.t1 = _context.sent;
-
-					_context.t0.log.call(_context.t0, _context.t1);
-
-					_context.next = 26;
+					_context.next = 9;
 					break;
 
-				case 23:
-					_context.prev = 23;
-					_context.t2 = _context['catch'](0);
+				case 6:
+					_context.prev = 6;
+					_context.t0 = _context['catch'](0);
 
-					console.error(_context.t2);
+					console.error(_context.t0);
 
-				case 26:
+				case 9:
 				case 'end':
 					return _context.stop();
 			}
 		}
-	}, _callee, this, [[0, 23]]);
+	}, _callee, this, [[0, 6]]);
 }))();
 
 //# sourceMappingURL=user.js.map

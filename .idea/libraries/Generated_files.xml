@@ -16,9 +16,11 @@
         <item url="file://$PROJECT_DIR$/modules/ui-js/core/directive.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/core/event-emitter.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/core/http.js" />
+        <item url="file://$PROJECT_DIR$/server/lib/orm/errors/validation-range-error.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/core/keyboard.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/core/platform.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/core/promise.js" />
+        <item url="file://$PROJECT_DIR$/server/models/test.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/core/shadow-style.js" />
         <item url="file://$PROJECT_DIR$/server/lib/orm/fields/field-model.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/core/tree.js" />
@@ -26,7 +28,7 @@
         <item url="file://$PROJECT_DIR$/server/lib/orm/fields/field-type.js" />
         <item url="file://$PROJECT_DIR$/server/lib/orm/fields/field-schemas.js" />
         <item url="file://$PROJECT_DIR$/server/lib/orm/fields/field-models.js" />
-        <item url="file://$PROJECT_DIR$/server/lib/orm/validation-error.js" />
+        <item url="file://$PROJECT_DIR$/server/lib/orm/errors/validation-type-error.js" />
         <item url="file://$PROJECT_DIR$/server/index.js" />
         <item url="file://$PROJECT_DIR$/server/config.js" />
         <item url="file://$PROJECT_DIR$/server/lib/orm/fields/field-types.js" />
@@ -90,9 +92,11 @@
       <root url="file://$PROJECT_DIR$/modules/ui-js/core/directive.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/core/event-emitter.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/core/http.js" />
+      <root url="file://$PROJECT_DIR$/server/lib/orm/errors/validation-range-error.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/core/keyboard.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/core/platform.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/core/promise.js" />
+      <root url="file://$PROJECT_DIR$/server/models/test.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/core/shadow-style.js" />
       <root url="file://$PROJECT_DIR$/server/lib/orm/fields/field-model.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/core/tree.js" />
@@ -100,7 +104,7 @@
       <root url="file://$PROJECT_DIR$/server/lib/orm/fields/field-type.js" />
       <root url="file://$PROJECT_DIR$/server/lib/orm/fields/field-schemas.js" />
       <root url="file://$PROJECT_DIR$/server/lib/orm/fields/field-models.js" />
-      <root url="file://$PROJECT_DIR$/server/lib/orm/validation-error.js" />
+      <root url="file://$PROJECT_DIR$/server/lib/orm/errors/validation-error.js" />
       <root url="file://$PROJECT_DIR$/server/index.js" />
       <root url="file://$PROJECT_DIR$/server/config.js" />
       <root url="file://$PROJECT_DIR$/server/lib/orm/fields/field-types.js" />

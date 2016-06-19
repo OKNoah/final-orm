@@ -1,9 +1,9 @@
 import gm from 'gm'
 import fs from 'fs'
 import path from 'path'
+import rmdir from 'rmdir'
 import mkdirp from 'mkdirp'
 import crypto from 'crypto'
-import rmdir from 'rmdir'
 import config from '../config'
 
 

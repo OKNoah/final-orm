@@ -19,10 +19,6 @@ var _fieldTypes = require('./fields/field-types');
 
 var _fieldTypes2 = _interopRequireDefault(_fieldTypes);
 
-var _fieldSchemas = require('./fields/field-schemas');
-
-var _fieldSchemas2 = _interopRequireDefault(_fieldSchemas);
-
 var _fieldModel = require('./fields/field-model');
 
 var _fieldModel2 = _interopRequireDefault(_fieldModel);
@@ -30,6 +26,10 @@ var _fieldModel2 = _interopRequireDefault(_fieldModel);
 var _fieldModels = require('./fields/field-models');
 
 var _fieldModels2 = _interopRequireDefault(_fieldModels);
+
+var _fieldSchemas = require('./fields/field-schemas');
+
+var _fieldSchemas2 = _interopRequireDefault(_fieldSchemas);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39,38 +39,45 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Schema = function () {
 	function Schema(userSchema) {
-		var isRootSchema = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+		var basePath = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+		var isRootSchema = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
 		_classCallCheck(this, Schema);
 
+		this.basePath = basePath;
 		this.fields = this.parseUserSchema(userSchema);
 
 		if (isRootSchema) {
-			this.fields.push(new _fieldType2.default(['_id'], String, true));
-			this.fields.push(new _fieldType2.default(['_key'], String, true));
-			this.fields.push(new _fieldType2.default(['_rev'], String, true));
-			this.fields.push(new _fieldType2.default(['_removed'], Boolean, true));
-			// TODO сделать проверку что не может иметь такие то свойства
+			this.fields.push(new _fieldType2.default(basePath, ['_id'], String, null, true));
+			this.fields.push(new _fieldType2.default(basePath, ['_key'], String, null, true));
+			this.fields.push(new _fieldType2.default(basePath, ['_rev'], String, null, true));
+			this.fields.push(new _fieldType2.default(basePath, ['_removed'], Boolean, null, true));
+			// TODO сделать проверку что не может иметь свойства save remove и начинающиеся с подчеркивания _
 		}
 	}
 
 	_createClass(Schema, [{
 		key: 'parseUserSchema',
 		value: function parseUserSchema(userSchema) {
-			var basePath = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+			var parentPath = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
 
 			var fields = [];
 
 			for (var key in userSchema) {
 				if (userSchema.hasOwnProperty(key)) {
+					var path = parentPath.concat([key]);
 					var value = userSchema[key];
-					var path = basePath.concat([key]);
+
+					if (value.$type) {
+						var options = value;
+						value = value.$type;
+					}
 
 					if (typeof value === 'function') {
 						if (value.prototype instanceof _model2.default) {
-							fields.push(new _fieldModel2.default(path, value));
+							fields.push(new _fieldModel2.default(this.basePath, path, value, options));
 						} else {
-							fields.push(new _fieldType2.default(path, value));
+							fields.push(new _fieldType2.default(this.basePath, path, value, options));
 						}
 					} else if (Array.isArray(value)) {
 						var firstItem = value[0];
@@ -78,12 +85,12 @@ var Schema = function () {
 						if (typeof firstItem === 'function') {
 
 							if (firstItem.prototype instanceof _model2.default) {
-								fields.push(new _fieldModels2.default(path, firstItem));
+								fields.push(new _fieldModels2.default(this.basePath, path, firstItem, options));
 							} else {
-								fields.push(new _fieldTypes2.default(path, firstItem));
+								fields.push(new _fieldTypes2.default(this.basePath, path, firstItem, options));
 							}
 						} else {
-							fields.push(new _fieldSchemas2.default(path, firstItem));
+							fields.push(new _fieldSchemas2.default(this.basePath, path, firstItem, options));
 						}
 					} else {
 						var subFields = this.parseUserSchema(value, path);

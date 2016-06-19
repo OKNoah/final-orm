@@ -1,4 +1,3 @@
-import ValidationError from '../validation-error'
 import Schema from '../schema'
 import Field from './field'
 
@@ -6,9 +5,9 @@ import Field from './field'
 export default class FieldSchemas extends Field {
 
 
-	constructor(path, userSchema, internal) {
-		super(path, internal)
-		this.schema = new Schema(userSchema, false)
+	constructor(basePath, path, userSchema, options, internal) {
+		super(basePath, path, options, internal)
+		this.schema = new Schema(userSchema, basePath.concat(path, ['..']), false)
 	}
 
 
@@ -17,7 +16,7 @@ export default class FieldSchemas extends Field {
 		let array = this.getByPath(data)
 
 		if (!Array.isArray(array)) {
-			throw new ValidationError([basePath, this.path], Array, array)
+			this.typeError(Array, array)
 		}
 
 		array.forEach((value, index) => {

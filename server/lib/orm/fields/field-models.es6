@@ -1,4 +1,3 @@
-import ValidationError from '../validation-error'
 import FieldModel from './field-model'
 import Model from "../model";
 
@@ -6,8 +5,8 @@ import Model from "../model";
 export default class FieldModels extends FieldModel {
 
 
-	constructor(path, Model, internal = false) {
-		super(path, Model, internal)
+	constructor(basePath, path, Model, options, internal = false) {
+		super(basePath, path, Model, options, internal)
 		this.arraySymbol = Symbol()
 	}
 
@@ -23,13 +22,18 @@ export default class FieldModels extends FieldModel {
 			array = this.getByPath(data)
 		}
 
+		this.validateRealArray(array, basePath)
+	}
+
+
+	validateRealArray(array, basePath) {
 		if (!Array.isArray(array)) {
-			throw new ValidationError([basePath, this.path], Array, array)
+			this.typeError(Array, array, [], basePath)
 		}
 
 		array.forEach((value, index) => {
 			if (!this.validateValue(value)) {
-				throw new ValidationError([basePath, this.path, [index]], this.Model, value)
+				this.typeError(this.Model, value, [index], basePath)
 			}
 		})
 	}
@@ -94,8 +98,8 @@ export default class FieldModels extends FieldModel {
 
 
 	fieldSetter(model, realArray) {
+		this.validateRealArray(realArray)
 		this.setBySymbol(model, this.arraySymbol, realArray)
-		this.validate(model)
 	}
 
 
