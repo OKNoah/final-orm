@@ -28,13 +28,15 @@ class User extends Model {
 		let user = await User.add({
 			name: 'Ашот',
 			status: 'active',
-			classes: new Set([1, 3, 55, 3]),
+			classes: new Set(['Трис']),
 		})
 
-		// user.classes.add(200)
-		// await user.save()
-		// await user.update()
-		// console.log(user.classes)
+		user.classes.add('Двас')
+		user.classes.add('Двас')
+		user.classes.add('Двас')
+		await user.save()
+		await user.update()
+		console.log(user.classes)
 
 	} catch (e) {
 		console.error(e)

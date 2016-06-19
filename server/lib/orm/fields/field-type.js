@@ -107,7 +107,7 @@ var FieldType = function (_Field) {
 						if (sets.indexOf(item) === -1) {
 							var setText = JSON.stringify(sets);
 							var itemValue = _this2.valueToString(item);
-							var message = 'must contain item only from ' + setText + ', but have item ' + itemValue;
+							var message = 'must contain item only from ' + setText + ', but have ' + itemValue;
 							_this2.throwError(message, basePath);
 						}
 					});

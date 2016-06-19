@@ -57,26 +57,41 @@ _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
 					return User.add({
 						name: 'Ашот',
 						status: 'active',
-						classes: new Set([1, 3, 55, 3])
+						classes: new Set(['Трис'])
 					});
 
 				case 3:
 					user = _context.sent;
+
+
+					user.classes.add('Двас');
+					user.classes.add('Двас');
+					user.classes.add('Двас');
 					_context.next = 9;
+					return user.save();
+
+				case 9:
+					_context.next = 11;
+					return user.update();
+
+				case 11:
+					console.log(user.classes);
+
+					_context.next = 17;
 					break;
 
-				case 6:
-					_context.prev = 6;
+				case 14:
+					_context.prev = 14;
 					_context.t0 = _context['catch'](0);
 
 					console.error(_context.t0);
 
-				case 9:
+				case 17:
 				case 'end':
 					return _context.stop();
 			}
 		}
-	}, _callee, this, [[0, 6]]);
+	}, _callee, this, [[0, 14]]);
 }))();
 
 //# sourceMappingURL=user.js.map

@@ -80,7 +80,7 @@ export default class FieldType extends Field {
 				if (sets.indexOf(item) === -1) {
 					let setText = JSON.stringify(sets)
 					let itemValue = this.valueToString(item)
-					let message = `must contain item only from ${setText}, but have item ${itemValue}`
+					let message = `must contain item only from ${setText}, but have ${itemValue}`
 					this.throwError(message, basePath)
 				}
 			})
