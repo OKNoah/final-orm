@@ -52,7 +52,8 @@ var Schema = function () {
 			this.fields.push(new _fieldType2.default(basePath, ['_key'], String, null, true));
 			this.fields.push(new _fieldType2.default(basePath, ['_rev'], String, null, true));
 			this.fields.push(new _fieldType2.default(basePath, ['_removed'], Boolean, null, true));
-			// TODO сделать проверку что не может иметь свойства save remove и начинающиеся с подчеркивания _
+			// TODO сделать проверку что не может иметь свойства save remove и начинающиеся
+			// с подчеркивания _
 		}
 	}
 
@@ -65,7 +66,7 @@ var Schema = function () {
 
 			for (var key in userSchema) {
 				if (userSchema.hasOwnProperty(key)) {
-					var path = parentPath.concat([key]);
+					var path = [].concat(_toConsumableArray(parentPath), [key]);
 					var value = userSchema[key];
 
 					if (value.$type) {

@@ -7,7 +7,7 @@ export default class FieldSchemas extends Field {
 
 	constructor(basePath, path, userSchema, options, internal) {
 		super(basePath, path, options, internal)
-		this.schema = new Schema(userSchema, basePath.concat(path, ['..']), false)
+		this.schema = new Schema(userSchema, [...basePath, ...path, '..'], false)
 	}
 
 
@@ -21,8 +21,7 @@ export default class FieldSchemas extends Field {
 
 		array.forEach((value, index) => {
 			if (value !== Object(value)) this.typeError(Object, value, basePath, [index])
-			let subPath = basePath.concat(this.path, [index])
-
+			let subPath = [...basePath, ...this.path, index]
 			this.schema.validate(value, subPath)
 		})
 
