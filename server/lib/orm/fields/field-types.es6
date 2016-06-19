@@ -14,12 +14,12 @@ export default class FieldTypes extends FieldType {
 		let array = this.getByPath(data)
 
 		if (!Array.isArray(array)) {
-			this.typeError(Array, array)
+			this.typeError(Array, array, basePath)
 		}
 
 		array.forEach((value, index) => {
 			if (!this.validateValue(value)) {
-				this.typeError(this.type, value, [index])
+				this.typeError(this.type, value, basePath, [index])
 			}
 		})
 	}

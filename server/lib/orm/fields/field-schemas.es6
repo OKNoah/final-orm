@@ -16,11 +16,13 @@ export default class FieldSchemas extends Field {
 		let array = this.getByPath(data)
 
 		if (!Array.isArray(array)) {
-			this.typeError(Array, array)
+			this.typeError(Array, array, basePath)
 		}
 
 		array.forEach((value, index) => {
+			if (value !== Object(value)) this.typeError(Object, value, basePath, [index])
 			let subPath = basePath.concat(this.path, [index])
+
 			this.schema.validate(value, subPath)
 		})
 

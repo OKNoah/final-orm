@@ -39,12 +39,12 @@ var FieldTypes = function (_FieldType) {
 			var array = this.getByPath(data);
 
 			if (!Array.isArray(array)) {
-				this.typeError(Array, array);
+				this.typeError(Array, array, basePath);
 			}
 
 			array.forEach(function (value, index) {
 				if (!_this2.validateValue(value)) {
-					_this2.typeError(_this2.type, value, [index]);
+					_this2.typeError(_this2.type, value, basePath, [index]);
 				}
 			});
 		}

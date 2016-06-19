@@ -1,5 +1,5 @@
 import FieldModel from './field-model'
-import Model from "../model";
+import Model from "../model"
 
 
 export default class FieldModels extends FieldModel {
@@ -28,12 +28,12 @@ export default class FieldModels extends FieldModel {
 
 	validateRealArray(array, basePath) {
 		if (!Array.isArray(array)) {
-			this.typeError(Array, array, [], basePath)
+			this.typeError(Array, array, basePath)
 		}
 
 		array.forEach((value, index) => {
 			if (!this.validateValue(value)) {
-				this.typeError(this.Model, value, [index], basePath)
+				this.typeError(this.Model, value, basePath, [index])
 			}
 		})
 	}

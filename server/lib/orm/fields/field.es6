@@ -6,14 +6,26 @@ export default class Field {
 
 
 	constructor(basePath = [], path, options = {}, internal = false) {
+		if (!internal) this.checkPath(path, basePath)
 		this.basePath = basePath
-		this.path = path
-		this.options = options
 		this.internal = internal
+		this.options = options
+		this.path = path
 	}
 
 
-	toPrettyPath(subPaths) {
+	checkPath(path, basePath) {
+		for (let prop of path) {
+			let match = prop.match(/^([_$])/)
+			if (match) {
+				let stringPath = this.pathsToString([basePath, path])
+				throw Error(`Field names can not begin with a '${match[1]}' symbol, but have '${stringPath}'`)
+			}
+		}
+	}
+
+
+	pathsToString(subPaths) {
 		let props = [].concat(...subPaths)
 
 		let prettyPath = props.map((prop, index)=> {
@@ -26,24 +38,24 @@ export default class Field {
 	}
 
 
-	typeError(type, value, subPath = [], basePath = this.basePath) {
-		let subPaths = [basePath, this.path, subPath]
-		let pathString = this.toPrettyPath(subPaths)
-		var valueText = value
-
-		if (Object(value) === value) {
-			valueText = value.constructor.name
-		} else if (typeof value === 'string') {
-			valueText = `'${value}'`
-		}
-
-		let message = `Field '${pathString}' must be ${type.name}, but have ${valueText}`
-		throw new ValidationError(message)
+	valueToString(value) {
+		if (Object(value) === value) return value.constructor.name
+		if (typeof value === 'string') return `'${value}'`
+		return value
 	}
 
 
-	throwError(message, subPath = []) {
-		throw new ValidationRangeError()
+	typeError(type, value, basePath, subPath) {
+		var valueText = this.valueToString(value)
+		let message = `must be ${type.name}, but have ${valueText}`
+		this.throwError(message, basePath, subPath)
+	}
+
+
+	throwError(message, basePath = this.basePath, subPath = []) {
+		let subPaths = [basePath, this.path, subPath]
+		let pathString = this.pathsToString(subPaths)
+		throw new ValidationError(`Field '${pathString}' ${message}`)
 	}
 
 

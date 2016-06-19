@@ -61,12 +61,12 @@ var FieldModels = function (_FieldModel) {
 			var _this2 = this;
 
 			if (!Array.isArray(array)) {
-				this.typeError(Array, array, [], basePath);
+				this.typeError(Array, array, basePath);
 			}
 
 			array.forEach(function (value, index) {
 				if (!_this2.validateValue(value)) {
-					_this2.typeError(_this2.Model, value, [index], basePath);
+					_this2.typeError(_this2.Model, value, basePath, [index]);
 				}
 			});
 		}

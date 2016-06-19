@@ -40,10 +40,10 @@ var User = (_temp2 = _class2 = function (_Model2) {
 
 	return User;
 }(_model2.default), _class2.schema = {
-	name: { $type: String, test: /^\W+$/ },
-	age: { $type: Number, min: 0, max: 200 },
-	names: [{ name: String }]
+	name: String,
+	status: { $type: String, emun: ['Рас', 'Двас', 'Трис'] }
 }, _temp2);
+// statuses: {$type: Set, set: ['1', 3, '5']}
 
 
 _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
@@ -57,7 +57,7 @@ _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
 					return User.add({
 						name: 'Ашот',
 						age: 3,
-						names: 3
+						names: [{ name: 100 }]
 					});
 
 				case 3:

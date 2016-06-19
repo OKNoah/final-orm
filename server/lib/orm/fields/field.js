@@ -28,15 +28,48 @@ var Field = function () {
 
 		_classCallCheck(this, Field);
 
+		if (!internal) this.checkPath(path, basePath);
 		this.basePath = basePath;
-		this.path = path;
-		this.options = options;
 		this.internal = internal;
+		this.options = options;
+		this.path = path;
 	}
 
 	_createClass(Field, [{
-		key: 'toPrettyPath',
-		value: function toPrettyPath(subPaths) {
+		key: 'checkPath',
+		value: function checkPath(path, basePath) {
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = path[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var prop = _step.value;
+
+					var match = prop.match(/^([_$])/);
+					if (match) {
+						var stringPath = this.pathsToString([basePath, path]);
+						throw Error('Field names can not begin with a \'' + match[1] + '\' symbol, but have \'' + stringPath + '\'');
+					}
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+		}
+	}, {
+		key: 'pathsToString',
+		value: function pathsToString(subPaths) {
 			var _ref;
 
 			var props = (_ref = []).concat.apply(_ref, _toConsumableArray(subPaths));
@@ -50,30 +83,28 @@ var Field = function () {
 			return prettyPath;
 		}
 	}, {
+		key: 'valueToString',
+		value: function valueToString(value) {
+			if (Object(value) === value) return value.constructor.name;
+			if (typeof value === 'string') return '\'' + value + '\'';
+			return value;
+		}
+	}, {
 		key: 'typeError',
-		value: function typeError(type, value) {
-			var subPath = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
-			var basePath = arguments.length <= 3 || arguments[3] === undefined ? this.basePath : arguments[3];
-
-			var subPaths = [basePath, this.path, subPath];
-			var pathString = this.toPrettyPath(subPaths);
-			var valueText = value;
-
-			if (Object(value) === value) {
-				valueText = value.constructor.name;
-			} else if (typeof value === 'string') {
-				valueText = '\'' + value + '\'';
-			}
-
-			var message = 'Field \'' + pathString + '\' must be ' + type.name + ', but have ' + valueText;
-			throw new _validationError2.default(message);
+		value: function typeError(type, value, basePath, subPath) {
+			var valueText = this.valueToString(value);
+			var message = 'must be ' + type.name + ', but have ' + valueText;
+			this.throwError(message, basePath, subPath);
 		}
 	}, {
 		key: 'throwError',
 		value: function throwError(message) {
-			var subPath = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+			var basePath = arguments.length <= 1 || arguments[1] === undefined ? this.basePath : arguments[1];
+			var subPath = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
 
-			throw new ValidationRangeError();
+			var subPaths = [basePath, this.path, subPath];
+			var pathString = this.pathsToString(subPaths);
+			throw new _validationError2.default('Field \'' + pathString + '\' ' + message);
 		}
 	}, {
 		key: 'documentToModel',
@@ -108,48 +139,14 @@ var Field = function () {
 	}, {
 		key: 'getByPath',
 		value: function getByPath(context) {
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
-
-			try {
-				for (var _iterator = this.path[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var prop = _step.value;
-
-					context = context[prop];
-				}
-			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
-					}
-				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
-					}
-				}
-			}
-
-			return context;
-		}
-	}, {
-		key: 'setByPath',
-		value: function setByPath(context, value) {
-			var path = this.path.slice();
-			var lastProp = path.pop();
-
 			var _iteratorNormalCompletion2 = true;
 			var _didIteratorError2 = false;
 			var _iteratorError2 = undefined;
 
 			try {
-				for (var _iterator2 = path[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+				for (var _iterator2 = this.path[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 					var prop = _step2.value;
 
-					if (!context[prop]) context[prop] = {};
 					context = context[prop];
 				}
 			} catch (err) {
@@ -163,6 +160,40 @@ var Field = function () {
 				} finally {
 					if (_didIteratorError2) {
 						throw _iteratorError2;
+					}
+				}
+			}
+
+			return context;
+		}
+	}, {
+		key: 'setByPath',
+		value: function setByPath(context, value) {
+			var path = this.path.slice();
+			var lastProp = path.pop();
+
+			var _iteratorNormalCompletion3 = true;
+			var _didIteratorError3 = false;
+			var _iteratorError3 = undefined;
+
+			try {
+				for (var _iterator3 = path[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+					var prop = _step3.value;
+
+					if (!context[prop]) context[prop] = {};
+					context = context[prop];
+				}
+			} catch (err) {
+				_didIteratorError3 = true;
+				_iteratorError3 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion3 && _iterator3.return) {
+						_iterator3.return();
+					}
+				} finally {
+					if (_didIteratorError3) {
+						throw _iteratorError3;
 					}
 				}
 			}

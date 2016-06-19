@@ -46,7 +46,7 @@ var FieldModel = function (_Field) {
 			var subModel = this.getByPath(data);
 
 			if (!this.validateValue(subModel)) {
-				this.typeError(this.Model, subModel);
+				this.typeError(this.Model, subModel, basePath);
 			}
 		}
 	}, {

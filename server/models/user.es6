@@ -13,12 +13,14 @@ class Sector extends Model {
 class User extends Model {
 
 	static schema = {
-		name: {$type: String, test: /^\W+$/},
-		age: {$type: Number, min: 0, max: 200},
-		names: [{name: String}]
+		name: String,
+		status: {$type: String, emun: ['Рас', 'Двас', 'Трис']},
+		// statuses: {$type: Set, set: ['1', 3, '5']}
 	}
 
 }
+
+
 
 
 (async function () {
@@ -28,9 +30,8 @@ class User extends Model {
 		let user = await User.add({
 			name: 'Ашот',
 			age: 3,
-			names: 3
+			names: [{name: 100}]
 		})
-
 
 	} catch (e) {
 		console.error(e)

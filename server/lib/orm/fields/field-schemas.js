@@ -44,11 +44,13 @@ var FieldSchemas = function (_Field) {
 			var array = this.getByPath(data);
 
 			if (!Array.isArray(array)) {
-				this.typeError(Array, array);
+				this.typeError(Array, array, basePath);
 			}
 
 			array.forEach(function (value, index) {
+				if (value !== Object(value)) _this2.typeError(Object, value, basePath, [index]);
 				var subPath = basePath.concat(_this2.path, [index]);
+
 				_this2.schema.validate(value, subPath);
 			});
 		}
