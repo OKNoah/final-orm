@@ -52,8 +52,6 @@ var Schema = function () {
 			this.fields.push(new _fieldType2.default(basePath, ['_key'], String, null, true));
 			this.fields.push(new _fieldType2.default(basePath, ['_rev'], String, null, true));
 			this.fields.push(new _fieldType2.default(basePath, ['_removed'], Boolean, null, true));
-			// TODO сделать проверку что не может иметь свойства save remove и начинающиеся
-			// с подчеркивания _
 		}
 	}
 

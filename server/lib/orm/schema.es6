@@ -18,8 +18,6 @@ export default class Schema {
 			this.fields.push(new FieldType(basePath, ['_key'], String, null, true))
 			this.fields.push(new FieldType(basePath, ['_rev'], String, null, true))
 			this.fields.push(new FieldType(basePath, ['_removed'], Boolean, null, true))
-			// TODO сделать проверку что не может иметь свойства save remove и начинающиеся
-			// с подчеркивания _
 		}
 
 	}
