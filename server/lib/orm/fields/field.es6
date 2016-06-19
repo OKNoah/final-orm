@@ -1,7 +1,7 @@
 import ValidationError from "../errors/validation-error"
 
 
-/** @abstract Field */
+/** @abstract class */
 export default class Field {
 
 
