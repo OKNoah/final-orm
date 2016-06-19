@@ -41,13 +41,13 @@ var FieldType = function (_Field) {
 			if (type === String) return;
 			if (type === Number) return;
 			if (type === Date) return;
+			if (type === Set) return;
 
 			if (!type.prototype.toJSON) {
-				throw Error('Custom Type ' + type.name + ' must have method toJSON()');
+				throw Error('Custom type \'' + type.name + '\' must have method \'toJSON\'');
 			}
-
 			if (!type.fromJSON) {
-				throw Error('Custom Type ' + type.name + ' must have static method \'fromJSON\': ' + type.name + '.fromJSON(document)');
+				throw Error('Custom type \'' + type.name + '\' must have static method \'fromJSON\'');
 			}
 		}
 	}, {
@@ -66,6 +66,10 @@ var FieldType = function (_Field) {
 			var type = this.type;
 			var options = this.options;
 
+			if ('enum' in options) {
+				this.validateEnum(value, options, basePath);
+			}
+
 			switch (type) {
 				case String:
 					return this.validateString(value, options, basePath);
@@ -73,9 +77,43 @@ var FieldType = function (_Field) {
 					return this.validateNumber(value, options, basePath);
 				case Boolean:
 					return typeof value === 'boolean';
+				case Set:
+					return this.validateSet(value, options, basePath);
 				default:
 					return value instanceof type;
 			}
+		}
+	}, {
+		key: 'validateEnum',
+		value: function validateEnum(value, options, basePath) {
+			var enums = options.enum;
+			if (enums.indexOf(value) === -1) {
+				var enumText = JSON.stringify(enums);
+				var valueText = this.valueToString(value);
+				var message = 'must be one of enum ' + enumText + ', but have ' + valueText;
+				this.throwError(message, basePath);
+			}
+		}
+	}, {
+		key: 'validateSet',
+		value: function validateSet(value, options, basePath) {
+			var _this2 = this;
+
+			if (!(value instanceof Set)) return false;
+			if ('set' in options) {
+				(function () {
+					var sets = options.set;
+					value.forEach(function (item) {
+						if (sets.indexOf(item) === -1) {
+							var setText = JSON.stringify(sets);
+							var itemValue = _this2.valueToString(item);
+							var message = 'must contain item only from ' + setText + ', but have item ' + itemValue;
+							_this2.throwError(message, basePath);
+						}
+					});
+				})();
+			}
+			return true;
 		}
 	}, {
 		key: 'validateNumber',
@@ -124,6 +162,8 @@ var FieldType = function (_Field) {
 					return Boolean(value);
 				case Date:
 					return new Date(value);
+				case Set:
+					return new Set(value);
 			}
 
 			return type.fromJSON(value);
@@ -142,6 +182,8 @@ var FieldType = function (_Field) {
 					return value;
 				case Date:
 					return value.getTime();
+				case Set:
+					return Array.from(value);
 			}
 
 			// for custom types

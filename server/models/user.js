@@ -41,9 +41,9 @@ var User = (_temp2 = _class2 = function (_Model2) {
 	return User;
 }(_model2.default), _class2.schema = {
 	name: String,
-	status: { $type: String, emun: ['Рас', 'Двас', 'Трис'] }
+	status: { $type: String, enum: ['active', 'desctive', 'done'] },
+	classes: { $type: Set, set: ['Рас', 'Двас', 'Трис'] }
 }, _temp2);
-// statuses: {$type: Set, set: ['1', 3, '5']}
 
 
 _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
@@ -56,8 +56,8 @@ _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
 					_context.next = 3;
 					return User.add({
 						name: 'Ашот',
-						age: 3,
-						names: [{ name: 100 }]
+						status: 'active',
+						classes: new Set([1, 3, 55, 3])
 					});
 
 				case 3:

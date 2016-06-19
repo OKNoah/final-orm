@@ -14,13 +14,11 @@ class User extends Model {
 
 	static schema = {
 		name: String,
-		status: {$type: String, emun: ['Рас', 'Двас', 'Трис']},
-		// statuses: {$type: Set, set: ['1', 3, '5']}
+		status: {$type: String, enum: ['active', 'desctive', 'done']},
+		classes: {$type: Set, set: ['Рас', 'Двас', 'Трис']},
 	}
 
 }
-
-
 
 
 (async function () {
@@ -29,9 +27,14 @@ class User extends Model {
 
 		let user = await User.add({
 			name: 'Ашот',
-			age: 3,
-			names: [{name: 100}]
+			status: 'active',
+			classes: new Set([1, 3, 55, 3]),
 		})
+
+		// user.classes.add(200)
+		// await user.save()
+		// await user.update()
+		// console.log(user.classes)
 
 	} catch (e) {
 		console.error(e)

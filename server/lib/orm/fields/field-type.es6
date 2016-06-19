@@ -16,13 +16,13 @@ export default class FieldType extends Field {
 		if (type === String) return
 		if (type === Number) return
 		if (type === Date) return
+		if (type === Set) return
 
 		if (!type.prototype.toJSON) {
-			throw Error(`Custom Type ${type.name} must have method toJSON()`)
+			throw Error(`Custom type '${type.name}' must have method 'toJSON'`)
 		}
-
 		if (!type.fromJSON) {
-			throw Error(`Custom Type ${type.name} must have static method 'fromJSON': ${type.name}.fromJSON(document)`)
+			throw Error(`Custom type '${type.name}' must have static method 'fromJSON'`)
 		}
 	}
 
@@ -41,6 +41,10 @@ export default class FieldType extends Field {
 		let type = this.type
 		let options = this.options
 
+		if ('enum' in options) {
+			this.validateEnum(value, options, basePath)
+		}
+
 		switch (type) {
 			case String:
 				return this.validateString(value, options, basePath)
@@ -48,10 +52,40 @@ export default class FieldType extends Field {
 				return this.validateNumber(value, options, basePath)
 			case Boolean:
 				return typeof value === 'boolean'
+			case Set:
+				return this.validateSet(value, options, basePath)
 			default:
 				return value instanceof type
 		}
 
+	}
+
+
+	validateEnum(value, options, basePath) {
+		let enums = options.enum
+		if (enums.indexOf(value) === -1) {
+			let enumText = JSON.stringify(enums)
+			let valueText = this.valueToString(value)
+			let message = `must be one of enum ${enumText}, but have ${valueText}`
+			this.throwError(message, basePath)
+		}
+	}
+
+
+	validateSet(value, options, basePath) {
+		if (!(value instanceof Set)) return false
+		if ('set' in options) {
+			let sets = options.set
+			value.forEach(item => {
+				if (sets.indexOf(item) === -1) {
+					let setText = JSON.stringify(sets)
+					let itemValue = this.valueToString(item)
+					let message = `must contain item only from ${setText}, but have item ${itemValue}`
+					this.throwError(message, basePath)
+				}
+			})
+		}
+		return true
 	}
 
 
@@ -100,6 +134,8 @@ export default class FieldType extends Field {
 				return Boolean(value)
 			case Date:
 				return new Date(value)
+			case Set:
+				return new Set(value)
 		}
 
 		return type.fromJSON(value)
@@ -118,6 +154,8 @@ export default class FieldType extends Field {
 				return value
 			case Date:
 				return value.getTime()
+			case Set:
+				return Array.from(value)
 		}
 
 		// for custom types
