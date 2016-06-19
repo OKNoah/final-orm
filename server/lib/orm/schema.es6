@@ -24,6 +24,7 @@ export default class Schema {
 
 
 	parseUserSchema(userSchema, parentPath = []) {
+		let basePath = this.basePath
 		let fields = []
 
 		for (let key in userSchema) if (userSchema.hasOwnProperty(key)) {
@@ -37,9 +38,9 @@ export default class Schema {
 
 			if (typeof value === 'function') {
 				if (value.prototype instanceof Model) {
-					fields.push(new FieldModel(this.basePath, path, value, options))
+					fields.push(new FieldModel(basePath, path, value, options))
 				} else {
-					fields.push(new FieldType(this.basePath, path, value, options))
+					fields.push(new FieldType(basePath, path, value, options))
 				}
 
 			} else if (Array.isArray(value)) {
@@ -48,13 +49,13 @@ export default class Schema {
 				if (typeof firstItem === 'function') {
 
 					if (firstItem.prototype instanceof Model) {
-						fields.push(new FieldModels(this.basePath, path, firstItem, options))
+						fields.push(new FieldModels(basePath, path, firstItem, options))
 					} else {
-						fields.push(new FieldTypes(this.basePath, path, firstItem, options))
+						fields.push(new FieldTypes(basePath, path, firstItem, options))
 					}
 
 				} else {
-					fields.push(new FieldSchemas(this.basePath, path, firstItem, options))
+					fields.push(new FieldSchemas(basePath, path, firstItem, options))
 				}
 
 			} else {

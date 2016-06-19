@@ -60,6 +60,7 @@ var Schema = function () {
 		value: function parseUserSchema(userSchema) {
 			var parentPath = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
 
+			var basePath = this.basePath;
 			var fields = [];
 
 			for (var key in userSchema) {
@@ -74,9 +75,9 @@ var Schema = function () {
 
 					if (typeof value === 'function') {
 						if (value.prototype instanceof _model2.default) {
-							fields.push(new _fieldModel2.default(this.basePath, path, value, options));
+							fields.push(new _fieldModel2.default(basePath, path, value, options));
 						} else {
-							fields.push(new _fieldType2.default(this.basePath, path, value, options));
+							fields.push(new _fieldType2.default(basePath, path, value, options));
 						}
 					} else if (Array.isArray(value)) {
 						var firstItem = value[0];
@@ -84,12 +85,12 @@ var Schema = function () {
 						if (typeof firstItem === 'function') {
 
 							if (firstItem.prototype instanceof _model2.default) {
-								fields.push(new _fieldModels2.default(this.basePath, path, firstItem, options));
+								fields.push(new _fieldModels2.default(basePath, path, firstItem, options));
 							} else {
-								fields.push(new _fieldTypes2.default(this.basePath, path, firstItem, options));
+								fields.push(new _fieldTypes2.default(basePath, path, firstItem, options));
 							}
 						} else {
-							fields.push(new _fieldSchemas2.default(this.basePath, path, firstItem, options));
+							fields.push(new _fieldSchemas2.default(basePath, path, firstItem, options));
 						}
 					} else {
 						var subFields = this.parseUserSchema(value, path);
