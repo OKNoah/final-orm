@@ -10,6 +10,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -39,11 +41,9 @@ var User = (_temp2 = _class2 = function (_Model2) {
 	}
 
 	return User;
-}(_model2.default), _class2.schema = {
-	name: String,
-	status: { $type: String, enum: ['active', 'desctive', 'done'] },
-	classes: { $type: Set, set: ['Рас', 'Двас', 'Трис'] }
-}, _temp2);
+}(_model2.default), _class2.schema = _defineProperty({
+	name: String
+}, 'name', { $type: String }), _temp2);
 
 
 _asyncToGenerator(regeneratorRuntime.mark(function _callee() {

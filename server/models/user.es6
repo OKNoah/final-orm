@@ -14,8 +14,7 @@ class User extends Model {
 
 	static schema = {
 		name: String,
-		status: {$type: String, enum: ['active', 'desctive', 'done']},
-		classes: {$type: Set, set: ['Рас', 'Двас', 'Трис']},
+		name: {$type: String}
 	}
 
 }

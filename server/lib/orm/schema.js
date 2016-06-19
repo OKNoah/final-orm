@@ -69,7 +69,7 @@ var Schema = function () {
 					var path = [].concat(_toConsumableArray(parentPath), [key]);
 					var value = userSchema[key];
 
-					if (value.$type) {
+					if ('$type' in value) {
 						var options = value;
 						value = value.$type;
 					}

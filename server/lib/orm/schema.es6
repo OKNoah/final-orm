@@ -32,7 +32,7 @@ export default class Schema {
 			let path = [...parentPath, key]
 			let value = userSchema[key]
 
-			if (value.$type) {
+			if ('$type' in value) {
 				var options = value
 				value = value.$type
 			}

@@ -84,6 +84,38 @@ var FieldType = function (_Field) {
 			}
 		}
 	}, {
+		key: 'validateNumber',
+		value: function validateNumber(value, options, basePath) {
+			if (typeof value !== 'number') return false;
+
+			if (!Number.isFinite(value)) {
+				this.throwError('must be finite number, but have ' + value, basePath);
+			}
+			if ('min' in options) if (value < options.min) {
+				this.throwError('must be more or equal ' + options.min + ', but have ' + value, basePath);
+			}
+			if ('max' in options) if (value > options.max) {
+				this.throwError('must be less or equal ' + options.max + ', but have ' + value, basePath);
+			}
+			return true;
+		}
+	}, {
+		key: 'validateString',
+		value: function validateString(value, options, basePath) {
+			if (typeof value !== 'string') return false;
+
+			if ('regExp' in options) if (!options.regExp.test(value)) {
+				this.throwError('must be match regExp ' + options.regExp + ', but have \'' + value + '\'', basePath);
+			}
+			if ('min' in options) if (value.length < options.min) {
+				this.throwError('length must be more or equal ' + options.min + ' symbols, but have \'' + value + '\'', basePath);
+			}
+			if ('max' in options) if (value.length > options.max) {
+				this.throwError('length must be less or equal ' + options.max + ' symbols, but have \'' + value + '\'', basePath);
+			}
+			return true;
+		}
+	}, {
 		key: 'validateEnum',
 		value: function validateEnum(value, options, basePath) {
 			var enums = options.enum;
@@ -112,38 +144,6 @@ var FieldType = function (_Field) {
 						}
 					});
 				})();
-			}
-			return true;
-		}
-	}, {
-		key: 'validateNumber',
-		value: function validateNumber(value, options, basePath) {
-			if (typeof value !== 'number') return false;
-
-			if (!Number.isFinite(value)) {
-				this.throwError('must be finite number, but have ' + value, basePath);
-			}
-			if ('min' in options) if (value < options.min) {
-				this.throwError('must be more or equal ' + options.min + ', but have ' + value, basePath);
-			}
-			if ('max' in options) if (value > options.max) {
-				this.throwError('must be less or equal ' + options.max + ', but have ' + value, basePath);
-			}
-			return true;
-		}
-	}, {
-		key: 'validateString',
-		value: function validateString(value, options, basePath) {
-			if (typeof value !== 'string') return false;
-
-			if ('test' in options) if (!options.test.test(value)) {
-				this.throwError('must be match regExp ' + options.test + ', but have \'' + value + '\'', basePath);
-			}
-			if ('min' in options) if (value.length < options.min) {
-				this.throwError('length must be more or equal ' + options.min + ' symbols, but have \'' + value + '\'', basePath);
-			}
-			if ('max' in options) if (value.length > options.max) {
-				this.throwError('length must be less or equal ' + options.max + ' symbols, but have \'' + value + '\'', basePath);
 			}
 			return true;
 		}

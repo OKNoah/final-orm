@@ -1,1 +1,0 @@
-{"version":3,"sources":["index.es6"],"names":[],"mappings":";;;;;;;AAAA;;;;;;;QAGQ,K","file":"index.js","sourcesContent":["import Model from './model'\r\nexport default Model\r\n\r\nexport {Model}\r\n\r\n"]}
