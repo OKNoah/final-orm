@@ -71,6 +71,8 @@ var Schema = function () {
 					if ('$type' in value) {
 						var options = value;
 						value = value.$type;
+					} else {
+						options = {};
 					}
 
 					if (typeof value === 'function') {
@@ -80,10 +82,9 @@ var Schema = function () {
 							fields.push(new _fieldType2.default(basePath, path, value, options));
 						}
 					} else if (Array.isArray(value)) {
+
 						var firstItem = value[0];
-
 						if (typeof firstItem === 'function') {
-
 							if (firstItem.prototype instanceof _model2.default) {
 								fields.push(new _fieldModels2.default(basePath, path, firstItem, options));
 							} else {

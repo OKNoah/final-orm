@@ -5,12 +5,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _model = require('./orm/model');
+var _orm = require('./orm');
 
-var _model2 = _interopRequireDefault(_model);
+var _orm2 = _interopRequireDefault(_orm);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _model2.default;
+exports.default = _orm2.default;
 
 //# sourceMappingURL=model.js.map

@@ -34,6 +34,8 @@ export default class Schema {
 			if ('$type' in value) {
 				var options = value
 				value = value.$type
+			} else {
+				options = {}
 			}
 
 			if (typeof value === 'function') {
@@ -44,16 +46,14 @@ export default class Schema {
 				}
 
 			} else if (Array.isArray(value)) {
+
 				let firstItem = value[0]
-
 				if (typeof firstItem === 'function') {
-
 					if (firstItem.prototype instanceof Model) {
 						fields.push(new FieldModels(basePath, path, firstItem, options))
 					} else {
 						fields.push(new FieldTypes(basePath, path, firstItem, options))
 					}
-
 				} else {
 					fields.push(new FieldSchemas(basePath, path, firstItem, options))
 				}

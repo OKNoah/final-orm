@@ -1,17 +1,15 @@
 import Platform from 'ui-js/core/platform'
-import Notificator from './notificator/notificator'
-import Gallery from './gallery/gallery'
-import Confirm from './confirm/confirm'
+import Promise from 'ui-js/core/promise'
 import Roulette from './roulette/roulette'
 import AdminPanel from './admin-panel/admin-panel'
-import Promise from 'ui-js/core/promise'
+import Collection from '../core/collection'
 
 
 export default class App {
 
 	static styles = [require('./app.styl')]
 	static selector = 'my-app'
-	static components = [Gallery, Confirm, Notificator, Roulette, AdminPanel]
+	static components = [Roulette, AdminPanel]
 
 	static template = `
 		<confirm #confirm></confirm>
@@ -22,6 +20,22 @@ export default class App {
 	`
 
 	constructor() {
+		this.users = new Collection('users')
+		this.users.call('ololo', 112, 3434)
+
+
+		// (async function () {
+		//
+		// 	let user = await this.users.call('add', {
+		// 		name: 'Ашот',
+		// 		age: 200,
+		// 	})
+		//
+		// 	console.log(user)
+		//
+		// }).call(this)
+
+
 		this.audioContext = new AudioContext()
 		this.soundBuffersLoadPromises = {}
 

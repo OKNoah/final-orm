@@ -161,7 +161,7 @@ export default class Model {
 	}
 
 
-	static async select(selector, skip = 0, limit = 100) {
+	static async find(selector, skip = 0, limit = 100) {
 		limit = Math.min(Math.max(limit, 0), 100)
 		selector._removed = false
 		let cursor = await this._call('byExample', selector, {skip, limit})
@@ -169,6 +169,12 @@ export default class Model {
 		return documents.map(document => {
 			return this._createModelByDocument(document)
 		})
+	}
+
+
+	static async findOne(selector, skip = 0) {
+		let models = await this.find(selector, skip, 1)
+		return models[0]
 	}
 
 

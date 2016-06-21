@@ -558,7 +558,7 @@ var Model = (_temp = _class = function () {
 			return restore;
 		}()
 	}, {
-		key: 'select',
+		key: 'find',
 		value: function () {
 			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee15(selector) {
 				var _this2 = this;
@@ -594,11 +594,42 @@ var Model = (_temp = _class = function () {
 				}, _callee15, this);
 			}));
 
-			function select(_x10, _x11, _x12) {
+			function find(_x10, _x11, _x12) {
 				return ref.apply(this, arguments);
 			}
 
-			return select;
+			return find;
+		}()
+	}, {
+		key: 'findOne',
+		value: function () {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee16(selector) {
+				var skip = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+				var models;
+				return regeneratorRuntime.wrap(function _callee16$(_context16) {
+					while (1) {
+						switch (_context16.prev = _context16.next) {
+							case 0:
+								_context16.next = 2;
+								return this.find(selector, skip, 1);
+
+							case 2:
+								models = _context16.sent;
+								return _context16.abrupt('return', models[0]);
+
+							case 4:
+							case 'end':
+								return _context16.stop();
+						}
+					}
+				}, _callee16, this);
+			}));
+
+			function findOne(_x15, _x16) {
+				return ref.apply(this, arguments);
+			}
+
+			return findOne;
 		}()
 	}]);
 

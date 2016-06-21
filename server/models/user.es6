@@ -1,20 +1,12 @@
-import Model from '../lib/model'
-
-
-class Sector extends Model {
-
-	static schema = {
-		size: Number
-	}
-
-}
+import Model from '../core/model'
 
 
 class User extends Model {
 
 	static schema = {
 		name: String,
-		name: {$type: String}
+		age: String,
+		friend: User,
 	}
 
 }
@@ -22,28 +14,13 @@ class User extends Model {
 
 (async function () {
 
-	try {
-
-		let user = await User.add({
-			name: 'Ашот',
-			status: 'active',
-			classes: new Set(['Трис']),
-		})
-
-		user.classes.add('Двас')
-		user.classes.add('Двас')
-		user.classes.add('Двас')
-		await user.save()
-		await user.update()
-		console.log(user.classes)
-
-	} catch (e) {
-		console.error(e)
-	}
+	let user = await User.add({name: 'Ашот', age: 33})
+	let user2 = await User.add({name: 'Гриша', age: 11})
 
 
-}())
 
+})()
 
+console.log(333)
 
 

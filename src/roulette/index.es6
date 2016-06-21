@@ -19,6 +19,10 @@ import TabTitle from './component/tabs/tab-title'
 import Pass from './component/pass/pass'
 import File from './component/file/file'
 import Form from './component/form/form'
+import Notificator from './component/notificator/notificator'
+import Gallery from './component/gallery/gallery'
+import Confirm from './component/confirm/confirm'
+
 
 ui.component(Pagination)
 ui.component(Checkbox)
@@ -37,6 +41,9 @@ ui.component(TabTitle)
 ui.component(Pass)
 ui.component(File)
 ui.component(Form)
+ui.component(Notificator)
+ui.component(Gallery)
+ui.component(Confirm)
 
 
 // start app
