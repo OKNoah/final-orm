@@ -1,6 +1,8 @@
 ORMjs this is javascript OOP interface to Database.
 Its use ArangoDB, but later I will add drivers for other databases (such as mongodb).
 
+GitHub https://github.com/uMaxmaxmaximus/ui-js/tree/master/server/core/orm
+
 Conception: Using the ES7 operator `await`, `getters` and `promises`,
 we can navigate the graph objects tree.
 
@@ -12,7 +14,7 @@ What do you think about it? =)
 
 This is part of a large project, but I upload it to npm as a separate module.
 May be it will be useful to someone.
-https://github.com/uMaxmaxmaximus/ui-js/tree/master/server/lib/orm
+
 
 It uses ArangoDB https://www.arangodb.com/2015/10/benchmark-postgresql-mongodb-arangodb/
 
