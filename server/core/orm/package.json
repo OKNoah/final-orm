@@ -1,6 +1,6 @@
 {
   "name": "ormjs",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "dependencies": {
     "arangojs": "^4.5.1"
   },
@@ -12,7 +12,9 @@
     "arangodb",
     "odm",
     "mongo",
-    "mongodb"
+    "mongodb",
+    "document",
+    "nosql"
   ]
 }
 
