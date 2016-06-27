@@ -27,10 +27,10 @@ export default class App {
   static template = `
     Hello {{name}} !!!
   `
-
   constructor(){
     this.name = 'World'
   }
+
 }
 ```
 
