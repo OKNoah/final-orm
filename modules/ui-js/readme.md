@@ -142,9 +142,9 @@ class Chat {
   static selector = 'chat'
   static template = `
     <ul .messages>
-      <li .message *for='message, index in messages'>
+      <li .message *for='message in messages'>
 
-        {{message.text}} {{index}}
+        {{message.text}}
 
         <button (click)='removeMessage(message)'>
           remove
@@ -179,7 +179,8 @@ class Chat {
 
 *directives
 ===
-- *for="item, index in arr" // iterate element
+- *for="item in arr" // iterate element
+- *for="item, index in arr" // iterate element and index
 - *for="10" // iterate element 10 times
 - *if="exp" // create or remove element with expression
 
