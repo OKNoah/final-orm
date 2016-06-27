@@ -211,7 +211,7 @@ class Component {
 
 if you use content element in you template, then original html content from host element, It will be placed there:
 
-```
+```javascript
 class Button {
   static selector = 'button'
   static template = `
