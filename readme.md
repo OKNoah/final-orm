@@ -1,6 +1,8 @@
 Frontend MVVM framework like Angular 2, but better =)
 ---
 
+Use Webpack to build application
+
 
 Basic example:
 ---
