@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectTasksOptions">
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="--source-maps --out-file $FileNameWithoutExtension$.js --presets es2015,stage-0 --plugins transform-decorators-legacy  $FilePath$" />
+      <option name="arguments" value="--source-maps --out-file $FileNameWithoutExtension$.js --presets es2015,stage-0 $FilePath$" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" value="Transpiles ECMAScript 6 code to ECMAScript 5" />
       <option name="exitCodeBehavior" value="ERROR" />

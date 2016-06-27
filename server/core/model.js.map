@@ -1,1 +1,1 @@
-{"version":3,"sources":["model.es6"],"names":[],"mappings":";;;;;;;;;;;;;QAAO,O","file":"model.js","sourcesContent":["export default from './orm'\r\n\r\n"]}
+{"version":3,"sources":["model.es6"],"names":[],"mappings":";;;;;;AAAA;;;;;;kBAEe,cAAI,OAAJ,CAAY;AAC1B,WAAU;AADgB,CAAZ,C","file":"model.js","sourcesContent":["import orm from './orm'\r\n\r\nexport default orm.connect({\r\n\tdatabase: 'oiopoppo',\r\n})\r\n\r\n\r\n\r\n"]}

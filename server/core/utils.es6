@@ -42,8 +42,7 @@ export default class Utils {
 
 
 	static async saveFile(stream, ext) {
-		if (!stream) throw Error `1 argument isnt stream`
-
+		if (!stream) throw Error `first argument is not stream`
 		let storagePath = config.storage
 		let folderName = this.createRandomString(64)
 		let fileName = this.createRandomString(5) + `.${ext}`

@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -29,8 +28,8 @@ var FieldType = function (_Field) {
 
 		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FieldType).call(this, basePath, path, options, internal));
 
-		_this.type = type;
 		_this.checkType(type);
+		_this.type = type;
 		return _this;
 	}
 
@@ -54,8 +53,10 @@ var FieldType = function (_Field) {
 		key: 'validate',
 		value: function validate(data, basePath) {
 			if (this.internal) return;
-
 			var value = this.getByPath(data);
+
+			// if (this.isOptional(value)) return
+
 			if (!this.validateValue(value, basePath)) {
 				this.typeError(this.type, value, basePath);
 			}

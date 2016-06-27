@@ -13,7 +13,7 @@ var _db = require('./db');
 
 var _db2 = _interopRequireDefault(_db);
 
-var _server = require('./server');
+var _server = require('./connection');
 
 var _server2 = _interopRequireDefault(_server);
 

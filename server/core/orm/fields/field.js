@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -29,13 +28,30 @@ var Field = function () {
 		_classCallCheck(this, Field);
 
 		if (!internal) this.checkPath(path, basePath);
+		this.options = this.normalizeOptions(options);
 		this.basePath = basePath;
 		this.internal = internal;
-		this.options = options;
 		this.path = path;
 	}
 
 	_createClass(Field, [{
+		key: 'isOptional',
+		value: function isOptional(value) {
+			return value == null && this.options.optional;
+		}
+	}, {
+		key: 'normalizeOptions',
+		value: function normalizeOptions(options) {
+			var normalOptions = {};
+			for (var key in options) {
+				if (options.hasOwnProperty(key)) {
+					var value = options[key];
+					var normalKey = key.match(/^\$?(.*)/)[1];
+					normalOptions[normalKey] = value;
+				}
+			}return normalOptions;
+		}
+	}, {
 		key: 'checkPath',
 		value: function checkPath(path, basePath) {
 			var _iteratorNormalCompletion = true;

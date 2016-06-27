@@ -1,8 +1,28 @@
 import 'babel-polyfill'
 
-// import './collections/users'
-// import './collections/sectors'
 
-import User from './models/user'
+// import User from './models/user'
 
+
+import connection from './core/connection'
+
+
+connection.addMethods({
+
+	async 'ololo' (a, b) {
+		throw 33
+		return a + b
+	},
+
+
+	// 'user.remove' (q, w, e) {
+	//
+	// 	// this.user.
+	// 	this.progress(33)
+	// 	this.resolve('dd')
+	// 	this.reject(33)
+	//
+	// }
+
+})
 

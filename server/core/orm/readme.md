@@ -31,6 +31,10 @@ Model.remove(model) // remove model
 Model.restore(model) // restore removed model
 Model.save(model) // save modified model to db
 Model.update(model) // update modified model from db
+Model.find(selector, offset = 0, limit = 100) // find models by selector obj
+Model.findOne(selector, offset = 0) // find one model by selector obj
+Model.count(selector) // return count models matches of selector
+Model.have(selector) // returns true if there is at least one model suitable for selector
 ```
 
 instance
@@ -307,7 +311,7 @@ Number
 schema = {
 	age: Number,
 	age: {$type: Number},
-    age: {$type: Number, min:0, max:100}
+	age: {$type: Number, min:0, max:100}
 }
 ```
 
@@ -317,7 +321,7 @@ String
 schema = {
 	name: String,
 	name: {$type: String},
-    name: {$type: String, min:3, max:20, test:/^\w+$/}
+	name: {$type: String, min:3, max:20, test:/^\w+$/}
 }
 ```
 
@@ -327,7 +331,7 @@ Set
 schema = {
 	tags: Set,
 	tags: {$type: Set},
-    tags: {$type: Set, set: ['animals', 'porn', 'movie']}
+	tags: {$type: Set, set: ['animals', 'porn', 'movie']}
 }
 ```
 

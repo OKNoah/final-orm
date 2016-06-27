@@ -5,7 +5,7 @@ import Schema from './schema'
 export default class Model {
 
 
-	static config = {database: 'fds'} // db config
+	static options = null // connection options
 	static schema = null // user schema
 
 	static _normalSchema = null
@@ -28,11 +28,11 @@ export default class Model {
 
 		let db = new Database()
 		try {
-			await db.createDatabase(Model.config.database)
+			await db.createDatabase(this.options.database)
 		} catch (e) {
 		}
 
-		db.useDatabase(Model.config.database)
+		db.useDatabase(this.options.database)
 		return Model._database = db
 	}
 
@@ -174,7 +174,20 @@ export default class Model {
 
 	static async findOne(selector, skip = 0) {
 		let models = await this.find(selector, skip, 1)
-		return models[0]
+		let model = models[0]
+		return model == null ? null : model
+	}
+
+
+	static async count(selector) {
+		let cursor = await this._call('byExample', selector)
+		return cursor.count
+	}
+
+
+	static async have(selector) {
+		let model = await this.findOne(selector)
+		return !!model
 	}
 
 

@@ -6,8 +6,8 @@ export default class FieldType extends Field {
 
 	constructor(basePath, path, type, options, internal = false) {
 		super(basePath, path, options, internal)
-		this.type = type
 		this.checkType(type)
+		this.type = type
 	}
 
 
@@ -29,8 +29,10 @@ export default class FieldType extends Field {
 
 	validate(data, basePath) {
 		if (this.internal) return
-
 		let value = this.getByPath(data)
+
+		// if (this.isOptional(value)) return
+
 		if (!this.validateValue(value, basePath)) {
 			this.typeError(this.type, value, basePath)
 		}

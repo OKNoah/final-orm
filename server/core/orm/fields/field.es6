@@ -7,10 +7,26 @@ export default class Field {
 
 	constructor(basePath = [], path, options = {}, internal = false) {
 		if (!internal) this.checkPath(path, basePath)
+		this.options = this.normalizeOptions(options)
 		this.basePath = basePath
 		this.internal = internal
-		this.options = options
 		this.path = path
+	}
+
+
+	isOptional(value) {
+		return (value == null) && this.options.optional
+	}
+
+
+	normalizeOptions(options) {
+		let normalOptions = {}
+		for (let key in options) if (options.hasOwnProperty(key)) {
+			let value = options[key]
+			let normalKey = key.match(/^\$?(.*)/)[1]
+			normalOptions[normalKey] = value
+		}
+		return normalOptions
 	}
 
 

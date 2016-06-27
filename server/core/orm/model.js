@@ -3,26 +3,72 @@
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.default = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () {
+	function defineProperties(target, props) {
+		for (var i = 0; i < props.length; i++) {
+			var descriptor = props[i];
+			descriptor.enumerable = descriptor.enumerable || false;
+			descriptor.configurable = true;
+			if ("value" in descriptor) descriptor.writable = true;
+			Object.defineProperty(target, descriptor.key, descriptor);
+		}
+	}
 
-var _class, _temp;
+	return function (Constructor, protoProps, staticProps) {
+		if (protoProps) defineProperties(Constructor.prototype, protoProps);
+		if (staticProps) defineProperties(Constructor, staticProps);
+		return Constructor;
+	};
+}();
 
 var _schema = require('./schema');
 
 var _schema2 = _interopRequireDefault(_schema);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+	return obj && obj.__esModule ? obj : {default: obj};
+}
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+function _asyncToGenerator(fn) {
+	return function () {
+		var gen = fn.apply(this, arguments);
+		return new Promise(function (resolve, reject) {
+			function step(key, arg) {
+				try {
+					var info = gen[key](arg);
+					var value = info.value;
+				} catch (error) {
+					reject(error);
+					return;
+				}
+				if (info.done) {
+					resolve(value);
+				} else {
+					return Promise.resolve(value).then(function (value) {
+						return step("next", value);
+					}, function (err) {
+						return step("throw", err);
+					});
+				}
+			}
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+			return step("next");
+		});
+	};
+}
+
+function _classCallCheck(instance, Constructor) {
+	if (!(instance instanceof Constructor)) {
+		throw new TypeError("Cannot call a class as a function");
+	}
+}
 
 var _require = require('arangojs');
 
 var Database = _require.Database;
-var Model = (_temp = _class = function () {
+
+var Model = function () {
 	function Model() {
 		_classCallCheck(this, Model);
 	}
@@ -129,7 +175,7 @@ var Model = (_temp = _class = function () {
 		}()
 	}], [{
 		key: '_getSchema',
-		// db config
+		// connection options
 		value: function _getSchema() {
 			if (!this._normalSchema) {
 				this._normalSchema = new _schema2.default(this.schema);
@@ -157,7 +203,7 @@ var Model = (_temp = _class = function () {
 								db = new Database();
 								_context5.prev = 3;
 								_context5.next = 6;
-								return db.createDatabase(Model.config.database);
+								return db.createDatabase(this.options.database);
 
 							case 6:
 								_context5.next = 10;
@@ -169,7 +215,7 @@ var Model = (_temp = _class = function () {
 
 							case 10:
 
-								db.useDatabase(Model.config.database);
+								db.useDatabase(this.options.database);
 								return _context5.abrupt('return', Model._database = db);
 
 							case 12:
@@ -243,10 +289,10 @@ var Model = (_temp = _class = function () {
 		value: function () {
 			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(method) {
 				var collection,
-				    _len,
-				    args,
-				    _key,
-				    _args7 = arguments;
+					_len,
+					args,
+					_key,
+					_args7 = arguments;
 
 				return regeneratorRuntime.wrap(function _callee7$(_context7) {
 					while (1) {
@@ -573,7 +619,7 @@ var Model = (_temp = _class = function () {
 								limit = Math.min(Math.max(limit, 0), 100);
 								selector._removed = false;
 								_context15.next = 4;
-								return this._call('byExample', selector, { skip: skip, limit: limit });
+								return this._call('byExample', selector, {skip: skip, limit: limit});
 
 							case 4:
 								cursor = _context15.sent;
@@ -605,7 +651,7 @@ var Model = (_temp = _class = function () {
 		value: function () {
 			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee16(selector) {
 				var skip = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-				var models;
+				var models, model;
 				return regeneratorRuntime.wrap(function _callee16$(_context16) {
 					while (1) {
 						switch (_context16.prev = _context16.next) {
@@ -615,9 +661,10 @@ var Model = (_temp = _class = function () {
 
 							case 2:
 								models = _context16.sent;
-								return _context16.abrupt('return', models[0]);
+								model = models[0];
+								return _context16.abrupt('return', model == null ? null : model);
 
-							case 4:
+							case 5:
 							case 'end':
 								return _context16.stop();
 						}
@@ -631,10 +678,76 @@ var Model = (_temp = _class = function () {
 
 			return findOne;
 		}()
+	}, {
+		key: 'count',
+		value: function () {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee17(selector) {
+				var cursor;
+				return regeneratorRuntime.wrap(function _callee17$(_context17) {
+					while (1) {
+						switch (_context17.prev = _context17.next) {
+							case 0:
+								_context17.next = 2;
+								return this._call('byExample', selector);
+
+							case 2:
+								cursor = _context17.sent;
+								return _context17.abrupt('return', cursor.count);
+
+							case 4:
+							case 'end':
+								return _context17.stop();
+						}
+					}
+				}, _callee17, this);
+			}));
+
+			function count(_x18) {
+				return ref.apply(this, arguments);
+			}
+
+			return count;
+		}()
+	}, {
+		key: 'have',
+		value: function () {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee18(selector) {
+				var model;
+				return regeneratorRuntime.wrap(function _callee18$(_context18) {
+					while (1) {
+						switch (_context18.prev = _context18.next) {
+							case 0:
+								_context18.next = 2;
+								return this.findOne(selector);
+
+							case 2:
+								model = _context18.sent;
+								return _context18.abrupt('return', !!model);
+
+							case 4:
+							case 'end':
+								return _context18.stop();
+						}
+					}
+				}, _callee18, this);
+			}));
+
+			function have(_x19) {
+				return ref.apply(this, arguments);
+			}
+
+			return have;
+		}()
 	}]);
 
 	return Model;
-}(), _class.config = { database: 'fds' }, _class.schema = null, _class._normalSchema = null, _class._collection = null, _class._database = null, _temp);
+}();
+
+Model.options = null;
+Model.schema = null;
+Model._normalSchema = null;
+Model._collection = null;
+Model._database = null;
 exports.default = Model;
 
 //# sourceMappingURL=model.js.map

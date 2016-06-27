@@ -2,13 +2,13 @@ import Platform from 'ui-js/core/platform'
 import Promise from 'ui-js/core/promise'
 import Roulette from './roulette/roulette'
 import AdminPanel from './admin-panel/admin-panel'
-import Collection from '../core/collection'
+import Server from '../core/server'
 
 
 export default class App {
 
-	static styles = [require('./app.styl')]
 	static selector = 'my-app'
+	static styles = [require('./app.styl')]
 	static components = [Roulette, AdminPanel]
 
 	static template = `
@@ -20,21 +20,17 @@ export default class App {
 	`
 
 	constructor() {
-		this.users = new Collection('users')
-		this.users.call('ololo', 112, 3434)
+		this.server = new Server();
 
 
-		// (async function () {
-		//
-		// 	let user = await this.users.call('add', {
-		// 		name: 'Ашот',
-		// 		age: 200,
-		// 	})
-		//
-		// 	console.log(user)
-		//
-		// }).call(this)
+		(async function () {
 
+			let q = await this.server.call('ololo', 1, 2)
+			console.log(q)
+
+			// this.server.call('ololo', 4, 7)
+
+		}).call(this);
 
 		this.audioContext = new AudioContext()
 		this.soundBuffersLoadPromises = {}
@@ -47,9 +43,15 @@ export default class App {
 
 
 	initHandlers() {
+		this.server.on('connect-error', e => this.onConnectionError(e))
 		this.watch('fontSize', this.updateFonts.bind(this))
 		ui.dom.on('resize', this.updateFonts.bind(this))
 		this.host.on('init', this.updateFonts.bind(this))
+	}
+
+
+	onConnectionError() {
+		this.error('Ошибка соединения с сервером, пытаюсь восстановить...')
 	}
 
 
