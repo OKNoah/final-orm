@@ -201,6 +201,37 @@ class Component {
 }
 ```
 
+\<content>
+===
+
+if you use content element in you template, then original html content from host element, It will be placed there:
+
+```
+class Button {
+  static selector = 'button'
+  static template = `
+    Content: <content></content>
+  `
+}
+
+class App {
+  static components = [Button]
+  static template = `
+    <button>Ololo</button>
+    <button> <span>Trololo</span> </button>
+  `
+}
+```
+
+render to:
+```html
+<head></head>
+<body>
+  <ui-button>Content: Ololo</ui-button>
+  <ui-button>Content: <span>Trololo</span> </ui-button>
+<body>
+```
+
 #links
 ===
 - \#linkName (add link for element or component to scope)
