@@ -5,6 +5,7 @@ Frontend MVVM framework like Angular 2, but better =)
 ===
 
 Use Webpack to build application
+GitHub: https://github.com/uMaxmaxmaximus/ui-js/tree/master/modules/ui-js
 
 
 Basic example:
