@@ -104,6 +104,20 @@ its render to:
 <body>
 ```
 
+In style we can use `:host` selector to styling root component element.
+
+If selector name is `button`, after rendering component name is `ui-button`,
+to avoid conflict with the built-in browser elements.
+
+ui-button element hav not display style, and you need set it:
+
+```css
+:host{
+    display: block
+}
+```
+This is a typical situation for the ShadowDOM
+
 Global components
 ---
 
