@@ -227,6 +227,7 @@ class Componenr {
 
 if exp has tag {{ }}, then exp is interpreted as a string
 
-[prop]="100" // prop is number 100
-[prop]="{{100}}px" // prop is string "100px"
+\<div [prop]="100"> // prop is number 100
+
+\<div [prop]="{{100}}px"> // prop is string "100px"
 
