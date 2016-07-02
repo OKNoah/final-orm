@@ -161,7 +161,7 @@ export default class Model {
 	}
 
 
-	static async find(selector, skip = 0, limit = 100) {
+	static async find(selector = {}, skip = 0, limit = 100) {
 		limit = Math.min(Math.max(limit, 0), 100)
 		selector._removed = false
 		let cursor = await this._call('byExample', selector, {skip, limit})

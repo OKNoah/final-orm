@@ -86,7 +86,7 @@ module.exports = class For
 			iteration.locals[@itemName] = @array[index]
 			newIterations.push(iteration)
 			content.push(iteration.node)
-			content.push(iteration.end)
+			content.push(iteration.endLabel)
 			cnt++
 
 		@insertIterationsContent(startIndex, content)
@@ -101,9 +101,9 @@ module.exports = class For
 		if index is 0
 			label = @label
 		else if index > @iterations.length - 1
-			label = @iterations[@iterations.length - 1].end
+			label = @iterations[@iterations.length - 1].endLabel
 		else
-			label = @iterations[index].end
+			label = @iterations[index].endLabel
 
 		label.after(content)
 		return
@@ -115,7 +115,7 @@ class Iteration
 	constructor: (@subThree, @component, locals)->
 		@locals = Object.create(locals)
 		@node = @subThree.template.clone()
-		@end = DOM.createComment(' *for iteration ')
+		@endLabel = DOM.createComment(' *for iteration ')
 		return
 
 
@@ -125,7 +125,7 @@ class Iteration
 
 
 	destroy: ->
-		@end.destroy(yes, yes)
+		@endLabel.destroy(yes, yes)
 		@node.destroy(yes, yes)
 		return
 

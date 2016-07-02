@@ -124,7 +124,7 @@ module.exports = For = (function() {
       iteration.locals[this.itemName] = this.array[index];
       newIterations.push(iteration);
       content.push(iteration.node);
-      content.push(iteration.end);
+      content.push(iteration.endLabel);
       cnt++;
     }
     this.insertIterationsContent(startIndex, content);
@@ -144,9 +144,9 @@ module.exports = For = (function() {
     if (index === 0) {
       label = this.label;
     } else if (index > this.iterations.length - 1) {
-      label = this.iterations[this.iterations.length - 1].end;
+      label = this.iterations[this.iterations.length - 1].endLabel;
     } else {
-      label = this.iterations[index].end;
+      label = this.iterations[index].endLabel;
     }
     label.after(content);
   };
@@ -161,7 +161,7 @@ Iteration = (function() {
     this.component = component;
     this.locals = Object.create(locals);
     this.node = this.subThree.template.clone();
-    this.end = DOM.createComment(' *for iteration ');
+    this.endLabel = DOM.createComment(' *for iteration ');
     return;
   }
 
@@ -170,7 +170,7 @@ Iteration = (function() {
   };
 
   Iteration.prototype.destroy = function() {
-    this.end.destroy(true, true);
+    this.endLabel.destroy(true, true);
     this.node.destroy(true, true);
   };
 

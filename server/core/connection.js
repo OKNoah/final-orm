@@ -6,13 +6,25 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _socket = require('socket.io-stream');
+
+var _socket2 = _interopRequireDefault(_socket);
+
 var _user = require('../models/user');
 
 var _user2 = _interopRequireDefault(_user);
 
+var _socket3 = require('socket.io');
+
+var _socket4 = _interopRequireDefault(_socket3);
+
 var _config = require('../config');
 
 var _config2 = _interopRequireDefault(_config);
+
+var _cookie = require('cookie');
+
+var _cookie2 = _interopRequireDefault(_cookie);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22,20 +34,26 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var ss = require('socket.io-stream');
-var socketIo = require('socket.io');
-var cookie = require('cookie');
+var Server = function () {
+	function Server() {
+		_classCallCheck(this, Server);
+	}
 
-var Connection = function () {
-	_createClass(Connection, null, [{
+	_createClass(Server, null, [{
 		key: 'addMethods',
-		value: function addMethods(obj) {
+		value: function addMethods(prefix, obj) {
 			for (var key in obj) {
 				if (obj.hasOwnProperty(key)) {
 					var method = obj[key];
-					this.methods[key] = method;
+					var name = prefix + '.' + key;
+					this.addMethod(name, method);
 				}
 			}
+		}
+	}, {
+		key: 'addMethod',
+		value: function addMethod(name, method) {
+			this.methods[name.toLowerCase()] = method;
 		}
 	}, {
 		key: 'callMethod',
@@ -46,7 +64,7 @@ var Connection = function () {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
-								method = this.methods[name];
+								method = this.methods[name.toLowerCase()];
 
 								if (method) {
 									_context.next = 3;
@@ -82,7 +100,7 @@ var Connection = function () {
 					while (1) {
 						switch (_context2.prev = _context2.next) {
 							case 0:
-								this.io = socketIo(_config2.default.port, {});
+								this.io = (0, _socket4.default)(_config2.default.port, {});
 								this.io.on('connection', function (socket) {
 									return _this.onConnection(socket);
 								});
@@ -110,13 +128,13 @@ var Connection = function () {
 					while (1) {
 						switch (_context3.prev = _context3.next) {
 							case 0:
-								socket = ss(socket);
+								socket = (0, _socket2.default)(socket);
 								_context3.next = 3;
 								return this.getUser(socket);
 
 							case 3:
 								user = _context3.sent;
-								connection = new this(socket, user);
+								connection = new Connection(socket, user);
 
 							case 5:
 							case 'end':
@@ -142,7 +160,7 @@ var Connection = function () {
 						switch (_context4.prev = _context4.next) {
 							case 0:
 								cookiesString = socket.sio.conn.request.headers.cookie;
-								cookies = cookie.parse(cookiesString);
+								cookies = _cookie2.default.parse(cookiesString);
 								sessionKey = cookies['session-key'];
 								_context4.next = 5;
 								return _user2.default.getBySessionKey(sessionKey);
@@ -166,9 +184,22 @@ var Connection = function () {
 		}()
 	}]);
 
-	function Connection(socket, user) {
+	return Server;
+}();
+
+// init server
+
+
+Server.io = null;
+Server.methods = {};
+exports.default = Server;
+Server.connect();
+
+var Connection = function () {
+	function Connection(server, socket, user) {
 		_classCallCheck(this, Connection);
 
+		this.server = server;
 		this.socket = socket;
 		this.user = user;
 		this.initHandlers();
@@ -290,10 +321,6 @@ var Connection = function () {
 	return Connection;
 }();
 
-Connection.io = null;
-Connection.methods = {};
-exports.default = Connection;
-
 var Task = function () {
 	function Task(connection, options) {
 		_classCallCheck(this, Task);
@@ -374,7 +401,5 @@ var Task = function () {
 
 	return Task;
 }();
-
-Connection.connect();
 
 //# sourceMappingURL=connection.js.map

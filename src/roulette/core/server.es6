@@ -9,7 +9,7 @@ function createId() {
 }
 
 
-export default class Server extends EventEmitter {
+export class Server extends EventEmitter {
 
 
 	constructor() {
@@ -163,4 +163,7 @@ class Task {
 	}
 
 }
+
+
+export default new Server()
 

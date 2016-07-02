@@ -74,6 +74,9 @@ module.exports = DOMRender = (function() {
       node = node.host;
     }
     realNode = node.realNode;
+    if (!realNode) {
+      return;
+    }
     switch (node.nodeType) {
       case 'text':
         this.updateText(node, realNode);
@@ -103,9 +106,6 @@ module.exports = DOMRender = (function() {
   };
 
   DOMRender.prototype.updateComment = function(node, realNode) {
-    if (!realNode) {
-      return;
-    }
     realNode.nodeValue = node.value;
   };
 

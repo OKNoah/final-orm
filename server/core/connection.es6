@@ -1,27 +1,32 @@
+import ss from 'socket.io-stream'
 import User from '../models/user'
+import socketIo from 'socket.io'
 import config from '../config'
-
-let ss = require('socket.io-stream')
-let socketIo = require('socket.io')
-let cookie = require('cookie')
+import cookie from 'cookie'
 
 
-export default class Connection {
+export default class Server {
 
 	static io = null
 	static methods = {}
 
 
-	static addMethods(obj) {
+	static addMethods(prefix, obj) {
 		for (let key in obj) if (obj.hasOwnProperty(key)) {
 			let method = obj[key]
-			this.methods[key] = method
+			let name = `${prefix}.${key}`
+			this.addMethod(name, method)
 		}
 	}
 
 
+	static addMethod(name, method) {
+		this.methods[name.toLowerCase()] = method
+	}
+
+
 	static async callMethod(name, args, context) {
-		let method = this.methods[name]
+		let method = this.methods[name.toLowerCase()]
 		if (!method) {
 			throw Error(`Нет такого метода '${name}'`)
 		}
@@ -38,7 +43,7 @@ export default class Connection {
 	static async onConnection(socket) {
 		socket = ss(socket)
 		let user = await this.getUser(socket)
-		let connection = new this(socket, user)
+		let connection = new Connection(socket, user)
 	}
 
 
@@ -49,8 +54,17 @@ export default class Connection {
 		return await User.getBySessionKey(sessionKey)
 	}
 
+}
 
-	constructor(socket, user) {
+// init server
+Server.connect()
+
+
+class Connection {
+
+
+	constructor(server, socket, user) {
+		this.server = server
 		this.socket = socket
 		this.user = user
 		this.initHandlers()
@@ -66,9 +80,7 @@ export default class Connection {
 		let tasks = request.tasks
 		let id = request.id
 		tasks = tasks.map(options => new Task(this, options))
-		for (let task of tasks) {
-			await task.run()
-		}
+		for (let task of tasks) await task.run()
 		let responses = tasks.map(task => task.toJSON())
 		this.sendResponse(responses, id)
 	}
@@ -131,7 +143,6 @@ class Task {
 }
 
 
-Connection.connect()
 
 
 

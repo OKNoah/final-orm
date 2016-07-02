@@ -1,4 +1,5 @@
 import "babel-polyfill"
+import ui from 'ui-js'
 
 
 import Pagination from './component/pagination/pagination'
@@ -22,8 +23,6 @@ import Notificator from './component/notificator/notificator'
 import Gallery from './component/gallery/gallery'
 import Confirm from './component/confirm/confirm'
 
-
-let ui = require('ui-js')
 
 ui.component(Pagination)
 ui.component(Checkbox)

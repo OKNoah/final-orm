@@ -26,7 +26,7 @@
       <option name="description" value="Compiles .coffee files into .js files" />
       <option name="exitCodeBehavior" value="ERROR" />
       <option name="fileExtension" value="coffee" />
-      <option name="immediateSync" value="true" />
+      <option name="immediateSync" value="false" />
       <option name="name" value="CoffeeScript" />
       <option name="output" value="$FileNameWithoutExtension$.js:$FileNameWithoutExtension$.map:$FileNameWithoutExtension$.js.map" />
       <option name="outputFilters">

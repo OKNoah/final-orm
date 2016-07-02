@@ -39,6 +39,9 @@ loader = (pattern, loaderName) ->
 
 productionConf =
 
+
+	devtool: 'cheap-module-eval-source-map'
+
 	module:
 		loaders: [
 			loader('src/**/*.jade', 'jade'),

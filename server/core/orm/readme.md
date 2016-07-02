@@ -46,10 +46,20 @@ Model.prototype.restore() // alias  Model.remove(this)
 ```
 
 Basics
-----
+---
+
+create init class model.js
+```javascript
+let orm = require('orm')
+let Model = orm.connect({options})
+export default Model
+```
+orm.connect() return Model class, and you need export and extend it
+
+
 Define collection User (class name will be collection name)
 ```javascript
-let Model = require('ormjs')
+import Model from './model.js'
 
 class User extends Model {
 
@@ -85,7 +95,7 @@ Example 0:
 
 
 ```javascript
-let Model = require('ormjs')
+import Model from './model.js'
 
 
 class User extends Model {
@@ -134,7 +144,7 @@ Usage:
 Example 1:
 ---
 ```javascript
-let Model = require('ormjs')
+import Model from './model.js'
 
 
 class User extends Model {
@@ -190,7 +200,7 @@ Usage:
 Example 2:
 ---
 ```javascript
-let Model = require('ormjs')
+import Model from './model.js'
 
 
 class Sector extends Model {
@@ -248,7 +258,7 @@ System types is: String, Number, Boolean, Data, Set
 Actually we can use custom types:
 
 ```javascript
-let Model = require('ormjs')
+import Model from './model.js'
 
 
 class Color {

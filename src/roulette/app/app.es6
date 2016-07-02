@@ -2,7 +2,7 @@ import Platform from 'ui-js/core/platform'
 import Promise from 'ui-js/core/promise'
 import Roulette from './roulette/roulette'
 import AdminPanel from './admin-panel/admin-panel'
-import Server from '../core/server'
+import server from '../core/server'
 
 
 export default class App {
@@ -20,17 +20,8 @@ export default class App {
 	`
 
 	constructor() {
-		this.server = new Server();
-
-
-		(async function () {
-
-			let q = await this.server.call('ololo', 1, 2)
-			console.log(q)
-
-			// this.server.call('ololo', 4, 7)
-
-		}).call(this);
+		this.server = server
+		this.call()
 
 		this.audioContext = new AudioContext()
 		this.soundBuffersLoadPromises = {}
@@ -39,6 +30,12 @@ export default class App {
 		this.fontSize = 70
 		this.bindHostClasses()
 		this.initHandlers()
+	}
+
+
+	async call() {
+		let q = await this.server.call('user.add', 1, 2)
+		console.log(q)
 	}
 
 

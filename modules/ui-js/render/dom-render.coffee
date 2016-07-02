@@ -4,7 +4,7 @@ MutationObserver = require('ui-js/dom/core/mutation-observer')
 HTMLRender = require('./html-render')
 Event = require('ui-js/dom/core/event')
 Selection = require('./selection')
-DOM = require('ui-js/dom') 
+DOM = require('ui-js/dom')
 
 
 module.exports = class DOMRender
@@ -55,6 +55,8 @@ module.exports = class DOMRender
 		if node.host then node = node.host
 		realNode = node.realNode
 
+		unless realNode then return # TODO
+
 		switch node.nodeType
 			when 'text' then @updateText(node, realNode)
 			when 'comment' then @updateComment(node, realNode)
@@ -76,7 +78,6 @@ module.exports = class DOMRender
 
 
 	updateComment: (node, realNode)->
-		unless realNode then return
 		realNode.nodeValue = node.value
 		return
 
@@ -258,7 +259,7 @@ module.exports = class DOMRender
 			@container.addEventListener eventName, (realEvent)=>
 				realNode = realEvent.target
 				virtualNode = realNode.renderResult?.node
-				
+
 				if virtualNode and eventName in ['input', 'change']
 					@updateInputModel(virtualNode, realNode)
 

@@ -4,65 +4,17 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () {
-	function defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-
-	return function (Constructor, protoProps, staticProps) {
-		if (protoProps) defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) defineProperties(Constructor, staticProps);
-		return Constructor;
-	};
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _schema = require('./schema');
 
 var _schema2 = _interopRequireDefault(_schema);
 
-function _interopRequireDefault(obj) {
-	return obj && obj.__esModule ? obj : {default: obj};
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) {
-	return function () {
-		var gen = fn.apply(this, arguments);
-		return new Promise(function (resolve, reject) {
-			function step(key, arg) {
-				try {
-					var info = gen[key](arg);
-					var value = info.value;
-				} catch (error) {
-					reject(error);
-					return;
-				}
-				if (info.done) {
-					resolve(value);
-				} else {
-					return Promise.resolve(value).then(function (value) {
-						return step("next", value);
-					}, function (err) {
-						return step("throw", err);
-					});
-				}
-			}
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
-			return step("next");
-		});
-	};
-}
-
-function _classCallCheck(instance, Constructor) {
-	if (!(instance instanceof Constructor)) {
-		throw new TypeError("Cannot call a class as a function");
-	}
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _require = require('arangojs');
 
@@ -289,10 +241,10 @@ var Model = function () {
 		value: function () {
 			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(method) {
 				var collection,
-					_len,
-					args,
-					_key,
-					_args7 = arguments;
+				    _len,
+				    args,
+				    _key,
+				    _args7 = arguments;
 
 				return regeneratorRuntime.wrap(function _callee7$(_context7) {
 					while (1) {
@@ -606,7 +558,9 @@ var Model = function () {
 	}, {
 		key: 'find',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee15(selector) {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee15() {
+				var selector = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
 				var _this2 = this;
 
 				var skip = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
@@ -619,7 +573,7 @@ var Model = function () {
 								limit = Math.min(Math.max(limit, 0), 100);
 								selector._removed = false;
 								_context15.next = 4;
-								return this._call('byExample', selector, {skip: skip, limit: limit});
+								return this._call('byExample', selector, { skip: skip, limit: limit });
 
 							case 4:
 								cursor = _context15.sent;
@@ -672,7 +626,7 @@ var Model = function () {
 				}, _callee16, this);
 			}));
 
-			function findOne(_x15, _x16) {
+			function findOne(_x16, _x17) {
 				return ref.apply(this, arguments);
 			}
 
@@ -702,7 +656,7 @@ var Model = function () {
 				}, _callee17, this);
 			}));
 
-			function count(_x18) {
+			function count(_x19) {
 				return ref.apply(this, arguments);
 			}
 
@@ -732,7 +686,7 @@ var Model = function () {
 				}, _callee18, this);
 			}));
 
-			function have(_x19) {
+			function have(_x20) {
 				return ref.apply(this, arguments);
 			}
 

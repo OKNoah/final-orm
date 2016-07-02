@@ -35,6 +35,7 @@ module.exports = window['ui'] = new class UI
 	EventEmitter: EventEmitter
 	Promise: Promise
 
+
 	constructor: ->
 		@directives = [Pre, For, If, Html, Draggable]
 		@components = []
@@ -45,11 +46,10 @@ module.exports = window['ui'] = new class UI
 
 
 	bootstrap: (MainComponent, Render = DOMRender, renderOptions...)->
-		MainComponent = Component.create(MainComponent)
-
 		@components = Component.compileComponents(@components)
 		@directives = Directive.compileDirectives(@directives)
 
+		MainComponent = Component.create(MainComponent)
 		host = DOM.createElement(MainComponent.selector)
 		MainComponent.init(host)
 		render = new Render(host, renderOptions...)

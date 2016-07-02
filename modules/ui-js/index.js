@@ -58,9 +58,9 @@ module.exports = window['ui'] = new (UI = (function() {
     if (Render == null) {
       Render = DOMRender;
     }
-    MainComponent = Component.create(MainComponent);
     this.components = Component.compileComponents(this.components);
     this.directives = Directive.compileDirectives(this.directives);
+    MainComponent = Component.create(MainComponent);
     host = DOM.createElement(MainComponent.selector);
     MainComponent.init(host);
     render = (function(func, args, ctor) {
