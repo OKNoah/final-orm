@@ -1,4 +1,5 @@
 import Map from 'ui-js/polyfill/map'
+import ui from 'ui-js'
 
 
 export default class Form {
@@ -7,7 +8,9 @@ export default class Form {
 	static selector = 'form'
 
 	static template = `
-		<content></content>
+		<form>
+			<content></content>
+		</form>
 	`
 
 	constructor() {
@@ -17,6 +20,7 @@ export default class Form {
 
 
 	addInput(input) {
+		if (!input.name) throw new Error('form input not have "name" attribute')
 		let dataBind = ui.bind(this.value, input.name, input, 'value')
 		this.inputs.set(input, dataBind)
 	}
@@ -32,11 +36,17 @@ export default class Form {
 
 	reset() {
 		this.inputs.forEach((dataBind, input)=> input.reset())
+		this.emit('reset', this.value)
 	}
 
 
 	send() {
 		this.emit('send', this.value)
+	}
+
+
+	toJSON() {
+		return this.value
 	}
 
 }

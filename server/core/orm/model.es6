@@ -46,10 +46,22 @@ export default class Model {
 		let collection = db.collection(this.name)
 		try {
 			await collection.create()
+			await this._setIndexes(collection)
 		} catch (e) {
-
 		}
 		return this._collection = collection
+	}
+
+
+	static async _setIndexes(collection) {
+		let schema = this._getSchema()
+		for (let field of schema) {
+			if (!field.options.index) continue
+
+			let path = field.path.join('.')
+			let unique = field.options.unique
+			await collection.createHashIndex(path, {unique})
+		}
 	}
 
 
@@ -175,7 +187,7 @@ export default class Model {
 	static async findOne(selector, skip = 0) {
 		let models = await this.find(selector, skip, 1)
 		let model = models[0]
-		return model == null ? null : model
+		return model || null
 	}
 
 

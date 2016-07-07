@@ -45,13 +45,14 @@ Model.prototype.remove() // alias  Model.remove(this)
 Model.prototype.restore() // alias  Model.remove(this)
 ```
 
-Basics
+Basic usage:
 ---
 
 create init class model.js
 ```javascript
-let orm = require('orm')
-let Model = orm.connect({options})
+var orm = require('ormjs')
+var options = {database: 'test'}
+var Model = orm.connect(options)
 export default Model
 ```
 orm.connect() return Model class, and you need export and extend it
@@ -114,7 +115,7 @@ Usage:
 (async function () {
 
 	// adding user to db
-	let user = await User.add({
+	var user = await User.add({
 		name: 'Ашот',
 		age: 24,
   	})
@@ -157,7 +158,7 @@ class User extends Model {
 
 
   async addFriend(user) {
-    let friends = await this.friends
+    var friends = await this.friends
     friends.push(user)
     await this.save()
   }
@@ -175,7 +176,7 @@ Usage:
 ```javascript
 (async function(){
 
-  let user = await User.add({
+  var user = await User.add({
     name: 'Ivan',
     age: 24,
     friends: []
@@ -228,11 +229,11 @@ Usage:
 ```javascript
 (async function () {
 
-	let sector = await Sector.add({
+	var sector = await Sector.add({
 		size: 236
 	})
 
-	let user = await User.add({
+	var user = await User.add({
 		name: 'Ашот',
 		sector: sector
 	})
@@ -240,7 +241,7 @@ Usage:
 	(await user.sector).size // 236
 
 
-	let sector2 = await Sector.add({
+	var sector2 = await Sector.add({
 		size: 1004
 	})
 	user.sector = sector2
@@ -303,7 +304,7 @@ Usage:
 ```javascript
 (async function () {
 
-	let user = await User.add({
+	var user = await User.add({
 		name: 'Ашот',
 		color: new Color(0, 255, 0)
 	})

@@ -212,22 +212,26 @@ var Model = function () {
 								return collection.create();
 
 							case 9:
-								_context6.next = 13;
-								break;
+								_context6.next = 11;
+								return this._setIndexes(collection);
 
 							case 11:
-								_context6.prev = 11;
-								_context6.t0 = _context6['catch'](6);
+								_context6.next = 15;
+								break;
 
 							case 13:
+								_context6.prev = 13;
+								_context6.t0 = _context6['catch'](6);
+
+							case 15:
 								return _context6.abrupt('return', this._collection = collection);
 
-							case 14:
+							case 16:
 							case 'end':
 								return _context6.stop();
 						}
 					}
-				}, _callee6, this, [[6, 11]]);
+				}, _callee6, this, [[6, 13]]);
 			}));
 
 			function _getCollection() {
@@ -237,59 +241,150 @@ var Model = function () {
 			return _getCollection;
 		}()
 	}, {
-		key: '_call',
+		key: '_setIndexes',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(method) {
-				var collection,
-				    _len,
-				    args,
-				    _key,
-				    _args7 = arguments;
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(collection) {
+				var schema, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, field, path, unique;
 
 				return regeneratorRuntime.wrap(function _callee7$(_context7) {
 					while (1) {
 						switch (_context7.prev = _context7.next) {
 							case 0:
-								_context7.prev = 0;
-								_context7.next = 3;
+								schema = this._getSchema();
+								_iteratorNormalCompletion = true;
+								_didIteratorError = false;
+								_iteratorError = undefined;
+								_context7.prev = 4;
+								_iterator = schema[Symbol.iterator]();
+
+							case 6:
+								if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
+									_context7.next = 17;
+									break;
+								}
+
+								field = _step.value;
+
+								if (field.options.index) {
+									_context7.next = 10;
+									break;
+								}
+
+								return _context7.abrupt('continue', 14);
+
+							case 10:
+								path = field.path.join('.');
+								unique = field.options.unique;
+								_context7.next = 14;
+								return collection.createHashIndex(path, { unique: unique });
+
+							case 14:
+								_iteratorNormalCompletion = true;
+								_context7.next = 6;
+								break;
+
+							case 17:
+								_context7.next = 23;
+								break;
+
+							case 19:
+								_context7.prev = 19;
+								_context7.t0 = _context7['catch'](4);
+								_didIteratorError = true;
+								_iteratorError = _context7.t0;
+
+							case 23:
+								_context7.prev = 23;
+								_context7.prev = 24;
+
+								if (!_iteratorNormalCompletion && _iterator.return) {
+									_iterator.return();
+								}
+
+							case 26:
+								_context7.prev = 26;
+
+								if (!_didIteratorError) {
+									_context7.next = 29;
+									break;
+								}
+
+								throw _iteratorError;
+
+							case 29:
+								return _context7.finish(26);
+
+							case 30:
+								return _context7.finish(23);
+
+							case 31:
+							case 'end':
+								return _context7.stop();
+						}
+					}
+				}, _callee7, this, [[4, 19, 23, 31], [24,, 26, 30]]);
+			}));
+
+			function _setIndexes(_x) {
+				return ref.apply(this, arguments);
+			}
+
+			return _setIndexes;
+		}()
+	}, {
+		key: '_call',
+		value: function () {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee8(method) {
+				var collection,
+				    _len,
+				    args,
+				    _key,
+				    _args8 = arguments;
+
+				return regeneratorRuntime.wrap(function _callee8$(_context8) {
+					while (1) {
+						switch (_context8.prev = _context8.next) {
+							case 0:
+								_context8.prev = 0;
+								_context8.next = 3;
 								return this._getCollection();
 
 							case 3:
-								collection = _context7.sent;
+								collection = _context8.sent;
 
 								if (collection[method]) {
-									_context7.next = 6;
+									_context8.next = 6;
 									break;
 								}
 
 								throw Error('Collection has not method \'' + method + '\'');
 
 							case 6:
-								for (_len = _args7.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-									args[_key - 1] = _args7[_key];
+								for (_len = _args8.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+									args[_key - 1] = _args8[_key];
 								}
 
-								_context7.next = 9;
+								_context8.next = 9;
 								return collection[method].apply(collection, args);
 
 							case 9:
-								return _context7.abrupt('return', _context7.sent);
+								return _context8.abrupt('return', _context8.sent);
 
 							case 12:
-								_context7.prev = 12;
-								_context7.t0 = _context7['catch'](0);
+								_context8.prev = 12;
+								_context8.t0 = _context8['catch'](0);
 
-								console.error(_context7.t0);
+								console.error(_context8.t0);
 
 							case 15:
 							case 'end':
-								return _context7.stop();
+								return _context8.stop();
 						}
 					}
-				}, _callee7, this, [[0, 12]]);
+				}, _callee8, this, [[0, 12]]);
 			}));
 
-			function _call(_x, _x2) {
+			function _call(_x2, _x3) {
 				return ref.apply(this, arguments);
 			}
 
@@ -340,36 +435,36 @@ var Model = function () {
 	}, {
 		key: 'add',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee8(data) {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee9(data) {
 				var documentHandle, document;
-				return regeneratorRuntime.wrap(function _callee8$(_context8) {
+				return regeneratorRuntime.wrap(function _callee9$(_context9) {
 					while (1) {
-						switch (_context8.prev = _context8.next) {
+						switch (_context9.prev = _context9.next) {
 							case 0:
 								this._validate(data);
 								data = this._modelToDocument(data);
 								data._removed = false;
-								_context8.next = 5;
+								_context9.next = 5;
 								return this._call('save', data);
 
 							case 5:
-								documentHandle = _context8.sent;
-								_context8.next = 8;
+								documentHandle = _context9.sent;
+								_context9.next = 8;
 								return this._call('document', documentHandle);
 
 							case 8:
-								document = _context8.sent;
-								return _context8.abrupt('return', this._createModelByDocument(document));
+								document = _context9.sent;
+								return _context9.abrupt('return', this._createModelByDocument(document));
 
 							case 10:
 							case 'end':
-								return _context8.stop();
+								return _context9.stop();
 						}
 					}
-				}, _callee8, this);
+				}, _callee9, this);
 			}));
 
-			function add(_x3) {
+			function add(_x4) {
 				return ref.apply(this, arguments);
 			}
 
@@ -378,52 +473,18 @@ var Model = function () {
 	}, {
 		key: 'get',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee9(documentHandle) {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee10(documentHandle) {
 				var document;
-				return regeneratorRuntime.wrap(function _callee9$(_context9) {
-					while (1) {
-						switch (_context9.prev = _context9.next) {
-							case 0:
-								_context9.next = 2;
-								return this._getDocument(documentHandle);
-
-							case 2:
-								document = _context9.sent;
-								return _context9.abrupt('return', this._createModelByDocument(document));
-
-							case 4:
-							case 'end':
-								return _context9.stop();
-						}
-					}
-				}, _callee9, this);
-			}));
-
-			function get(_x4) {
-				return ref.apply(this, arguments);
-			}
-
-			return get;
-		}()
-	}, {
-		key: 'getArr',
-		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee10(documentHandles) {
-				var _this = this;
-
-				var documents;
 				return regeneratorRuntime.wrap(function _callee10$(_context10) {
 					while (1) {
 						switch (_context10.prev = _context10.next) {
 							case 0:
 								_context10.next = 2;
-								return this._getDocuments(documentHandles);
+								return this._getDocument(documentHandle);
 
 							case 2:
-								documents = _context10.sent;
-								return _context10.abrupt('return', documents.map(function (document) {
-									return _this._createModelByDocument(document);
-								}));
+								document = _context10.sent;
+								return _context10.abrupt('return', this._createModelByDocument(document));
 
 							case 4:
 							case 'end':
@@ -433,7 +494,41 @@ var Model = function () {
 				}, _callee10, this);
 			}));
 
-			function getArr(_x5) {
+			function get(_x5) {
+				return ref.apply(this, arguments);
+			}
+
+			return get;
+		}()
+	}, {
+		key: 'getArr',
+		value: function () {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee11(documentHandles) {
+				var _this = this;
+
+				var documents;
+				return regeneratorRuntime.wrap(function _callee11$(_context11) {
+					while (1) {
+						switch (_context11.prev = _context11.next) {
+							case 0:
+								_context11.next = 2;
+								return this._getDocuments(documentHandles);
+
+							case 2:
+								documents = _context11.sent;
+								return _context11.abrupt('return', documents.map(function (document) {
+									return _this._createModelByDocument(document);
+								}));
+
+							case 4:
+							case 'end':
+								return _context11.stop();
+						}
+					}
+				}, _callee11, this);
+			}));
+
+			function getArr(_x6) {
 				return ref.apply(this, arguments);
 			}
 
@@ -442,32 +537,32 @@ var Model = function () {
 	}, {
 		key: 'save',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee11(model) {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee12(model) {
 				var document, newHandle;
-				return regeneratorRuntime.wrap(function _callee11$(_context11) {
+				return regeneratorRuntime.wrap(function _callee12$(_context12) {
 					while (1) {
-						switch (_context11.prev = _context11.next) {
+						switch (_context12.prev = _context12.next) {
 							case 0:
 								this._validate(model);
 								document = this._modelToDocument(model);
-								_context11.next = 4;
+								_context12.next = 4;
 								return this._call('update', model._id, document);
 
 							case 4:
-								newHandle = _context11.sent;
+								newHandle = _context12.sent;
 
 								model._rev = newHandle._rev;
-								return _context11.abrupt('return', model);
+								return _context12.abrupt('return', model);
 
 							case 7:
 							case 'end':
-								return _context11.stop();
+								return _context12.stop();
 						}
 					}
-				}, _callee11, this);
+				}, _callee12, this);
 			}));
 
-			function save(_x6) {
+			function save(_x7) {
 				return ref.apply(this, arguments);
 			}
 
@@ -476,30 +571,30 @@ var Model = function () {
 	}, {
 		key: 'update',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee12(model) {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee13(model) {
 				var document;
-				return regeneratorRuntime.wrap(function _callee12$(_context12) {
+				return regeneratorRuntime.wrap(function _callee13$(_context13) {
 					while (1) {
-						switch (_context12.prev = _context12.next) {
+						switch (_context13.prev = _context13.next) {
 							case 0:
-								_context12.next = 2;
+								_context13.next = 2;
 								return this._getDocument(model);
 
 							case 2:
-								document = _context12.sent;
+								document = _context13.sent;
 
 								this._documentToModel(model, document);
-								return _context12.abrupt('return', model);
+								return _context13.abrupt('return', model);
 
 							case 5:
 							case 'end':
-								return _context12.stop();
+								return _context13.stop();
 						}
 					}
-				}, _callee12, this);
+				}, _callee13, this);
 			}));
 
-			function update(_x7) {
+			function update(_x8) {
 				return ref.apply(this, arguments);
 			}
 
@@ -508,37 +603,12 @@ var Model = function () {
 	}, {
 		key: 'remove',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee13(model) {
-				return regeneratorRuntime.wrap(function _callee13$(_context13) {
-					while (1) {
-						switch (_context13.prev = _context13.next) {
-							case 0:
-								model._removed = true;
-								return _context13.abrupt('return', this.save(model));
-
-							case 2:
-							case 'end':
-								return _context13.stop();
-						}
-					}
-				}, _callee13, this);
-			}));
-
-			function remove(_x8) {
-				return ref.apply(this, arguments);
-			}
-
-			return remove;
-		}()
-	}, {
-		key: 'restore',
-		value: function () {
 			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee14(model) {
 				return regeneratorRuntime.wrap(function _callee14$(_context14) {
 					while (1) {
 						switch (_context14.prev = _context14.next) {
 							case 0:
-								model._removed = false;
+								model._removed = true;
 								return _context14.abrupt('return', this.save(model));
 
 							case 2:
@@ -549,7 +619,32 @@ var Model = function () {
 				}, _callee14, this);
 			}));
 
-			function restore(_x9) {
+			function remove(_x9) {
+				return ref.apply(this, arguments);
+			}
+
+			return remove;
+		}()
+	}, {
+		key: 'restore',
+		value: function () {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee15(model) {
+				return regeneratorRuntime.wrap(function _callee15$(_context15) {
+					while (1) {
+						switch (_context15.prev = _context15.next) {
+							case 0:
+								model._removed = false;
+								return _context15.abrupt('return', this.save(model));
+
+							case 2:
+							case 'end':
+								return _context15.stop();
+						}
+					}
+				}, _callee15, this);
+			}));
+
+			function restore(_x10) {
 				return ref.apply(this, arguments);
 			}
 
@@ -558,7 +653,7 @@ var Model = function () {
 	}, {
 		key: 'find',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee15() {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee16() {
 				var selector = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
 				var _this2 = this;
@@ -566,35 +661,35 @@ var Model = function () {
 				var skip = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 				var limit = arguments.length <= 2 || arguments[2] === undefined ? 100 : arguments[2];
 				var cursor, documents;
-				return regeneratorRuntime.wrap(function _callee15$(_context15) {
+				return regeneratorRuntime.wrap(function _callee16$(_context16) {
 					while (1) {
-						switch (_context15.prev = _context15.next) {
+						switch (_context16.prev = _context16.next) {
 							case 0:
 								limit = Math.min(Math.max(limit, 0), 100);
 								selector._removed = false;
-								_context15.next = 4;
+								_context16.next = 4;
 								return this._call('byExample', selector, { skip: skip, limit: limit });
 
 							case 4:
-								cursor = _context15.sent;
-								_context15.next = 7;
+								cursor = _context16.sent;
+								_context16.next = 7;
 								return cursor.all();
 
 							case 7:
-								documents = _context15.sent;
-								return _context15.abrupt('return', documents.map(function (document) {
+								documents = _context16.sent;
+								return _context16.abrupt('return', documents.map(function (document) {
 									return _this2._createModelByDocument(document);
 								}));
 
 							case 9:
 							case 'end':
-								return _context15.stop();
+								return _context16.stop();
 						}
 					}
-				}, _callee15, this);
+				}, _callee16, this);
 			}));
 
-			function find(_x10, _x11, _x12) {
+			function find(_x11, _x12, _x13) {
 				return ref.apply(this, arguments);
 			}
 
@@ -603,30 +698,30 @@ var Model = function () {
 	}, {
 		key: 'findOne',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee16(selector) {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee17(selector) {
 				var skip = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 				var models, model;
-				return regeneratorRuntime.wrap(function _callee16$(_context16) {
+				return regeneratorRuntime.wrap(function _callee17$(_context17) {
 					while (1) {
-						switch (_context16.prev = _context16.next) {
+						switch (_context17.prev = _context17.next) {
 							case 0:
-								_context16.next = 2;
+								_context17.next = 2;
 								return this.find(selector, skip, 1);
 
 							case 2:
-								models = _context16.sent;
+								models = _context17.sent;
 								model = models[0];
-								return _context16.abrupt('return', model == null ? null : model);
+								return _context17.abrupt('return', model || null);
 
 							case 5:
 							case 'end':
-								return _context16.stop();
+								return _context17.stop();
 						}
 					}
-				}, _callee16, this);
+				}, _callee17, this);
 			}));
 
-			function findOne(_x16, _x17) {
+			function findOne(_x17, _x18) {
 				return ref.apply(this, arguments);
 			}
 
@@ -635,48 +730,18 @@ var Model = function () {
 	}, {
 		key: 'count',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee17(selector) {
-				var cursor;
-				return regeneratorRuntime.wrap(function _callee17$(_context17) {
-					while (1) {
-						switch (_context17.prev = _context17.next) {
-							case 0:
-								_context17.next = 2;
-								return this._call('byExample', selector);
-
-							case 2:
-								cursor = _context17.sent;
-								return _context17.abrupt('return', cursor.count);
-
-							case 4:
-							case 'end':
-								return _context17.stop();
-						}
-					}
-				}, _callee17, this);
-			}));
-
-			function count(_x19) {
-				return ref.apply(this, arguments);
-			}
-
-			return count;
-		}()
-	}, {
-		key: 'have',
-		value: function () {
 			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee18(selector) {
-				var model;
+				var cursor;
 				return regeneratorRuntime.wrap(function _callee18$(_context18) {
 					while (1) {
 						switch (_context18.prev = _context18.next) {
 							case 0:
 								_context18.next = 2;
-								return this.findOne(selector);
+								return this._call('byExample', selector);
 
 							case 2:
-								model = _context18.sent;
-								return _context18.abrupt('return', !!model);
+								cursor = _context18.sent;
+								return _context18.abrupt('return', cursor.count);
 
 							case 4:
 							case 'end':
@@ -686,7 +751,37 @@ var Model = function () {
 				}, _callee18, this);
 			}));
 
-			function have(_x20) {
+			function count(_x20) {
+				return ref.apply(this, arguments);
+			}
+
+			return count;
+		}()
+	}, {
+		key: 'have',
+		value: function () {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee19(selector) {
+				var model;
+				return regeneratorRuntime.wrap(function _callee19$(_context19) {
+					while (1) {
+						switch (_context19.prev = _context19.next) {
+							case 0:
+								_context19.next = 2;
+								return this.findOne(selector);
+
+							case 2:
+								model = _context19.sent;
+								return _context19.abrupt('return', !!model);
+
+							case 4:
+							case 'end':
+								return _context19.stop();
+						}
+					}
+				}, _callee19, this);
+			}));
+
+			function have(_x21) {
 				return ref.apply(this, arguments);
 			}
 

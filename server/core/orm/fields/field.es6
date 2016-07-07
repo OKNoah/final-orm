@@ -26,6 +26,11 @@ export default class Field {
 			let normalKey = key.match(/^\$?(.*)/)[1]
 			normalOptions[normalKey] = value
 		}
+
+		if (normalOptions.unique) {
+			normalOptions.index = true
+		}
+
 		return normalOptions
 	}
 

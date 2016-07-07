@@ -1,7 +1,5 @@
-// import Sectors from '../../list/sectors'
+import User from '../../api/user'
 
-// users = db('Users')
-// sectors = db('Sectors')
 
 export default class AdminPanel {
 
@@ -13,25 +11,35 @@ export default class AdminPanel {
 
 
 		<div .controls>
-			<file #sectorBg label='Фон'></file>
-			<file #sectorContent label='Контент'></file>
-			<button (click)='addSector(sectorBg.value[0], sectorContent.value[0])'>
+			<file #sectorBg label="Фон"></file>
+			<file #sectorContent label="Контент"></file>
+			<button (click)="addSector(sectorBg.value[0], sectorContent.value[0])">
 				Добавить сектор
 			</button>
+			
+			<form #loginForm>
+				<text name="login" label="login"></text>
+				<text name="pass" label="pass"></text>
+				<button (click)="login(loginForm)">Войти</button>
+				<button (click)="register(loginForm)">Заегистрировать</button>
+				<button (click)="get()">get</button>
+				<button (click)="logout()">logout</button>
+			</form>
+			
 		</div>
 
 		<ul .sectors>
 
-			<li .sector *for='sector in sectors'
-					.__selected='selectedSector is sector'>
+			<li .sector *for="sector in sectors"
+					.__selected="selectedSector is sector">
 
-				<div .sector-content (click)='selectSector(sector)'
-					 [style.backgroundImage]='url(/storage/{{sector.texture}})'>
+				<div .sector-content (click)="selectSector(sector)"
+					 [style.backgroundImage]="url(/storage/{{sector.texture}})">
 						{{ sector }}
 				</div>
 
 				<div .sector-controls>
-					<div .remove (click)='sector.remove()'>X</div>
+					<div .remove (click)="sector.remove()">X</div>
 				</div>
 			</li> 
 		</ul>
@@ -46,10 +54,50 @@ export default class AdminPanel {
 	}
 
 
+	async login(form) {
+		try {
+			let res = await User.login(form)
+			console.log(res)
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
+
+	async logout() {
+		try {
+			let res = await User.logout()
+			console.log(res)
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
+
+	async register(form) {
+		try {
+			let res = await User.register(form)
+			console.log(res)
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
+
+	async get() {
+		try {
+			let res = await User.get()
+			console.log(res)
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
+
 	initHandlers() {
-		this.on('init', ()=>
+		this.on('init', ()=> {
 			this.roulette.on('sectorclick', this.selectSector)
-		)
+		})
 	}
 
 

@@ -14,14 +14,23 @@ export default class App {
 	static template = `
 		<confirm #confirm></confirm>
 		<notificator #notificator></notificator>
-
-		<roulette #roulette></roulette>
-		<admin-panel [roulette]='roulette'></admin-panel>
+		
+		<div .info>
+			<div .server-connection-error *if="!server.connected">
+				Соединение с сервером разорвано, пробуем восстановить...
+			</div>
+		</div>
+		
+		
+		<div .content>
+			<roulette #roulette></roulette>
+			<admin-panel [roulette]='roulette'></admin-panel>
+		</div>
 	`
 
 	constructor() {
 		this.server = server
-		this.call()
+		// connected
 
 		this.audioContext = new AudioContext()
 		this.soundBuffersLoadPromises = {}
@@ -33,22 +42,15 @@ export default class App {
 	}
 
 
-	async call() {
-		let q = await this.server.call('user.add', 1, 2)
-		console.log(q)
+	async call(...args) {
+		return await this.server.call(...args)
 	}
 
 
 	initHandlers() {
-		this.server.on('connect-error', e => this.onConnectionError(e))
 		this.watch('fontSize', this.updateFonts.bind(this))
 		ui.dom.on('resize', this.updateFonts.bind(this))
 		this.host.on('init', this.updateFonts.bind(this))
-	}
-
-
-	onConnectionError() {
-		this.error('Ошибка соединения с сервером, пытаюсь восстановить...')
 	}
 
 
@@ -132,4 +134,6 @@ export default class App {
 	}
 
 }
+
+
 

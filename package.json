@@ -12,6 +12,7 @@
     "clean-webpack-plugin": "^0.1.9",
     "coffee-loader": "^0.7.2",
     "coffee-script": "^1.10.0",
+    "cookie": "latest",
     "css-loader": "^0.23.1",
     "file-loader": "^0.8.5",
     "gm": "^1.22.0",
@@ -31,9 +32,9 @@
     "style-loader": "^0.13.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.1.0",
+    "ui-js": "0.0.1003",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1",
-    "cookie": "latest"
+    "webpack-dev-server": "^1.14.1"
   }
 }

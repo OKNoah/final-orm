@@ -49,7 +49,11 @@ var Field = function () {
 					var normalKey = key.match(/^\$?(.*)/)[1];
 					normalOptions[normalKey] = value;
 				}
-			}return normalOptions;
+			}if (normalOptions.unique) {
+				normalOptions.index = true;
+			}
+
+			return normalOptions;
 		}
 	}, {
 		key: 'checkPath',

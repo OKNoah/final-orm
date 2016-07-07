@@ -1,12 +1,6 @@
-let io = require('socket.io-client')
-let ss = require('socket.io-stream')
-let EventEmitter = require('ui-js/core/event-emitter')
-
-
-let lastId = 0
-function createId() {
-	return lastId++
-}
+import EventEmitter  from 'ui-js/core/event-emitter'
+import io  from 'socket.io-client'
+import ss  from 'socket.io-stream'
 
 
 export class Server extends EventEmitter {
@@ -15,6 +9,7 @@ export class Server extends EventEmitter {
 	constructor() {
 		super()
 		this.socket = ss(io.connect(`${location.hostname}:8080`))
+		this.connected = true
 		this.tasksQueue = []
 		this.minTime = 10
 		this.pending = false
@@ -24,13 +19,21 @@ export class Server extends EventEmitter {
 
 
 	initHandlers() {
-		this.socket.sio.on('connect_error', e => this.onConnectError(e))
+		this.socket.sio.on('connect', ()=> this.onConnect())
+		this.socket.sio.on('connect_error', ()=> this.onConnectError())
 		this.socket.on('response', response => this.onServerResponse(response))
 	}
 
 
-	onConnectError(e) {
-		this.emit('connect-error', e)
+	onConnect() {
+		this.connected = true
+		this.emit('connect')
+	}
+
+
+	onConnectError() {
+		this.connected = false
+		this.emit('connect-error')
 	}
 
 
@@ -43,34 +46,34 @@ export class Server extends EventEmitter {
 	}
 
 
-	clearTaskQueue() {
+	clearQueue() {
 		this.tasksQueue = []
 	}
 
 
-	addTaskToQueue(method, args) {
-		let task = new Task(method, args)
+	addToQueue(method, params) {
+		let task = new Task(method, params)
 		this.tasksQueue.push(task)
 		return task
 	}
 
 
-	sendTaskQueue() {
+	sendQueue() {
 		let request = new Request(this.tasksQueue)
 		this.activeRequests[request.id] = request
 		this.socket.emit('request', request)
-		this.clearTaskQueue()
+		this.clearQueue()
 	}
 
 
-	async call(method, ...args) {
-		let task = this.addTaskToQueue(method, args)
+	async call(method, params) {
+		let task = this.addToQueue(method, params)
 
 		if (this.pending) return task.promise
 		this.pending = true
 
 		setTimeout(()=> {
-			this.sendTaskQueue()
+			this.sendQueue()
 			this.pending = false
 		}, this.minTime)
 
@@ -83,9 +86,15 @@ export class Server extends EventEmitter {
 
 class Request {
 
+	static lastId = 0
+
+	static createId() {
+		return this.lastId++
+	}
+
 	constructor(tasks) {
 		this.tasks = tasks
-		this.id = createId()
+		this.id = Request.createId()
 	}
 
 
@@ -110,9 +119,9 @@ class Request {
 
 class Task {
 
-	constructor(method, args) {
+	constructor(method, params) {
 		this.method = method
-		this.args = Task.wrapFilesToStream(args)
+		this.params = Task.wrapFilesToStream(this.toJsonObject(params))
 		this.resolve = null
 		this.reject = null
 		this.promise = new Promise((resolve, reject)=> {
@@ -122,9 +131,18 @@ class Task {
 	}
 
 
+	toJsonObject(obj) {
+		return JSON.parse(JSON.stringify(obj))
+	}
+
+
 	complete(response) {
 		if (response.error != null) {
-			this.reject(response.error)
+			let errorData = response.error
+			let message = `${errorData.textCode}: ${errorData.message}`
+			let code = errorData.code
+			let error = new ApiError(code, message)
+			this.reject(error)
 		}
 		else {
 			this.resolve(response.result)
@@ -135,7 +153,7 @@ class Task {
 	toJSON() {
 		return {
 			method: this.method,
-			args: this.args,
+			params: this.params,
 		}
 	}
 
@@ -162,6 +180,12 @@ class Task {
 		return wrapper
 	}
 
+}
+
+
+function ApiError(code, message) {
+	this.message = message
+	this.code = code
 }
 
 

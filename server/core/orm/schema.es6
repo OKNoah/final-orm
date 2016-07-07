@@ -90,5 +90,12 @@ export default class Schema {
 		return document
 	}
 
+
+	[Symbol.iterator]() {
+		return this.fields.values()
+	}
+
+
+
 }
 

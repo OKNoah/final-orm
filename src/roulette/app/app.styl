@@ -7,9 +7,30 @@
 	background-image url('./bg.jpg')
 	background-size cover
 	background-position center
-	display flex
-	flex-direction row
 	//background-color black
+	display flex
+	flex-direction column
+
+	.info
+		flex-shrink 0
+		z-index 1
+		box-shadow 0 0 1em black
+
+		.server-connection-error
+			background-color red
+			padding 0.5em
+			text-align center
+			color white
+			background-image url('./reconnection.gif')
+			background-size auto 100%
+			text-shadow 0 0 0.2em black
+
+	.content
+		display flex
+		flex-direction row
+		position relative
+		flex-grow 1
+		z-index 0
 
 
 
