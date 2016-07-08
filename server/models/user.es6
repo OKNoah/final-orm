@@ -19,7 +19,6 @@ export default class User extends Model {
 
 	static add({login, pass}) {
 		pass = passwordHash.generate(pass)
-		console.log('hashed', pass)
 		return super.add({login, pass})
 	}
 
@@ -48,18 +47,12 @@ export class Session extends Model {
 
 	static async getByKey(key) {
 		if (!key) return null
-		let sess = await this.findOne({key})
-		console.log('found session', sess)
-		return sess
+		return await this.findOne({key})
 	}
 
 
 	async close() {
-		console.log('close session', this)
 		await this.remove()
-		console.log('session closed', this)
-		await this.update()
-		console.log('but in db', this)
 	}
 
 }

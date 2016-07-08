@@ -1,4 +1,5 @@
 import User from '../../api/user'
+import Sector from '../../api/sector'
 
 
 export default class AdminPanel {
@@ -26,6 +27,10 @@ export default class AdminPanel {
 				<button (click)="logout()">logout</button>
 			</form>
 			
+			<div>
+				{{ User.current.login }}
+			</div>
+			
 		</div>
 
 		<ul .sectors>
@@ -47,7 +52,10 @@ export default class AdminPanel {
 
 
 	constructor() {
-		this.sectors = []
+		this.User = User
+		this.sectors = Sector.range({dd: 3}, 30, 3)
+
+
 		this.roulette = null
 		this.selectedSector = null
 		this.initHandlers()
@@ -55,42 +63,26 @@ export default class AdminPanel {
 
 
 	async login(form) {
-		try {
-			let res = await User.login(form)
-			console.log(res)
-		} catch (e) {
-			console.error(e)
-		}
+		let res = await User.login(form)
+		console.log(res)
 	}
 
 
 	async logout() {
-		try {
-			let res = await User.logout()
-			console.log(res)
-		} catch (e) {
-			console.error(e)
-		}
+		let res = await User.logout()
+		console.log(res)
 	}
 
 
 	async register(form) {
-		try {
-			let res = await User.register(form)
-			console.log(res)
-		} catch (e) {
-			console.error(e)
-		}
+		let res = await User.register(form)
+		console.log(res)
 	}
 
 
 	async get() {
-		try {
-			let res = await User.get()
-			console.log(res)
-		} catch (e) {
-			console.error(e)
-		}
+		let res = await User.get()
+		console.log(res)
 	}
 
 

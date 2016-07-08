@@ -136,7 +136,6 @@ var Field = function () {
 	}, {
 		key: 'modelToDocument',
 		value: function modelToDocument(mode, document) {
-			if (this.internal) return;
 			var value = this.getByPath(mode);
 			value = this.convertToDocumentValue(value);
 			this.setByPath(document, value);

@@ -1,7 +1,8 @@
 import ApiError from './errors/api-error'
+import Server from './server'
 
 
-class Task {
+export default class Task {
 
 	constructor(connection, options) {
 		this.connection = connection
@@ -33,6 +34,7 @@ class Task {
 			var result = await Server.callMethod(this.method, this.params, this.connection)
 		} catch (error) {
 			if (!(error instanceof ApiError)) {
+				console.error(error)
 				error = new ApiError(0, '')
 			}
 			this.reject(error)

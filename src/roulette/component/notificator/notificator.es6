@@ -70,11 +70,10 @@ export default class Notificator {
 }
 
 
-
 export class Message extends EventEmitter {
 
 
-	constructor(text, type, time = 2500) {
+	constructor(text, type, time = 3000) {
 		super()
 		this.text = text
 		this.type = type

@@ -76,7 +76,7 @@ module.exports = For = (function() {
         return results1;
       }).apply(this);
     } else if (!(newArray instanceof Array)) {
-      throw Error('invalid *for array');
+      throw Error('*for directive should take a number or array');
     }
     splices = ui.diff(newArray, this.array);
     this.array = newArray;

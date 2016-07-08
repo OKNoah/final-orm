@@ -1,1 +1,1 @@
-{"version":3,"sources":["index.es6"],"names":[],"mappings":";;AAAA;;AAKA","file":"index.js","sourcesContent":["import 'babel-polyfill'\r\n\r\n\r\n// import User from './models/user'\r\n\r\nimport './api/user'\r\n"]}
+{"version":3,"sources":["index.es6"],"names":[],"mappings":";;AAAA;;AAKA;;AACA","file":"index.js","sourcesContent":["import 'babel-polyfill'\r\n\r\n\r\n// import User from './models/user'\r\n\r\nimport './api/user'\r\nimport './api/sector'\r\n\r\n"]}

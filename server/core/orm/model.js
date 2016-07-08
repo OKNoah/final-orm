@@ -6,6 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _arangojs = require('arangojs');
+
+var _arangojs2 = _interopRequireDefault(_arangojs);
+
 var _schema = require('./schema');
 
 var _schema2 = _interopRequireDefault(_schema);
@@ -15,10 +19,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var _require = require('arangojs');
-
-var Database = _require.Database;
 
 var Model = function () {
 	function Model() {
@@ -139,7 +139,7 @@ var Model = function () {
 		key: '_getDatabase',
 		value: function () {
 			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee5() {
-				var db;
+				var dbName, db;
 				return regeneratorRuntime.wrap(function _callee5$(_context5) {
 					while (1) {
 						switch (_context5.prev = _context5.next) {
@@ -152,30 +152,37 @@ var Model = function () {
 								return _context5.abrupt('return', Model._database);
 
 							case 2:
-								db = new Database();
-								_context5.prev = 3;
-								_context5.next = 6;
-								return db.createDatabase(this.options.database);
+								dbName = this.options.database;
+								db = (0, _arangojs2.default)({ arangoVersion: 30000 });
+								_context5.prev = 4;
+								_context5.next = 7;
+								return db.createDatabase(dbName);
 
-							case 6:
-								_context5.next = 10;
+							case 7:
+								_context5.next = 11;
 								break;
 
-							case 8:
-								_context5.prev = 8;
-								_context5.t0 = _context5['catch'](3);
+							case 9:
+								_context5.prev = 9;
+								_context5.t0 = _context5['catch'](4);
 
-							case 10:
+							case 11:
 
-								db.useDatabase(this.options.database);
-								return _context5.abrupt('return', Model._database = db);
+								try {
+									db.useDatabase(dbName);
+								} catch (e) {
+									console.log(1111);
+								}
 
-							case 12:
+								Model._database = db;
+								return _context5.abrupt('return', db);
+
+							case 14:
 							case 'end':
 								return _context5.stop();
 						}
 					}
-				}, _callee5, this, [[3, 8]]);
+				}, _callee5, this, [[4, 9]]);
 			}));
 
 			function _getDatabase() {

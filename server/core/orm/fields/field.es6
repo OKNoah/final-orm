@@ -88,7 +88,6 @@ export default class Field {
 
 
 	modelToDocument(mode, document) {
-		if (this.internal) return
 		let value = this.getByPath(mode)
 		value = this.convertToDocumentValue(value)
 		this.setByPath(document, value)

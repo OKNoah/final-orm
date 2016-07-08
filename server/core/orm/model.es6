@@ -1,4 +1,4 @@
-let {Database} = require('arangojs')
+import arangojs from 'arangojs'
 import Schema from './schema'
 
 
@@ -26,14 +26,21 @@ export default class Model {
 			return Model._database
 		}
 
-		let db = new Database()
+		let dbName = this.options.database
+		let db = arangojs({arangoVersion: 30000})
 		try {
-			await db.createDatabase(this.options.database)
+			await db.createDatabase(dbName)
 		} catch (e) {
 		}
 
-		db.useDatabase(this.options.database)
-		return Model._database = db
+		try {
+			db.useDatabase(dbName)
+		} catch (e) {
+			console.log(1111)
+		}
+
+		Model._database = db
+		return db
 	}
 
 

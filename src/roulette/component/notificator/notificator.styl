@@ -8,13 +8,14 @@
 	.message
 		background-color rgba(white, 0.8)
 		padding 1em 1em
-		margin-bottom 0.5em
-		margin-right 0.5em
-		border-radius 0.5em
+		margin-bottom 0.3em
+		margin-right 0.3em
+		border-radius 0.3em
 		cursor pointer
 		width auto
 		display inline-block
-		box-shadow 0 0 1em rgba(#000, 1)
+		box-shadow 0.1em 0.1em 0.2em rgba(#000, 0.7)
+		background-image linear-gradient(rgba(black, 0), rgba(black, 0.25))
 
 		&.__alert
 			text-shadow 0.03em 0.03em 0 rgba(black, 0.4)
@@ -23,7 +24,7 @@
 
 		&.__error
 			text-shadow 0.03em 0.03em 0 rgba(black, 0.4)
-			background-color red
+			background-color #c5000a
 			color white
 
 		&.__warning

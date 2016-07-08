@@ -1,4 +1,4 @@
-DOM = require('ui-js/dom') 
+DOM = require('ui-js/dom')
 
 
 module.exports = class For
@@ -47,7 +47,7 @@ module.exports = class For
 			newArray = +newArray
 			newArray = [0...newArray]
 		else unless newArray instanceof Array
-			throw Error 'invalid *for array'
+			throw Error '*for directive should take a number or array'
 
 		splices = ui.diff(newArray, @array)
 		@array = newArray

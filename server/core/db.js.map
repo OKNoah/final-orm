@@ -1,1 +1,0 @@
-{"version":3,"sources":["db.es6"],"names":[],"mappings":";;;;;;AAAA;;AACA;;;;;;AAGA,IAAI,KAAK,kBAAS,EAAC,UAAU,iBAAO,QAAlB,EAAT,CAAT;AACA,GAAG,OAAH;;kBAEe,E","file":"db.js","sourcesContent":["import {Core} from 'iridium'\r\nimport config from '../config'\r\n\r\n\r\nlet db = new Core({database: config.database})\r\ndb.connect()\r\n\r\nexport default db\r\n\r\n"]}

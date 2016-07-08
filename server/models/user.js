@@ -121,7 +121,6 @@ var User = function (_Model) {
 			var pass = _ref.pass;
 
 			pass = _passwordHash2.default.generate(pass);
-			console.log('hashed', pass);
 			return _get(Object.getPrototypeOf(User), 'add', this).call(this, { login: login, pass: pass });
 		}
 	}]);
@@ -155,19 +154,10 @@ var Session = exports.Session = function (_Model2) {
 					while (1) {
 						switch (_context3.prev = _context3.next) {
 							case 0:
-								console.log('close session', this);
-								_context3.next = 3;
+								_context3.next = 2;
 								return this.remove();
 
-							case 3:
-								console.log('session closed', this);
-								_context3.next = 6;
-								return this.update();
-
-							case 6:
-								console.log('but in db', this);
-
-							case 7:
+							case 2:
 							case 'end':
 								return _context3.stop();
 						}
@@ -185,7 +175,6 @@ var Session = exports.Session = function (_Model2) {
 		key: 'getByKey',
 		value: function () {
 			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(key) {
-				var sess;
 				return regeneratorRuntime.wrap(function _callee4$(_context4) {
 					while (1) {
 						switch (_context4.prev = _context4.next) {
@@ -202,12 +191,9 @@ var Session = exports.Session = function (_Model2) {
 								return this.findOne({ key: key });
 
 							case 4:
-								sess = _context4.sent;
+								return _context4.abrupt('return', _context4.sent);
 
-								console.log('found session', sess);
-								return _context4.abrupt('return', sess);
-
-							case 7:
+							case 5:
 							case 'end':
 								return _context4.stop();
 						}

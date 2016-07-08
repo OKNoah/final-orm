@@ -4,26 +4,13 @@
 	position relative
 	absolute top 0 left 0
 	size 100%
-	background-image url('./bg.jpg')
+	//background-image url('./bg.jpg')
+	//background-color #000
+	background-image linear-gradient(#444, #333)
 	background-size cover
 	background-position center
-	//background-color black
 	display flex
 	flex-direction column
-
-	.info
-		flex-shrink 0
-		z-index 1
-		box-shadow 0 0 1em black
-
-		.server-connection-error
-			background-color red
-			padding 0.5em
-			text-align center
-			color white
-			background-image url('./reconnection.gif')
-			background-size auto 100%
-			text-shadow 0 0 0.2em black
 
 	.content
 		display flex

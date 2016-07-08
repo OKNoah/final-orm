@@ -1,6 +1,6 @@
 {
   "name": "ormjs",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "dependencies": {
     "arangojs": "^4.5.1"
   },

@@ -54,6 +54,11 @@ export class Server extends EventEmitter {
 	addToQueue(method, params) {
 		let task = new Task(method, params)
 		this.tasksQueue.push(task)
+
+		task.on('error', error => {
+			this.emit('error', error)
+		})
+
 		return task
 	}
 
@@ -117,21 +122,26 @@ class Request {
 }
 
 
-class Task {
+class Task extends EventEmitter {
 
-	constructor(method, params) {
+	constructor(method, params = {}) {
+		super()
 		this.method = method
-		this.params = Task.wrapFilesToStream(this.toJsonObject(params))
+		this.params = Task.wrapFilesToStream(this.clearParams(params))
 		this.resolve = null
 		this.reject = null
 		this.promise = new Promise((resolve, reject)=> {
 			this.resolve = resolve
 			this.reject = reject
 		})
+
+		this.promise.catch(error => {
+			this.emit('error', error)
+		})
 	}
 
 
-	toJsonObject(obj) {
+	clearParams(obj) {
 		return JSON.parse(JSON.stringify(obj))
 	}
 
@@ -139,9 +149,7 @@ class Task {
 	complete(response) {
 		if (response.error != null) {
 			let errorData = response.error
-			let message = `${errorData.textCode}: ${errorData.message}`
-			let code = errorData.code
-			let error = new ApiError(code, message)
+			let error = new ApiError(response.error)
 			this.reject(error)
 		}
 		else {
@@ -183,11 +191,22 @@ class Task {
 }
 
 
-function ApiError(code, message) {
-	this.message = message
-	this.code = code
+class ApiError {
+
+	constructor(errorData) {
+
+		if (errorData.textCode) {
+			this.message = `${errorData.textCode}: ${errorData.message}`
+		} else {
+			this.message = errorData.message
+		}
+
+		let code = errorData.code
+	}
+
 }
 
 
 export default new Server()
+
 

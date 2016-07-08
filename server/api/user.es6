@@ -1,13 +1,14 @@
-import Connection from '../core/server'
+import Server from '../core/server'
 import User from '../models/user'
+import API from '../core/api'
 
 
-Connection.addMethods('user', {
+Server.api('User', class extends API {
 
 
-	async register(form){
-		let login = form.login
-		let pass = form.pass
+	async register(params, connection) {
+		let login = params.get('login', String, {min: 3, max: 20, test: /^\w+$/})
+		let pass = params.get('pass', String, {min: 3, max: 50, test: /^\S+$/})
 
 		if (await User.have({login})) {
 			this.error(4, 'Пользователь с таким логином уже существует')
@@ -21,20 +22,21 @@ Connection.addMethods('user', {
 			session: session.fields('key'),
 			user: user.fields('login')
 		}
-	},
+	}
 
 
-	async login(form){
-		let login = form.login
-		let pass = form.pass
+	async login(params) {
+		let login = params.get('login', String, {max: 20})
+		let pass = params.get('pass', String, {max: 50})
+
 		let user = await User.findOne({login: login})
 
 		if (!user) {
-			this.error(2, 'Не верный логин')
+			this.error(3, 'Не верный логин')
 		}
 
-		if (user.checkPass(pass)) {
-			this.error(2, 'Не верный пароль')
+		if (!user.checkPass(pass)) {
+			this.error(3, 'Не верный пароль')
 		}
 
 		let session = await user.startSession()
@@ -44,18 +46,19 @@ Connection.addMethods('user', {
 			session: session.fields('key'),
 			user: user.fields('login')
 		}
-	},
+	}
 
 
-	async logout(){
+	async logout() {
 		await this.logoutUser()
-	},
+		return true
+	}
 
 
-	async current(){
+	async current() {
 		if (!this.user) return null
 		return this.user.fields('login')
-	},
+	}
 
 
 })

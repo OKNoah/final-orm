@@ -1,36 +1,35 @@
-import Platform from 'ui-js/core/platform'
-import Promise from 'ui-js/core/promise'
-import Roulette from './roulette/roulette'
-import AdminPanel from './admin-panel/admin-panel'
+import ui from 'ui-js'
+import style from './app.styl'
 import server from '../core/server'
+import Promise from 'ui-js/core/promise'
+import Platform from 'ui-js/core/platform'
+
+// components
+import AdminPanel from './admin-panel/admin-panel'
+import Roulette from './roulette/roulette'
+import Info from './info/info'
 
 
 export default class App {
 
 	static selector = 'my-app'
-	static styles = [require('./app.styl')]
-	static components = [Roulette, AdminPanel]
+	static styles = [style]
+	static components = [Info, Roulette, AdminPanel]
 
 	static template = `
-		<confirm #confirm></confirm>
-		<notificator #notificator></notificator>
-		
-		<div .info>
-			<div .server-connection-error *if="!server.connected">
-				Соединение с сервером разорвано, пробуем восстановить...
-			</div>
-		</div>
+		<Confirm #confirm></Confirm>
+		<Notificator #notificator></Notificator>
+		<Info></Info>
 		
 		
 		<div .content>
-			<roulette #roulette></roulette>
-			<admin-panel [roulette]='roulette'></admin-panel>
+			<Roulette #roulette></Roulette>
+			<Admin-panel [roulette]='roulette'></Admin-panel>
 		</div>
 	`
 
 	constructor() {
 		this.server = server
-		// connected
 
 		this.audioContext = new AudioContext()
 		this.soundBuffersLoadPromises = {}
@@ -42,15 +41,16 @@ export default class App {
 	}
 
 
-	async call(...args) {
-		return await this.server.call(...args)
+	initHandlers() {
+		this.watch('fontSize', this.updateFonts.bind(this))
+		ui.on('resize', this.updateFonts.bind(this))
+		this.host.on('init', this.updateFonts.bind(this))
+		this.server.on('error', this.onApiError.bind(this))
 	}
 
 
-	initHandlers() {
-		this.watch('fontSize', this.updateFonts.bind(this))
-		ui.dom.on('resize', this.updateFonts.bind(this))
-		this.host.on('init', this.updateFonts.bind(this))
+	onApiError(error) {
+		this.error(error.message)
 	}
 
 
@@ -128,9 +128,9 @@ export default class App {
 
 
 	updateFonts() {
-		let fontSize = this.host.width() / this.fontSize
-		this.host.style.fontSize = "#{fontSize}px"
-		this.host.renderStyle()
+		// let fontSize = this.host.width() / this.fontSize
+		// this.host.style.fontSize = `${fontSize}px`
+		// this.host.renderStyle()
 	}
 
 }

@@ -11,3 +11,51 @@ export default class API {
 
 }
 
+
+export class RangeAPI extends API {
+
+
+	static range(filter, skip, limit) {
+		return new Range(this, filter, skip, limit)
+	}
+
+}
+
+
+function SuperArray() {
+
+}
+
+SuperArray.prototype = Array.prototype
+
+
+class Range extends SuperArray {
+
+	constructor(Api, filter = {}, skip = 0, limit = 100) {
+		super()
+		this.filter = filter
+		this.limit = limit
+		this.skip = skip
+		this.Api = Api
+		this.update()
+	}
+
+
+	call(...args) {
+		return this.Api.call(...args)
+	}
+
+
+	async update() {
+		let res = await this.call('get', {
+			filter: this.filter,
+			skip: this.skip,
+			limit: this.limit,
+		})
+
+		console.log('update', res)
+	}
+
+
+}
+

@@ -5,11 +5,13 @@ import Task from './task'
 export default class Connection {
 
 
-	constructor(server, socket, user, session) {
+	constructor(server, socket, user, session, headers, cookies) {
+		this.session = session
+		this.cookies = cookies
+		this.headers = headers
 		this.server = server
 		this.socket = socket
 		this.user = user
-		this.session = session
 		this.initHandlers()
 	}
 

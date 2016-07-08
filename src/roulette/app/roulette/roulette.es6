@@ -236,7 +236,6 @@ export default class Roulette {
 
 
 	run(angle = this.angle - 8290, time = 30000) {
-		this.app.call()
 		this.runned = true
 		this.startTime = Date.now()
 		this.endTime = this.startTime + time
