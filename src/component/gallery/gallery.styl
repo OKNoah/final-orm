@@ -1,37 +1,51 @@
 :host
-	$time = 0.7s
-
-	&:before
-		background-color rgba(white, 1)
-		box-shadow none
-		transition opacity $time
+	$time = 0.3s
+	absolute top 0 left 0
+	size 100%
+	z-index 1000
+	perspective 10em
+	display flex
+	flex-direction column
+	align-items center
+	justify-content center
+	pointer-events none
 
 	&.__active
+		pointer-events all
 
 		.content
 			transition transform $time
 
 		.panel
-			transform translateY(0)
+			transform translateY(0) rotate3d(0, 0, 0, 0)
 
-	.wrapper
-		width 100%
-		flex-grow 1
-		display flex
-		align-items center
-		justify-content center
-		flex-direction column
+		.photo
+		transition transform $time
+		transform-origin top left
+		will-change transform
+		&.__dragging
+			transition none !important
+
+	.popup
 		position relative
 
-	.content
-		transition transform $time , opacity $time
+		&:before
+			opacity 0 !important
 
-		.scale
+		.photo-zoom
+			display flex
+			flex-direction column
+			align-items center
+			justify-content center
 			transition transform $time
+			transform-origin top left
+			will-change transform
 
-		.slide
-			flex-grow 1
-			position relative
+			.img
+				height 20em
+				display block
+				box-shadow 0 0 1em rgba(black, 0.7)
+				transform rotate3d(0, 0, 0, 0)
 
 	.panel
 		flex-shrink 0
@@ -41,7 +55,7 @@
 		background-image linear-gradient(rgba(black, 0), rgba(black, 0.15))
 		will-change transform
 		transition transform $time
-		transform translateY(100%)
+		transform translateY(100%) rotate3d(0, 0, 0, 0)
 
 		.previews
 			display flex
@@ -60,4 +74,6 @@
 				background-color white
 				background-repeat no-repeat
 				background-size cover
+
+
 

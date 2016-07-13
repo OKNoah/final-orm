@@ -31,14 +31,14 @@ module.exports = Draggable = (function() {
     this.startY = event.clientY;
     this.lastX = 0;
     this.lastY = 0;
-    this.node.emit('dragstart');
+    this.node.emit('drag-start');
     event.prevent();
   };
 
   Draggable.prototype.onMouseUp = function(event) {
     this.state = false;
-    this.node.emit('dragend');
-    this.node.emit('dragstop');
+    this.node.emit('drag-end');
+    this.node.emit('drag-stop');
   };
 
   Draggable.prototype.onMouseMove = function(event) {

@@ -16,29 +16,31 @@ export default class Popup {
 	`
 
 	constructor() {
-		this.state = false
-		this.bindClass('__active', 'state')
-		this.bindClass('__non-active', '!state')
+		this.active = false
+		this.bindClass('__active', 'active')
+		this.bindClass('__non-active', '!active')
 		this.initHandlers()
 	}
 
 
 	initHandlers() {
-		keyboard.on('esc', ()=> this.exit())
-		this.own('mousedown', event => {
-			event.prevent()
-			this.exit()
-		})
+		keyboard.on('esc', ()=> this.close())
+
+		this.on('mousedown', event => this.onMouseDown(event))
 	}
 
 
-	open() {
-		this.state = true
-		this.openEffectFrom(Event.target)
-		this.watch('state', value => {
-			if (value) this.emit('open')
-			else this.emit('close')
-		})
+	onMouseDown(event) {
+		let targets = [
+			this.host,
+			this.locals.scale,
+			this.locals.content
+		]
+
+		if (targets.indexOf(event.src) !== -1) {
+			event.prevent()
+			this.close()
+		}
 	}
 
 
@@ -46,43 +48,36 @@ export default class Popup {
 		let content = this.locals.content
 		let scale = this.locals.scale
 
-		let transform = this.calcTransformFor(content, target)
+		let transform = this.getTransform(content, target)
+		let x = transform.x
+		let y = transform.y
+		let scaleX = transform.scaleX
+		let scaleY = transform.scaleY
 
 		// start point
 		content.renderCss({
 			transition: 'none',
-			transform: `translate(${transform.x}px, ${transform.y}px)`,
-		})
-
-		scale.renderCss({
-			transition: 'none',
-			transform: `scale(${transform.scaleX}, ${transform.scaleY})`,
+			transform: `translate(${x}px, ${y}px) scale(${scaleX}, ${scaleY})`,
 		})
 
 		// play animation
 		content.renderCss({
 			transform: '',
 			transition: '',
-			visibility: '',
-		})
-
-		scale.renderCss({
-			transform: '',
-			transition: '',
 		})
 	}
 
 
-	calcTransformFor(content, target) {
+	getTransform(content, target) {
 		if (!target) return {x: 0, y: 0, scaleX: 0.5, scaleY: 0.5}
 
-		let contentRect = this.getContentRect(content)
 		let targetRect = this.getTargetRect(target)
+		let contentRect = this.getContentRect(content)
 
 		let targetX = targetRect.left + (targetRect.width / 2)
 		let targetY = targetRect.top + (targetRect.height / 2)
-		let contentX = this.locals.wrapper.width() / 2
-		let contentY = this.locals.wrapper.height() / 2
+		let contentX = contentRect.left + (contentRect.width / 2)
+		let contentY = contentRect.top + (contentRect.height / 2)
 
 		let x = targetX - contentX
 		let y = targetY - contentY
@@ -106,19 +101,22 @@ export default class Popup {
 	}
 
 
-	close() {
-		this.state = false
+	open() {
+		this.active = true
+		this.openEffectFrom(Event.target)
+		this.emit('open')
 	}
 
 
-	exit() {
-		this.close()
-		this.emit('exit')
+	close() {
+		this.active = false
+		this.emit('close')
 	}
 
 
 	toggle() {
-		this.state = !this.state
+		if (this.active) this.close()
+		else this.open()
 	}
 
 }

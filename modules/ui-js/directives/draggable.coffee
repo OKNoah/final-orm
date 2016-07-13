@@ -27,15 +27,15 @@ module.exports = class Draggable
 		@startY = event.clientY
 		@lastX = 0
 		@lastY = 0
-		@node.emit('dragstart')
+		@node.emit('drag-start')
 		event.prevent()
 		return
 
 
 	onMouseUp: (event)=>
 		@state = off
-		@node.emit('dragend')
-		@node.emit('dragstop')
+		@node.emit('drag-end')
+		@node.emit('drag-stop')
 		return
 
 

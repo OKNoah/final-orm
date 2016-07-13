@@ -68,7 +68,7 @@ export default class AdminPanel {
 		})
 
 		this.sectors.on('update', ()=> {
-			console.log('sectors update')
+			// console.log('sectors update')
 		})
 	}
 

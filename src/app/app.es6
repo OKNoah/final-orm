@@ -1,5 +1,6 @@
 import ui from 'ui-js'
 import style from './app.styl'
+import Audio from '../core/audio'
 import server from '../core/server'
 import Promise from 'ui-js/core/promise'
 import Platform from 'ui-js/core/platform'
@@ -17,34 +18,27 @@ export default class App {
 	static template = `
 		<Confirm #confirm></Confirm>
 		<Notificator #notificator></Notificator>
+		<Gallery #gallery></Gallery>
 		<Info></Info>
 		
-		<div .content>
-			<Roulette #roulette></Roulette>
-			<Admin-panel [roulette]='roulette'></Admin-panel>
-		</div>
-	`
-
-	static template = `
-		<Confirm #confirm></Confirm>
-		<Notificator #notificator></Notificator>
-		<Info></Info>
-		
-		<tabs .content>
-		
-			<tab .home-page>
-				<tab-title>Главная</tab-title>
-				<Roulette #roulette></Roulette>
-				<Admin-panel [roulette]='roulette'></Admin-panel>
-			</tab>
+		<tabs .content .__blur="gallery.active">
 			
 			<tab>
 				<tab-title>Настройки</tab-title>
 				Settings
+				<button (click)="test()">test</button>
+			</tab>
+		
+			<tab .home-page>
+				<tab-title>Главная</tab-title>
+				<button (click)="test()">test</button>
+				<Roulette #roulette></Roulette>
+				<Admin-panel [roulette]='roulette'></Admin-panel>
 			</tab>
 			
 			<tab .settings-page>
 				<tab-title>Статистика</tab-title>
+				<button (click)="test()">test</button>
 				<Admin-panel [roulette]='roulette'></Admin-panel>
 			</tab>
 			
@@ -52,11 +46,9 @@ export default class App {
 	`
 
 	constructor() {
-		this.audioContext = new AudioContext()
-		this.soundBuffersLoadPromises = {}
-
+		this.audio = new Audio()
 		this.platform = new Platform()
-		this.fontSize = 70
+		this.fontSize = 60
 		this.bindHostClasses()
 		this.initHandlers()
 	}
@@ -67,6 +59,16 @@ export default class App {
 		ui.on('resize', this.updateFonts.bind(this))
 		this.host.on('init', this.updateFonts.bind(this))
 		server.on('error', this.onApiError.bind(this))
+	}
+
+
+	test() {
+		this.gallery([
+			'http://cs412916.vk.me/v412916031/62f9/rXqGd6jlMgs.jpg',
+			'https://pp.vk.me/c623221/v623221137/d268/Q18_Bp-E4XQ.jpg',
+			'https://pp.vk.me/c636129/v636129137/b0fd/kH7C504jDyA.jpg',
+			'https://pp.vk.me/c623919/v623919137/fa95/2cj7jNNDkbU.jpg',
+		])
 	}
 
 
@@ -81,45 +83,6 @@ export default class App {
 		this.bindClass('__edge', 'platform.edge')
 		this.bindClass('__chrome', 'platform.chrome')
 		this.bindClass('__firefox', 'platform.firefox')
-	}
-
-
-	playSound(url, volume = 1) {
-		this.loadSound(url).then((buffer)=>
-			this.playSoundBuffer(buffer, volume)
-		)
-	}
-
-
-	playSoundBuffer(buffer, volume) {
-		let gainNode = this.audioContext.createGain()
-		gainNode.gain.value = volume
-		let source = this.audioContext.createBufferSource()
-		source.buffer = buffer
-		source.connect(gainNode)
-		gainNode.connect(this.audioContext.destination)
-		source.start(0)
-	}
-
-
-	loadSound(url) {
-		if (this.soundBuffersLoadPromises[url]) {
-			return this.soundBuffersLoadPromises[url]
-		}
-
-		let promise = new Promise()
-		let request = new XMLHttpRequest()
-		request.open('GET', url, true)
-		request.responseType = 'arraybuffer'
-
-		request.addEventListener('load', ()=> {
-			let audioData = request.response
-			this.audioContext.decodeAudioData(audioData, promise.resolve, promise.reject)
-		})
-
-		request.send()
-		this.soundBuffersLoadPromises[url] = promise
-		return promise
 	}
 
 

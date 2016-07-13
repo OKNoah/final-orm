@@ -49,9 +49,7 @@ ui.component(Confirm)
 // start app
 import App from './app/app'
 
-setTimeout(function () {
-	ui.bootstrap(App)
-}, 3000)
+ui.bootstrap(App)
 
 
 
