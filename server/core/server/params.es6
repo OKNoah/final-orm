@@ -1,7 +1,7 @@
 export default class Params {
 
 
-	constructor(params, connection) {
+	constructor(params = {}, connection) {
 		this.connection = connection
 		this.params = params
 	}

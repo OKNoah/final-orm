@@ -2,6 +2,8 @@ import orm from './orm'
 
 let OrmModel = orm.connect({
 	database: 'oiopoppo',
+	username: 'root',
+	password: '',
 })
 
 

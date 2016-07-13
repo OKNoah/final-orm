@@ -61,13 +61,13 @@ export default class Utils {
 	}
 
 
-	static resizeImage(stream, ext, width = 1024, height = 1024){
+	static _resizeImage(stream, ext, width = 1024, height = 1024){
 		return gm(stream, `img.${ext}`).resize(width, height, '!').stream()
 	}
 
 
 	static async saveImage(stream, ext, width = 1024, height = 1024) {
-		let gmStream = this.resizeImage(stream, ext, width, height)
+		let gmStream = this._resizeImage(stream, ext, width, height)
 		return await this.saveFile(gmStream, ext)
 	}
 

@@ -181,8 +181,8 @@ var Utils = function () {
 			return remove;
 		}()
 	}, {
-		key: 'resizeImage',
-		value: function resizeImage(stream, ext) {
+		key: '_resizeImage',
+		value: function _resizeImage(stream, ext) {
 			var width = arguments.length <= 2 || arguments[2] === undefined ? 1024 : arguments[2];
 			var height = arguments.length <= 3 || arguments[3] === undefined ? 1024 : arguments[3];
 
@@ -199,7 +199,7 @@ var Utils = function () {
 					while (1) {
 						switch (_context4.prev = _context4.next) {
 							case 0:
-								gmStream = this.resizeImage(stream, ext, width, height);
+								gmStream = this._resizeImage(stream, ext, width, height);
 								_context4.next = 3;
 								return this.saveFile(gmStream, ext);
 

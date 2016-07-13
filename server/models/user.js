@@ -76,7 +76,7 @@ var User = function (_Model) {
 	}, {
 		key: 'checkPass',
 		value: function checkPass(pass) {
-			return _passwordHash2.default.verify(this.pass, pass);
+			return _passwordHash2.default.verify(pass, this.pass);
 		}
 	}], [{
 		key: 'getBySession',

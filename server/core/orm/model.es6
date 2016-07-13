@@ -27,17 +27,22 @@ export default class Model {
 		}
 
 		let dbName = this.options.database
-		let db = arangojs({arangoVersion: 30000})
+		let host = this.options.host || 'localhost'
+		let port = this.options.port || 8529
+		let username = this.options.username || 'root'
+		let password = this.options.password || ''
+
+
+		let db = arangojs({
+			url: `http://${username}:${password}@${host}:${port}`,
+		})
+
 		try {
 			await db.createDatabase(dbName)
 		} catch (e) {
 		}
 
-		try {
-			db.useDatabase(dbName)
-		} catch (e) {
-			console.log(1111)
-		}
+		db.useDatabase(dbName)
 
 		Model._database = db
 		return db
@@ -180,7 +185,8 @@ export default class Model {
 	}
 
 
-	static async find(selector = {}, skip = 0, limit = 100) {
+	static async find(selector, skip = 0, limit = 100) {
+		if (!selector) selector = {}
 		limit = Math.min(Math.max(limit, 0), 100)
 		selector._removed = false
 		let cursor = await this._call('byExample', selector, {skip, limit})

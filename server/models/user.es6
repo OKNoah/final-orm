@@ -31,7 +31,7 @@ export default class User extends Model {
 
 
 	checkPass(pass) {
-		return passwordHash.verify(this.pass, pass)
+		return passwordHash.verify(pass, this.pass)
 	}
 
 }

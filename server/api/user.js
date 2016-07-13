@@ -42,7 +42,7 @@ _server2.default.api('User', function (_API) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
-								login = params.get('login', String, { min: 3, max: 20, test: /^\w+$/ });
+								login = params.get('login', String, { min: 3, max: 20, test: /^\S+$/ });
 								pass = params.get('pass', String, { min: 3, max: 50, test: /^\S+$/ });
 								_context.next = 4;
 								return _user2.default.have({ login: login });
@@ -53,7 +53,7 @@ _server2.default.api('User', function (_API) {
 									break;
 								}
 
-								this.error(4, 'Пользователь с таким логином уже существует');
+								connection.error(4, 'Пользователь с таким логином уже существует');
 
 							case 6:
 								_context.next = 8;
@@ -67,7 +67,7 @@ _server2.default.api('User', function (_API) {
 							case 11:
 								session = _context.sent;
 								_context.next = 14;
-								return this.setUser(user, session);
+								return connection.setUser(user, session);
 
 							case 14:
 								return _context.abrupt('return', {
@@ -92,7 +92,7 @@ _server2.default.api('User', function (_API) {
 	}, {
 		key: 'login',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(params) {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(params, connection) {
 				var login, pass, user, session;
 				return regeneratorRuntime.wrap(function _callee2$(_context2) {
 					while (1) {
@@ -108,11 +108,11 @@ _server2.default.api('User', function (_API) {
 
 
 								if (!user) {
-									this.error(3, 'Не верный логин');
+									connection.error(3, 'Не верный логин');
 								}
 
 								if (!user.checkPass(pass)) {
-									this.error(3, 'Не верный пароль');
+									connection.error(3, 'Не верный пароль');
 								}
 
 								_context2.next = 9;
@@ -121,7 +121,7 @@ _server2.default.api('User', function (_API) {
 							case 9:
 								session = _context2.sent;
 								_context2.next = 12;
-								return this.setUser(user, session);
+								return connection.setUser(user, session);
 
 							case 12:
 								return _context2.abrupt('return', {
@@ -137,7 +137,7 @@ _server2.default.api('User', function (_API) {
 				}, _callee2, this);
 			}));
 
-			function login(_x3) {
+			function login(_x3, _x4) {
 				return ref.apply(this, arguments);
 			}
 
@@ -146,13 +146,13 @@ _server2.default.api('User', function (_API) {
 	}, {
 		key: 'logout',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee3() {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(params, connection) {
 				return regeneratorRuntime.wrap(function _callee3$(_context3) {
 					while (1) {
 						switch (_context3.prev = _context3.next) {
 							case 0:
 								_context3.next = 2;
-								return this.logoutUser();
+								return connection.logoutUser();
 
 							case 2:
 								return _context3.abrupt('return', true);
@@ -165,7 +165,7 @@ _server2.default.api('User', function (_API) {
 				}, _callee3, this);
 			}));
 
-			function logout() {
+			function logout(_x5, _x6) {
 				return ref.apply(this, arguments);
 			}
 
@@ -174,12 +174,12 @@ _server2.default.api('User', function (_API) {
 	}, {
 		key: 'current',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee4() {
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(params, connection) {
 				return regeneratorRuntime.wrap(function _callee4$(_context4) {
 					while (1) {
 						switch (_context4.prev = _context4.next) {
 							case 0:
-								if (this.user) {
+								if (connection.user) {
 									_context4.next = 2;
 									break;
 								}
@@ -187,7 +187,7 @@ _server2.default.api('User', function (_API) {
 								return _context4.abrupt('return', null);
 
 							case 2:
-								return _context4.abrupt('return', this.user.fields('login'));
+								return _context4.abrupt('return', connection.user.fields('login'));
 
 							case 3:
 							case 'end':
@@ -197,7 +197,7 @@ _server2.default.api('User', function (_API) {
 				}, _callee4, this);
 			}));
 
-			function current() {
+			function current(_x7, _x8) {
 				return ref.apply(this, arguments);
 			}
 

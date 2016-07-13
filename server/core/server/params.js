@@ -9,7 +9,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Params = function () {
-	function Params(params, connection) {
+	function Params() {
+		var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+		var connection = arguments[1];
+
 		_classCallCheck(this, Params);
 
 		this.connection = connection;

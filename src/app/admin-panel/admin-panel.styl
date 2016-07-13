@@ -1,0 +1,44 @@
+:host
+	background-color rgba(white, 0.9)
+	display flex
+	flex-direction column
+	width 20em
+	position relative
+	z-index 0
+	box-shadow 0 0 1em rgba(#000, 0.6)
+
+	.controls
+		background-color #444
+		padding 0.5em
+		flex-shrink 0
+
+	.sectors
+		overflow auto
+
+		.sector
+			height 5em
+			margin 0.5em 1em
+			display flex
+			flex-direction row
+			align-items stretch
+
+			&.__selected
+				box-shadow 0 0 0 0.2em red
+
+			.sector-content
+				flex-grow 1
+				background-size cover
+				background-position center
+				cursor pointer
+
+			.sector-controls
+				width 2em
+				background-color #666
+				display flex
+				flex-direction column
+
+				.remove
+					background-color red
+					cursor pointer
+					height 2em
+

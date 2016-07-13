@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectTasksOptions">
+  <component name="ProjectTasksOptions" suppressed-tasks="Babel;Stylus">
     <TaskOptions isEnabled="true">
       <option name="arguments" value="--source-maps --out-file $FileNameWithoutExtension$.js --presets es2015,stage-0 $FilePath$" />
       <option name="checkSyntaxErrors" value="true" />

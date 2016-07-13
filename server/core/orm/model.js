@@ -139,7 +139,7 @@ var Model = function () {
 		key: '_getDatabase',
 		value: function () {
 			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee5() {
-				var dbName, db;
+				var dbName, host, port, username, password, db;
 				return regeneratorRuntime.wrap(function _callee5$(_context5) {
 					while (1) {
 						switch (_context5.prev = _context5.next) {
@@ -153,36 +153,38 @@ var Model = function () {
 
 							case 2:
 								dbName = this.options.database;
-								db = (0, _arangojs2.default)({ arangoVersion: 30000 });
-								_context5.prev = 4;
-								_context5.next = 7;
+								host = this.options.host || 'localhost';
+								port = this.options.port || 8529;
+								username = this.options.username || 'root';
+								password = this.options.password || '';
+								db = (0, _arangojs2.default)({
+									url: 'http://' + username + ':' + password + '@' + host + ':' + port
+								});
+								_context5.prev = 8;
+								_context5.next = 11;
 								return db.createDatabase(dbName);
 
-							case 7:
-								_context5.next = 11;
+							case 11:
+								_context5.next = 15;
 								break;
 
-							case 9:
-								_context5.prev = 9;
-								_context5.t0 = _context5['catch'](4);
+							case 13:
+								_context5.prev = 13;
+								_context5.t0 = _context5['catch'](8);
 
-							case 11:
+							case 15:
 
-								try {
-									db.useDatabase(dbName);
-								} catch (e) {
-									console.log(1111);
-								}
+								db.useDatabase(dbName);
 
 								Model._database = db;
 								return _context5.abrupt('return', db);
 
-							case 14:
+							case 18:
 							case 'end':
 								return _context5.stop();
 						}
 					}
-				}, _callee5, this, [[4, 9]]);
+				}, _callee5, this, [[8, 13]]);
 			}));
 
 			function _getDatabase() {
@@ -660,9 +662,7 @@ var Model = function () {
 	}, {
 		key: 'find',
 		value: function () {
-			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee16() {
-				var selector = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
+			var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee16(selector) {
 				var _this2 = this;
 
 				var skip = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
@@ -672,23 +672,24 @@ var Model = function () {
 					while (1) {
 						switch (_context16.prev = _context16.next) {
 							case 0:
+								if (!selector) selector = {};
 								limit = Math.min(Math.max(limit, 0), 100);
 								selector._removed = false;
-								_context16.next = 4;
+								_context16.next = 5;
 								return this._call('byExample', selector, { skip: skip, limit: limit });
 
-							case 4:
+							case 5:
 								cursor = _context16.sent;
-								_context16.next = 7;
+								_context16.next = 8;
 								return cursor.all();
 
-							case 7:
+							case 8:
 								documents = _context16.sent;
 								return _context16.abrupt('return', documents.map(function (document) {
 									return _this2._createModelByDocument(document);
 								}));
 
-							case 9:
+							case 10:
 							case 'end':
 								return _context16.stop();
 						}
@@ -728,7 +729,7 @@ var Model = function () {
 				}, _callee17, this);
 			}));
 
-			function findOne(_x17, _x18) {
+			function findOne(_x16, _x17) {
 				return ref.apply(this, arguments);
 			}
 
@@ -758,7 +759,7 @@ var Model = function () {
 				}, _callee18, this);
 			}));
 
-			function count(_x20) {
+			function count(_x19) {
 				return ref.apply(this, arguments);
 			}
 
@@ -788,7 +789,7 @@ var Model = function () {
 				}, _callee19, this);
 			}));
 
-			function have(_x21) {
+			function have(_x20) {
 				return ref.apply(this, arguments);
 			}
 
