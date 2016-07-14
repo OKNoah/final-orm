@@ -1,3 +1,6 @@
+import Promise from 'ui-js/core/promise'
+
+
 export default class Audio {
 
 

@@ -2,7 +2,6 @@ import ui from 'ui-js'
 import style from './app.styl'
 import Audio from '../core/audio'
 import server from '../core/server'
-import Promise from 'ui-js/core/promise'
 import Platform from 'ui-js/core/platform'
 import AdminPanel from './admin-panel/admin-panel'
 import Roulette from './roulette/roulette'
@@ -22,24 +21,31 @@ export default class App {
 		<Info></Info>
 		
 		<tabs .content .__blur="gallery.active">
-			
-			<tab>
-				<tab-title>Настройки</tab-title>
-				Settings
-				<button (click)="test()">test</button>
-			</tab>
 		
 			<tab .home-page>
-				<tab-title>Главная</tab-title>
-				<button (click)="test()">test</button>
+				<tab-title>Рулетка</tab-title>
 				<Roulette #roulette></Roulette>
 				<Admin-panel [roulette]='roulette'></Admin-panel>
 			</tab>
 			
-			<tab .settings-page>
+			<tab .ololo>
+				<tab-title>Призы</tab-title>
+				Призы
+			</tab>
+			
+			<tab>
+				<tab-title>Юзеры</tab-title>
+				Юзеры
+			</tab>
+			
+			<tab>
 				<tab-title>Статистика</tab-title>
-				<button (click)="test()">test</button>
-				<Admin-panel [roulette]='roulette'></Admin-panel>
+				Статистика
+			</tab>
+			
+			<tab>
+				<tab-title>Настройки</tab-title>
+				Настройки
 			</tab>
 			
 		</tabs>

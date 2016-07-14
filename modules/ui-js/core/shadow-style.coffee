@@ -1,4 +1,4 @@
-module.exports = class ShadowStyle 
+module.exports = class ShadowStyle
 
 	cssBlockRegExp = /([\s\S]+?)\s*(\{[\s\S]*?})/img
 	partsRegExp = /([^,]+)/img
@@ -6,21 +6,27 @@ module.exports = class ShadowStyle
 
 	@compile: (style)->
 		if typeof style is 'function' then return style
-		style = style.toString()
-		return @createStyleGenerator(style)
+		return @createStyleGenerator(style.toString())
 
 
 	@replace: (selector, id, components = [])->
-		childParts = selector.split(/\s+|>/)
-		lastChildPart = childParts[childParts.length - 1]
+		componentTags = components.map (component)=> component.selector
 
-		unless /:host/.test(lastChildPart)
-			lastChildPart = lastChildPart.replace /^(.+?)(:.+)?$/, "$1[c#{id}]$2"
-			childParts[childParts.length - 1] = lastChildPart
-			selector = childParts.join(' ')
+		parts = selector.split(/\s+|>/).map (part, index, parts)=>
+			# pseudo selector
+			if index is parts.length - 1 and not /:host/.test(part)
+				part = part.replace /^(.+?)(:.+)?$/, "$1[c#{id}]$2"
+			# :host
+			part = part.replace(/:host/img, "[h#{id}]")
+			# child components
+			part = part.replace /^[\w\-]+/, (tag)=>
+				return if componentTags.indexOf(tag) isnt -1
+					return "ui-#{tag}"
+				return tag
+			# return chanted part
+			return part
 
-		selector = selector.replace(/:host/img, "[h#{id}]")
-		return selector
+		return parts.join(' ')
 
 
 	@createStyleGenerator: (style)->

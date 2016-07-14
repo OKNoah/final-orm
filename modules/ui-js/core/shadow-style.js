@@ -14,24 +14,35 @@ module.exports = ShadowStyle = (function() {
     if (typeof style === 'function') {
       return style;
     }
-    style = style.toString();
-    return this.createStyleGenerator(style);
+    return this.createStyleGenerator(style.toString());
   };
 
   ShadowStyle.replace = function(selector, id, components) {
-    var childParts, lastChildPart;
+    var componentTags, parts;
     if (components == null) {
       components = [];
     }
-    childParts = selector.split(/\s+|>/);
-    lastChildPart = childParts[childParts.length - 1];
-    if (!/:host/.test(lastChildPart)) {
-      lastChildPart = lastChildPart.replace(/^(.+?)(:.+)?$/, "$1[c" + id + "]$2");
-      childParts[childParts.length - 1] = lastChildPart;
-      selector = childParts.join(' ');
-    }
-    selector = selector.replace(/:host/img, "[h" + id + "]");
-    return selector;
+    componentTags = components.map((function(_this) {
+      return function(component) {
+        return component.selector;
+      };
+    })(this));
+    parts = selector.split(/\s+|>/).map((function(_this) {
+      return function(part, index, parts) {
+        if (index === parts.length - 1 && !/:host/.test(part)) {
+          part = part.replace(/^(.+?)(:.+)?$/, "$1[c" + id + "]$2");
+        }
+        part = part.replace(/:host/img, "[h" + id + "]");
+        part = part.replace(/^[\w\-]+/, function(tag) {
+          if (componentTags.indexOf(tag) !== -1) {
+            return "ui-" + tag;
+          }
+          return tag;
+        });
+        return part;
+      };
+    })(this));
+    return parts.join(' ');
   };
 
   ShadowStyle.createStyleGenerator = function(style) {

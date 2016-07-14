@@ -20,11 +20,12 @@
 			transform translateY(0) rotate3d(0, 0, 0, 0)
 
 		.photo
-		transition transform $time
-		transform-origin top left
-		will-change transform
-		&.__dragging
-			transition none !important
+			transition transform $time
+			transform-origin top left
+			will-change transform
+
+			&.__dragging
+				transition none !important
 
 	.popup
 		position relative
