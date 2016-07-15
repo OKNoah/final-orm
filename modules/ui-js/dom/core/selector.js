@@ -131,7 +131,7 @@ module.exports = Selector = (function() {
   };
 
   Selector.prototype.selectChildren = function(element, subSelector, own) {
-    var child, children, elements, i, len;
+    var child, children, elements, i, len, subChildren;
     if (own == null) {
       own = false;
     }
@@ -144,7 +144,8 @@ module.exports = Selector = (function() {
           elements.push(child);
         }
         if (!own) {
-          elements.push.apply(elements, this.selectChildren(child, subSelector));
+          subChildren = this.selectChildren(child, subSelector);
+          elements.push.apply(elements, subChildren);
         }
       }
     }

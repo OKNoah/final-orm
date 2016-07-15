@@ -1,5 +1,5 @@
 module.exports = class HtmlParser
-	
+
 
 	SINGLE_TAGS = '
 	area base basefont bgsound br col
@@ -9,8 +9,8 @@ module.exports = class HtmlParser
 	TAG = 0
 	TEXT = 1
 
-	tagRegExp = /<([\w\-$]+)([\s\S]*?)>|<\/([\w-]+)>/img
-	attrsRegExp = /(\S+?)\s*=\s*(?:(?:('|")(.*?)\2)|(\S+))|(\S+)/img
+	tagRegExp = /<([\w-]+)\s*((?:[^>]+=("|').*?\3|[^>]+)\s*)*>|<\/([\w-]+)>/img
+	attrsRegExp = /(\S+?)\s*=\s*(?:(?:("|')(.*?)\2)|(\S+))|(\S+)/img
 	dotClassRegExp = /^\.(.+)/
 
 
@@ -47,10 +47,11 @@ module.exports = class HtmlParser
 
 
 	getTokens: (html)->
-		tokens = []
 		prevEndIndex = 0
+		tokens = []
 
-		html.replace tagRegExp, (match, openTag, attrs, closeTag, index)=>
+		html.replace tagRegExp, (match, openTag, attrs, quote, closeTag, index)=>
+
 			if index > prevEndIndex then tokens.push
 				type: TEXT
 				value: html.slice(prevEndIndex, index)

@@ -10,6 +10,7 @@ export default class Tab {
 	NEXT = 2
 	ACTIVE = 3
 
+
 	constructor() {
 		this.status = this.NEXT
 		this.tabs = this.require('tabs')

@@ -28,14 +28,14 @@ export default class App {
 				<Admin-panel [roulette]='roulette'></Admin-panel>
 			</tab>
 			
-			<tab .ololo>
+			<tab>
 				<tab-title>Призы</tab-title>
 				Призы
 			</tab>
 			
 			<tab>
 				<tab-title>Юзеры</tab-title>
-				Юзеры
+				Юзеры {selector}
 			</tab>
 			
 			<tab>
@@ -45,7 +45,18 @@ export default class App {
 			
 			<tab>
 				<tab-title>Настройки</tab-title>
-				Настройки
+				
+				<tabs>
+					<tab>
+						<tab-title>lol</tab-title>
+						lol
+					</tab>
+					<tab>
+						<tab-title>zaz</tab-title>
+						zaz
+					</tab>
+				</tabs>
+				
 			</tab>
 			
 		</tabs>

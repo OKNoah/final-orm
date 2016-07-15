@@ -11,9 +11,9 @@ module.exports = HtmlParser = (function() {
 
   TEXT = 1;
 
-  tagRegExp = /<([\w\-$]+)([\s\S]*?)>|<\/([\w-]+)>/img;
+  tagRegExp = /<([\w-]+)\s*((?:[^>]+=("|').*?\3|[^>]+)\s*)*>|<\/([\w-]+)>/img;
 
-  attrsRegExp = /(\S+?)\s*=\s*(?:(?:('|")(.*?)\2)|(\S+))|(\S+)/img;
+  attrsRegExp = /(\S+?)\s*=\s*(?:(?:("|')(.*?)\2)|(\S+))|(\S+)/img;
 
   dotClassRegExp = /^\.(.+)/;
 
@@ -59,10 +59,10 @@ module.exports = HtmlParser = (function() {
 
   HtmlParser.prototype.getTokens = function(html) {
     var prevEndIndex, tokens;
-    tokens = [];
     prevEndIndex = 0;
+    tokens = [];
     html.replace(tagRegExp, (function(_this) {
-      return function(match, openTag, attrs, closeTag, index) {
+      return function(match, openTag, attrs, quote, closeTag, index) {
         if (index > prevEndIndex) {
           tokens.push({
             type: TEXT,

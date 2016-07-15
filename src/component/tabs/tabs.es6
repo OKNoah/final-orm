@@ -5,7 +5,7 @@ export default class Tabs {
 
 	static template = `
 		<div .titles>
-			<content select='tab tab-title'></content>
+			<content select='tab > tab-title'></content>
 		</div>
 
 		<div .content>

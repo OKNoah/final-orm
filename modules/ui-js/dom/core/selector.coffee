@@ -1,4 +1,4 @@
-module.exports = class Selector 
+module.exports = class Selector
 
 
 	regExp = /(?:(\s*>\s*)|^|\s+)(\S+)/img
@@ -85,7 +85,9 @@ module.exports = class Selector
 		if children then for child in children
 			if @matchElement(child, subSelector)
 				elements.push(child)
-			unless own then elements.push(@selectChildren(child, subSelector)...)
+			unless own
+				subChildren = @selectChildren(child, subSelector)
+				elements.push(subChildren...)
 		return elements
 
 

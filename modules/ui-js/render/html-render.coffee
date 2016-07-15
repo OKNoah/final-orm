@@ -1,7 +1,7 @@
 module.exports = class HtmlRender
 
 
-	constructor: (@node)-> 
+	constructor: (@node)->
 		return
 
 
@@ -34,9 +34,9 @@ module.exports = class HtmlRender
 
 	renderElement: (node, shadowOnly, excludeNodes)->
 		tag = node.tag
-#
-#		if tag is 'content'
-#			return @renderContentElement(node, shadowOnly, excludeNodes)
+		#
+		#		if tag is 'content'
+		#			return @renderContentElement(node, shadowOnly, excludeNodes)
 
 		content = ''
 		renderResult = new RenderResult(node)
@@ -57,7 +57,7 @@ module.exports = class HtmlRender
 			hostShadowId = node.shadowRoot.shadowId
 			attrs += " h#{hostShadowId}"
 			tag = "ui-#{tag}"
-			
+
 
 		for child in contentRoot.children
 			if child.nodeType is 'comment'
@@ -83,18 +83,17 @@ module.exports = class HtmlRender
 
 
 	renderComment: (node)->
-		html = "<!--#{node.value}-->"
+		html = "<!-- #{node.value} -->"
 		return new RenderResult(node, html)
 
 
 	renderContentElement: (node, shadowOnly, excludeNodes)->
-		host = @getHost(node)
-		select = node.attr('select')
 		renderResults = []
+		host = @getHost(node)
+		selector = node.attr('select')
 
-		if select
-			foundNodes = host.select(select)
-			for foundNode in foundNodes
+		if selector
+			for foundNode in host.select(">#{selector}")
 				if foundNode.nodeType is 'comment' then continue
 				if foundNode in excludeNodes then continue
 				renderResult = @renderNode(foundNode, shadowOnly, excludeNodes)

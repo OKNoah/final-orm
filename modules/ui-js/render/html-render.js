@@ -106,19 +106,19 @@ module.exports = HtmlRender = (function() {
 
   HtmlRender.prototype.renderComment = function(node) {
     var html;
-    html = "<!--" + node.value + "-->";
+    html = "<!-- " + node.value + " -->";
     return new RenderResult(node, html);
   };
 
   HtmlRender.prototype.renderContentElement = function(node, shadowOnly, excludeNodes) {
-    var child, foundNode, foundNodes, host, i, j, len, len1, ref, renderResult, renderResults, select;
-    host = this.getHost(node);
-    select = node.attr('select');
+    var child, foundNode, host, i, j, len, len1, ref, ref1, renderResult, renderResults, selector;
     renderResults = [];
-    if (select) {
-      foundNodes = host.select(select);
-      for (i = 0, len = foundNodes.length; i < len; i++) {
-        foundNode = foundNodes[i];
+    host = this.getHost(node);
+    selector = node.attr('select');
+    if (selector) {
+      ref = host.select(">" + selector);
+      for (i = 0, len = ref.length; i < len; i++) {
+        foundNode = ref[i];
         if (foundNode.nodeType === 'comment') {
           continue;
         }
@@ -130,9 +130,9 @@ module.exports = HtmlRender = (function() {
         this.markAsExcluded(foundNode, excludeNodes);
       }
     } else {
-      ref = host.children;
-      for (j = 0, len1 = ref.length; j < len1; j++) {
-        child = ref[j];
+      ref1 = host.children;
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        child = ref1[j];
         if (child.nodeType === 'comment') {
           continue;
         }
