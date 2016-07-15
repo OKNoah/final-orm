@@ -6,6 +6,7 @@ module.exports = class HtmlParser
 
 	TAG = 0
 	TEXT = 1
+
 	SINGLE_TAGS = '
 	area base basefont bgsound br col
 	command embed hr img input isindex keygen link meta
