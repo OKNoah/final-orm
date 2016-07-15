@@ -1,5 +1,9 @@
 module.exports = class HtmlParser
 
+	tagRegExp = /<([\w-]+)\s*((?:[^>]+=("|').*?\3|[^>]+)\s*)*>|<\/([\w-]+)>/img
+	attrsRegExp = /(\S+?)\s*=\s*(?:(?:("|')(.*?)\2)|(\S+))|(\S+)/img
+	dotClassRegExp = /^\.(.+)/
+
 	TAG = 0
 	TEXT = 1
 	SINGLE_TAGS = '
@@ -7,11 +11,6 @@ module.exports = class HtmlParser
 	command embed hr img input isindex keygen link meta
 	param source track wbr
 	'.split(/\s+/)
-
-
-	tagRegExp = /<([\w-]+)\s*((?:[^>]+=("|').*?\3|[^>]+)\s*)*>|<\/([\w-]+)>/img
-	attrsRegExp = /(\S+?)\s*=\s*(?:(?:("|')(.*?)\2)|(\S+))|(\S+)/img
-	dotClassRegExp = /^\.(.+)/
 
 
 	constructor: ->
