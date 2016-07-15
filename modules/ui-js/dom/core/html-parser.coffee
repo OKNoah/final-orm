@@ -3,7 +3,7 @@ module.exports = class HtmlParser
 
 	SINGLE_TAGS = '
 	area base basefont bgsound br col
-  command embed hr img input isindex keygen link meta
+	command embed hr img input isindex keygen link meta
 	param source track wbr'.split(/\s+/)
 
 	TAG = 0
