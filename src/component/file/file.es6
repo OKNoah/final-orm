@@ -6,7 +6,9 @@ export default class File {
 	static template = `
 		<button .button>
 		
-			<div .label *if='not fileInfo'> {{ host.attrs.label or 'Обзор...' }}</div>
+			<div .label *if='not fileInfo'>
+				{{ host.attrs.label or 'Обзор...' }}
+			</div>
 	
 			<input #input .input
 			(change)='onChange()'
@@ -16,7 +18,6 @@ export default class File {
 			</input>
 	
 			<div .info *if='fileInfo'>
-	
 				<div .controls>
 					<span .reset (click)='reset()'></span>
 				</div>

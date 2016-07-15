@@ -2,9 +2,10 @@ module.exports = class HtmlParser
 
 
 	SINGLE_TAGS = '
-	area base basefont bgsound br col
-	command embed hr img input isindex keygen link meta
-	param source track wbr'.split(/\s+/)
+		area base basefont bgsound br col
+		command embed hr img input isindex keygen link meta
+		param source track wbr
+	'.split(/\s+/)
 
 	TAG = 0
 	TEXT = 1
@@ -51,7 +52,6 @@ module.exports = class HtmlParser
 		tokens = []
 
 		html.replace tagRegExp, (match, openTag, attrs, quote, closeTag, index)=>
-
 			if index > prevEndIndex then tokens.push
 				type: TEXT
 				value: html.slice(prevEndIndex, index)
