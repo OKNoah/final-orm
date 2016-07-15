@@ -5,11 +5,11 @@ var HtmlParser,
 module.exports = HtmlParser = (function() {
   var SINGLE_TAGS, TAG, TEXT, attrsRegExp, dotClassRegExp, tagRegExp;
 
-  SINGLE_TAGS = 'area base basefont bgsound br col command embed hr img input isindex keygen link meta param source track wbr'.split(/\s+/);
-
   TAG = 0;
 
   TEXT = 1;
+
+  SINGLE_TAGS = 'area base basefont bgsound br col command embed hr img input isindex keygen link meta param source track wbr'.split(/\s+/);
 
   tagRegExp = /<([\w-]+)\s*((?:[^>]+=("|').*?\3|[^>]+)\s*)*>|<\/([\w-]+)>/img;
 
