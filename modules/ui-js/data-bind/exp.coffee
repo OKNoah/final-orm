@@ -1,5 +1,5 @@
 VAR_REF = '$$ref'
-VAR_CONTEXT = '$$context' 
+VAR_CONTEXT = '$$context'
 VAR_VALUE = '$$val'
 VAR_LOCALS = '$$locals'
 VAR_HELPERS = '$$helpers'
@@ -21,6 +21,7 @@ ALIASES =
 	'typeof': 'typeof '
 	'instanceof': 'instanceof '
 	'@': 'this'
+	'#': 'locals'
 # не знаю костыль ли это, или оптимизация, в общем мы не парсим пробельные символы
 # и при компиляции у нас все впритык друг к другу идет, а после instanceof нужен пробел
 # по этому чтобы не усложнять парсинг я просто создал ему алиас с пробелом
@@ -181,7 +182,7 @@ class Token
 		|(?:([$\w]+)\s*:)             # objest keys
 		|(\d+)                        # numbers
 		|([$\w]+)                     # words
-		|(\+\+|\-\-)                  # crement
+		|(\+\+|--)                  	# crement
 		|(\S)                         # other symbols
 	///img
 
@@ -205,7 +206,7 @@ class Token
 		@isSymbol = !!isSymbol
 		@isVar = (@value is VAR_REF) or (@value is VAR_CONTEXT) or (@value is VAR_VALUE)
 		@isKeyword = !!(KEYWORDS[@value] or ALIASES[@value])
-		@isProp = !!((isWord and !@isKeyword and !@isKey and !@isVar) or (@value is '@'))
+		@isProp = !!((isWord and !@isKeyword and !@isKey and !@isVar) or (@value is '@') or (@value is '#'))
 		@isOperator = !!(isSymbol or isCrement or @isKeyword) and not @isProp
 		@isBracketStart = @match('[', '(', '{')
 		return

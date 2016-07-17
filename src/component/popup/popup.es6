@@ -25,7 +25,6 @@ export default class Popup {
 
 	initHandlers() {
 		keyboard.on('esc', ()=> this.close())
-
 		this.on('mousedown', event => this.onMouseDown(event))
 	}
 

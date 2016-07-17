@@ -1,5 +1,6 @@
-import Map from 'ui-js/polyfill/map'
 import ui from 'ui-js'
+import Map from 'ui-js/polyfill/map'
+import File from '../file/file'
 
 
 export default class Form {
@@ -16,21 +17,55 @@ export default class Form {
 	constructor() {
 		this.value = {}
 		this.inputs = new Map()
+		this.inputsByName = {}
+	}
+
+
+	get(name) {
+		return this.value[name]
+	}
+
+
+	has(name, errorMessage) {
+		if (this._isEmpty(name)) {
+			if (errorMessage) {
+				this.app.error(errorMessage)
+				throw new Error(errorMessage)
+			}
+			return false
+		}
+		return true
+	}
+
+
+	_isEmpty(name) {
+		let input = this.inputsByName[name]
+		let value = this.get(name)
+
+		if (input instanceof File) {
+			return value.length === 0
+		}
+
+		return value == null
 	}
 
 
 	addInput(input) {
-		if (!input.name) throw new Error('form input not have "name" attribute')
-		let dataBind = ui.bind(this.value, input.name, input, 'value')
+		let name = input.name
+		if (!name) throw new Error('form input have not attribute "name"')
+		let dataBind = ui.bind(this.value, name, input, 'value')
+		this.inputsByName[name] = input
 		this.inputs.set(input, dataBind)
 	}
 
 
 	removeInput(input) {
 		let dataBind = this.inputs.get(input)
+		let name = input.name
 		dataBind.destroy()
 		this.inputs.delete(input)
-		delete this.value[input.name]
+		delete this.inputsByName[name]
+		delete this.value[name]
 	}
 
 
@@ -40,8 +75,8 @@ export default class Form {
 	}
 
 
-	send() {
-		this.emit('send', this.value)
+	submit() {
+		this.emit('submit', this.value)
 	}
 
 

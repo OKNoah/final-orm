@@ -7,7 +7,7 @@ export default class File {
 		<button .button>
 		
 			<div .label *if='not fileInfo'>
-				{{ host.attrs.label or 'Обзор...' }}
+				<content></content>
 			</div>
 	
 			<input #input .input

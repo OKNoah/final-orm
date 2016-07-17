@@ -4,8 +4,12 @@ export default class Tabs {
 	static styles = [require('./tabs.styl')]
 
 	static template = `
-		<div .titles>
-			<content select='tab > tab-title'></content>
+		<div .header>
+			<div .titles>
+				<content select="tab > tab-title"></content>
+			</div> 
+			
+			<content select="tab-tray"></content>
 		</div>
 
 		<div .content>

@@ -49,6 +49,8 @@ module.exports = window['ui'] = new (UI = (function() {
     this.pipes = {};
     this.dom = DOM;
     this.keyboard = keyboard;
+    this.systemGlobals = Object.create(null);
+    this.globals = Object.create(this.systemGlobals);
     return;
   }
 
@@ -58,8 +60,12 @@ module.exports = window['ui'] = new (UI = (function() {
     if (Render == null) {
       Render = DOMRender;
     }
-    this.components = Component.compileComponents(this.components);
-    this.directives = Directive.compileDirectives(this.directives);
+    this.components = this.components.map(function(Class) {
+      return Component.create(Class);
+    });
+    this.directives = this.directives.map(function(Class) {
+      return Directive.create(Class);
+    });
     MainComponent = Component.create(MainComponent);
     host = DOM.createElement(MainComponent.selector);
     MainComponent.init(host);
@@ -81,6 +87,10 @@ module.exports = window['ui'] = new (UI = (function() {
 
   UI.prototype.pipe = function(name, pipe) {
     return Exp.addPipe(name, pipe);
+  };
+
+  UI.prototype.global = function(name, value) {
+    return this.globals[name] = value;
   };
 
   UI.prototype.watch = function(context, exp, handler, locals, init) {

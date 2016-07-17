@@ -1,8 +1,8 @@
+MutationObserver = require('ui-js/dom/core/mutation-observer')
 animationFrame = require('ui-js/polyfill/animation-frame')
 ArrayObserver = require('ui-js/data-bind/array-observer')
-MutationObserver = require('ui-js/dom/core/mutation-observer')
-HTMLRender = require('./html-render')
 Event = require('ui-js/dom/core/event')
+HTMLRender = require('./html-render')
 Selection = require('./selection')
 DOM = require('ui-js/dom')
 

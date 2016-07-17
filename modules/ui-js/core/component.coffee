@@ -1,4 +1,4 @@
-DOM = require('ui-js/dom') 
+DOM = require('ui-js/dom')
 ShadowStyle = require('./shadow-style')
 Directive = require('./directive')
 Tree = require('./tree')
@@ -6,29 +6,23 @@ Tree = require('./tree')
 
 module.exports = class Component
 
-	componentsById = {}
-
 	@selector = ''
 	@template = ''
 	@styles = []
 	@components = []
 	@directives = []
-	@attrs = []
 
 	@tree = null
 	@initedComponents = null
-	@styleNode = null
 	@compiledTemplate = ''
 	@id = 0
 
 	lastId = 0
-
-	@generateId: ->
-		return lastId++
+	compiledComponents = []
 
 
 	@create: (Class)->
-		if componentsById[Class.id] then return Class
+		if Class in compiledComponents then return Class
 
 		for own key, value of @
 			Class[key] = Class[key] or value
@@ -37,32 +31,29 @@ module.exports = class Component
 			for key, value of @prototype when key isnt 'constructor'
 				Class.prototype[key] = value
 
-		id = @generateId()
-		Class.id = id
-		componentsById[id] = Class
+		compiledComponents.push(compiledComponents)
 		Class.initedComponents = []
+		Class.isComponent = yes
+		Class.id = lastId++
 		Class.compile()
 		return Class
 
 
-	@compileComponents: (components)->
-		compiledComponents = []
-		for component in components
-			if typeof component is 'function'
-				CompiledComponent = Component.create(component)
-				compiledComponents.push(CompiledComponent)
-			else
-				for own key, value of component
-					CompiledComponent = Component.create(value)
-					compiledComponents.push(CompiledComponent)
-		return compiledComponents
-
-
 	@compile: ->
-		@components = Component.compileComponents(@components)
-		@directives = Directive.compileDirectives(@directives)
-		@compileStyles()
+		@compileComponents()
+		@compileDirectives()
 		@compileTemplate()
+		@compileStyles()
+		return
+
+
+	@compileComponents: ->
+		@components = @components.map (Class)-> Component.create(Class)
+		return
+
+
+	@compileDirectives: ->
+		@directives = @directives.map (Class)-> Directive.create(Class)
 		return
 
 
@@ -74,25 +65,25 @@ module.exports = class Component
 		return
 
 
+	styleNodesMap = new Map()
+
+
 	@compileStyles: ->
-		unless @styles
-			if @styleNode
-				document.head.removeChild(@styleNode)
-				@styleNode = null
-				return
+		unless styleNodesMap.has(@)
+			styleNode = document.createElement('style')
+			styleNode.setAttribute('shadow-style', @selector)
+			document.head.appendChild(styleNode)
+			styleNodesMap.set(@, styleNode)
 
-		unless @styleNode
-			@styleNode = document.createElement('style')
-			document.head.appendChild(@styleNode)
+		@styles = @styles.map (style)=> ShadowStyle.compile(style)
 
-		totalStylesCode = ''
-
+		css = ''
 		for style in @styles
-			styleGenerator = ShadowStyle.compile(style)
-			components = ui.components.concat(@components)
-			totalStylesCode += styleGenerator(@id, components)
+			components = [ui.components..., @components...]
+			css += style(@id, [ui.components..., @components...])
 
-		@styleNode.innerHTML = totalStylesCode
+		styleNode = styleNodesMap.get(@)
+		styleNode.innerHTML = css
 		return
 
 
@@ -147,7 +138,7 @@ module.exports = class Component
 		shadowRoot.html(children)
 
 		component = Object.create(@prototype)
-		locals = {}
+		locals = Object.create(ui.globals)
 
 		@define(component, 'host', host)
 		@define(component, 'locals', locals)

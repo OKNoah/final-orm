@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.es6"],"names":[],"mappings":";;;;;;AAAA;;;;;;AACA,iBAAO,OAAP","file":"index.js","sourcesContent":["import Server from './server'\r\nServer.connect()\r\n\r\nexport default Server\r\n\r\n"]}

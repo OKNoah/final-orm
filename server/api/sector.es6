@@ -9,8 +9,10 @@ Server.api('Sector', class extends ListAPI {
 
 	async add(params) {
 		let name = params.get('name', String, {min: 1})
-		let texture = params.get('texture')
-		return await Sector.add({name, texture})
+		let contentBg = params.get('contentBg')
+		let bg = params.get('bg')
+
+		return await Sector.add({name, bg, contentBg})
 	}
 
 })

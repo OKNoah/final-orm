@@ -5,13 +5,9 @@ module.exports = class Directive
 	@terminal = off
 
 
-	@compileDirectives: (components)->
-		return components.map (DirClass)-> Directive.create(DirClass)
-
-
-	@create: (DirClass)->
+	@create: (Class)->
 		for own key, value of @ when typeof value isnt 'function'
-			DirClass[key] = DirClass[key] or value
-		return DirClass
+			Class[key] = Class[key] or value
+		return Class
 
 

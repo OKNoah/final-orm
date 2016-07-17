@@ -10,8 +10,8 @@ export default class Textarea extends Text {
 		.__active='focused or value'
 		.__error='activity and error'>
 
-			<div .label *if='host.attrs.label'>
-				{{ host.attrs.label }}
+			<div .label>
+				<content></content>
 			</div>
 
 			<textarea .textarea
@@ -22,6 +22,13 @@ export default class Textarea extends Text {
 
 		</label>
 	`
+
+	onKeyDown(event) {
+		if (event.realEvent.ctrlKey && event.realEvent.keyCode == 13) {
+			this.form.submit()
+		}
+	}
+
 
 }
 

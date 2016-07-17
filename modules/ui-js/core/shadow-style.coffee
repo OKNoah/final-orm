@@ -41,6 +41,3 @@ module.exports = class ShadowStyle
 		generatorBody = "var replace = #{@replace}; return \"#{style}\""
 		return new Function(generatorArgs, generatorBody)
 
-
-
-

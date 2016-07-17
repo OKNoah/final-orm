@@ -1,5 +1,3 @@
-module.exports = ArraySplice; 
-
 function newSplice(index, removed, addedCount) {
 	return {
 		index: index,
@@ -248,4 +246,7 @@ ArraySplice.prototype = {
 		return currentValue === previousValue;
 	}
 };
+
+
+module.exports = ArraySplice;
 

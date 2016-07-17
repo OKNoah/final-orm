@@ -29,7 +29,8 @@ ALIASES = {
   'undefined': 'void 0',
   'typeof': 'typeof ',
   'instanceof': 'instanceof ',
-  '@': 'this'
+  '@': 'this',
+  '#': 'locals'
 };
 
 KEYWORDS = {
@@ -217,7 +218,7 @@ ParseError = (function(superClass) {
 })(Error);
 
 Token = (function() {
-  Token.regExp = /(("|')(?:\\\2|[\s\S])*?\2)|(?:([$\w]+)\s*:)|(\d+)|([$\w]+)|(\+\+|\-\-)|(\S)/img;
+  Token.regExp = /(("|')(?:\\\2|[\s\S])*?\2)|(?:([$\w]+)\s*:)|(\d+)|([$\w]+)|(\+\+|--)|(\S)/img;
 
   function Token(matches) {
     var isCrement, isKey, isNumber, isString, isSymbol, isWord;
@@ -238,7 +239,7 @@ Token = (function() {
     this.isSymbol = !!isSymbol;
     this.isVar = (this.value === VAR_REF) || (this.value === VAR_CONTEXT) || (this.value === VAR_VALUE);
     this.isKeyword = !!(KEYWORDS[this.value] || ALIASES[this.value]);
-    this.isProp = !!((isWord && !this.isKeyword && !this.isKey && !this.isVar) || (this.value === '@'));
+    this.isProp = !!((isWord && !this.isKeyword && !this.isKey && !this.isVar) || (this.value === '@') || (this.value === '#'));
     this.isOperator = !!(isSymbol || isCrement || this.isKeyword) && !this.isProp;
     this.isBracketStart = this.match('[', '(', '{');
     return;

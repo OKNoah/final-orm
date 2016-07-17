@@ -1,11 +1,11 @@
-import ui from 'ui-js'
-import style from './app.styl'
-import Audio from '../core/audio'
-import server from '../core/server'
-import Platform from 'ui-js/core/platform'
 import AdminPanel from './admin-panel/admin-panel'
 import Roulette from './roulette/roulette'
+import Platform from 'ui-js/core/platform'
+import server from '../core/server'
+import Audio from '../core/audio'
+import style from './app.styl'
 import Info from './info/info'
+import ui from 'ui-js'
 
 
 export default class App {
@@ -24,6 +24,7 @@ export default class App {
 		
 			<tab .home-page>
 				<tab-title>Рулетка</tab-title>
+				<HomePage></HomePage>
 				<Roulette #roulette></Roulette>
 				<Admin-panel [roulette]='roulette'></Admin-panel>
 			</tab>
@@ -35,7 +36,7 @@ export default class App {
 			
 			<tab>
 				<tab-title>Юзеры</tab-title>
-				Юзеры {selector}
+				Юзеры
 			</tab>
 			
 			<tab>
@@ -72,10 +73,11 @@ export default class App {
 
 
 	initHandlers() {
-		this.watch('fontSize', this.updateFonts.bind(this))
-		ui.on('resize', this.updateFonts.bind(this))
-		this.host.on('init', this.updateFonts.bind(this))
-		server.on('error', this.onApiError.bind(this))
+		server.on('error', (error)=> this.onApiError(error))
+		this.watch('fontSize', ()=> this.updateFonts())
+		this.host.on('init', ()=> this.updateFonts())
+		ui.on('resize', ()=> this.updateFonts())
+		if (1 && 4) 3;
 	}
 
 

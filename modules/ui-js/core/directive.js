@@ -11,22 +11,16 @@ module.exports = Directive = (function() {
 
   Directive.terminal = false;
 
-  Directive.compileDirectives = function(components) {
-    return components.map(function(DirClass) {
-      return Directive.create(DirClass);
-    });
-  };
-
-  Directive.create = function(DirClass) {
+  Directive.create = function(Class) {
     var key, value;
     for (key in this) {
       if (!hasProp.call(this, key)) continue;
       value = this[key];
       if (typeof value !== 'function') {
-        DirClass[key] = DirClass[key] || value;
+        Class[key] = Class[key] || value;
       }
     }
-    return DirClass;
+    return Class;
   };
 
   return Directive;

@@ -29,7 +29,6 @@
         <item url="file://$PROJECT_DIR$/server/core/orm/fields/field-schemas.js" />
         <item url="file://$PROJECT_DIR$/server/core/orm/fields/field-models.js" />
         <item url="file://$PROJECT_DIR$/server/core/api.js" />
-        <item url="file://$PROJECT_DIR$/server/index.js" />
         <item url="file://$PROJECT_DIR$/server/config.js" />
         <item url="file://$PROJECT_DIR$/server/api/sector.js" />
         <item url="file://$PROJECT_DIR$/server/core/orm/fields/field-types.js" />
@@ -51,6 +50,7 @@
         <item url="file://$PROJECT_DIR$/server/core/server/index.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js-hot-loader/index.js" />
         <item url="file://$PROJECT_DIR$/server/core/orm/model.js" />
+        <item url="file://$PROJECT_DIR$/server/index.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/render/dom-render.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/render/html-render.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/render/selection.js" />
@@ -126,7 +126,6 @@
       <root url="file://$PROJECT_DIR$/server/core/orm/fields/field-models.js" />
       <root url="file://$PROJECT_DIR$/server/core/api.js" />
       <root url="file://$PROJECT_DIR$/server/core/orm/errors/validation-error.js" />
-      <root url="file://$PROJECT_DIR$/server/index.js" />
       <root url="file://$PROJECT_DIR$/server/config.js" />
       <root url="file://$PROJECT_DIR$/server/api/sector.js" />
       <root url="file://$PROJECT_DIR$/server/core/orm/fields/field-types.js" />
@@ -148,6 +147,7 @@
       <root url="file://$PROJECT_DIR$/server/core/server/index.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js-hot-loader/index.js" />
       <root url="file://$PROJECT_DIR$/server/core/orm/model.js" />
+      <root url="file://$PROJECT_DIR$/server/index.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/render/dom-render.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/render/html-render.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/render/selection.js" />

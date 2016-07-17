@@ -14,8 +14,8 @@ export default class Text {
 			(focus)='onFocus()'
 			(blur)='onBlur()'>
 
-			<div *if='host.attrs.label' .label>
-				{{ host.attrs.label }}
+			<div .label>
+				<content></content>
 			</div>
 
 		</label>
@@ -35,10 +35,7 @@ export default class Text {
 			this.form.addInput(this)
 		}
 
-		this.on('keydown', event => {
-			let keyCode = event.realEvent.keyCode
-			if (keyCode == 13) this.emit('submit')
-		})
+		this.on('keydown', event => this.onKeyDown(event))
 	}
 
 
@@ -47,6 +44,13 @@ export default class Text {
 			this.form.removeInput(this)
 		}
 		this.valueObserver.destroy()
+	}
+
+
+	onKeyDown(event) {
+		if (event.realEvent.keyCode == 13) {
+			this.form.submit()
+		}
 	}
 
 

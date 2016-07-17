@@ -42,12 +42,14 @@ module.exports = window['ui'] = new class UI
 		@pipes = {}
 		@dom = DOM
 		@keyboard = keyboard
+		@systemGlobals = Object.create(null)
+		@globals = Object.create(@systemGlobals)
 		return
 
 
 	bootstrap: (MainComponent, Render = DOMRender, renderOptions...)->
-		@components = Component.compileComponents(@components)
-		@directives = Directive.compileDirectives(@directives)
+		@components = @components.map (Class)-> Component.create(Class)
+		@directives = @directives.map (Class)-> Directive.create(Class)
 
 		MainComponent = Component.create(MainComponent)
 		host = DOM.createElement(MainComponent.selector)
@@ -68,6 +70,10 @@ module.exports = window['ui'] = new class UI
 
 	pipe: (name, pipe)->
 		return Exp.addPipe(name, pipe)
+
+
+	global: (name, value)->
+		return @globals[name] = value
 
 
 	watch: (context, exp, handler, locals, init = on)->

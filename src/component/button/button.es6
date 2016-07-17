@@ -21,9 +21,10 @@ export default class Button {
 	BOTTOM = 3
 	TOP = 4
 
+
 	constructor() {
 		this.state = this.NONE
-		this.on('mousedown', this.onMouseDown.bind(this))
+		this.on('mousedown', event => this.onMouseDown(event))
 	}
 
 
