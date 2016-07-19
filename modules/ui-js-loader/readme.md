@@ -1,6 +1,8 @@
 Webpack loader for [UI-js](https://www.npmjs.com/package/ui-js) framework
 ===
 
+Link to framework [UI-js](https://www.npmjs.com/package/ui-js)
+
 Features:
 ---
 - Dev server hot module replacement (reload) for Components

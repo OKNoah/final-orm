@@ -1,10 +1,6 @@
 import Component from 'ui-js/core/component'
 
 
-
-
-
-
 export default class ComponentPatcher {
 
 	static allWrappers = []
