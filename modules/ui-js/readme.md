@@ -1,11 +1,15 @@
 `UI-js` (alpha 0.0)
-
-
-Frontend MVVM framework like Angular 2, but better =)
+Frontend MVVM framework like Angular 2 and React, but better =)
 ===
 
-Use Webpack to build application
-GitHub: https://github.com/uMaxmaxmaximus/ui-js/tree/master/modules/ui-js
+
+- Use [Webpack](https://www.npmjs.com/package/webpack) to build application.
+- Use [Webpack loader](https://www.npmjs.com/package/ui-js-loader) to hot components livereload. 
+- Use Shadow DOM emulation and Shadow Styles emulation in components.
+- Extend components cuz its just javascript classes.
+- Enjoy =)
+
+P.S. Link to [GitHub](https://github.com/uMaxmaxmaximus/ui-js/tree/master/modules/ui-js) 
 
 
 Basic example:

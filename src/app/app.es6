@@ -41,9 +41,9 @@ export default class App {
 				Юзеры
 			</tab>
 			
-			<tab>
-				<tab-title>Статистика</tab-title>
-				Статистика
+			<tab *for="item in 5">
+				<tab-title>Статистика {{ item }}</tab-title>
+				Статистика {{ item }}
 			</tab>
 			
 			<tab>
