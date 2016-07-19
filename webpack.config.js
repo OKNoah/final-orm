@@ -22,7 +22,7 @@ module.exports = {
 		loaders: [
 			loader('src/**/*.jade', 'jade'),
 			loader('src/**/*.coffee', 'coffee'),
-			loader('src/**/*.es6', 'babel?{"presets":["es2015","stage-0"],"plugins":["transform-decorators-legacy"]}'),
+			loader('src/**/*.es6', 'ui-js!babel?{"presets":["es2015","stage-0"],"plugins":["transform-decorators-legacy"]}'),
 			loader('src/**/*.css', 'css!autoprefixer?browsers=last 2 version'),
 			loader('src/**/*.styl', 'css!autoprefixer?browsers=last 2 version!stylus'),
 			loader('src/**/*.{jpeg,jpg,png,gif,svg}', 'url?limit=10000&name=images/[hash].[ext]!img?progressive=true'),
@@ -75,14 +75,14 @@ module.exports = override(module.exports, {
 
 	entry: ['webpack-dev-server/client?http://' + HOST + ':' + PORT, 'webpack/hot/dev-server', 'style!' + STYLE, SCRIPT],
 	plugins: [
-		new webpack.HotModuleReplacementPlugin,
 		new HtmlWebpackPlugin({template: path.resolve(HTML)}),
 	],
 	devServer: {
 		stats: 'errors-only',
 		host: '0.0.0.0',
 		port: 1337,
-	}
+	},
+
 
 })
 

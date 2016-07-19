@@ -19,7 +19,6 @@ export default class Roulette {
 		</div>
 	`
 
-
 	constructor() {
 		this.easing = new BezierEasing(0.24, 0, 0.27, 0.99)
 		this.fov = 90

@@ -8,7 +8,7 @@ export default class Confirm {
 	static selector = 'confirm'
 	static template = `
 		<modal #modal (exit)='reject()'>
-			<div .text>{{ text }} </div>
+			<div .text> {{ text }} </div>
 			<div>
 				<button (click)='resolve()'>Да</button>
 				<button (click)='reject()'>Нет</button>

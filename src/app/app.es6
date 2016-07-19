@@ -15,6 +15,7 @@ export default class App {
 	static components = [Info, Roulette, AdminPanel]
 
 	static template = `
+	
 		<Confirm #confirm></Confirm>
 		<Notificator #notificator></Notificator>
 		<Gallery #gallery></Gallery>
@@ -24,6 +25,7 @@ export default class App {
 		
 			<tab .home-page>
 				<tab-title>Рулетка</tab-title>
+				
 				<HomePage></HomePage>
 				<Roulette #roulette></Roulette>
 				<Admin-panel [roulette]='roulette'></Admin-panel>
@@ -72,12 +74,21 @@ export default class App {
 	}
 
 
+	static test() {
+		this.template = `OLOLO!!! {{lol}} ! ${this.template}`
+
+		console.time('reload')
+		this.reload()
+		console.timeEnd('reload')
+
+	}
+
+
 	initHandlers() {
 		server.on('error', (error)=> this.onApiError(error))
 		this.watch('fontSize', ()=> this.updateFonts())
 		this.host.on('init', ()=> this.updateFonts())
 		ui.on('resize', ()=> this.updateFonts())
-		if (1 && 4) 3;
 	}
 
 
@@ -138,5 +149,9 @@ export default class App {
 
 }
 
+
+// setInterval(()=> {
+// 	App.test()
+// }, 3000)
 
 

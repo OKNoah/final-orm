@@ -1,0 +1,7 @@
+{
+  "name": "ui-js-loader",
+  "version": "0.0.11",
+  "dependencies": {
+    "source-map": "latest"
+  }
+}

@@ -23,6 +23,7 @@
     "img-loader": "latest",
     "jade": "latest",
     "jade-loader": "latest",
+    "minimatch": "latest",
     "mkdirp": "latest",
     "nib": "latest",
     "rmdir": "latest",
@@ -32,10 +33,9 @@
     "style-loader": "latest",
     "stylus": "latest",
     "stylus-loader": "latest",
-    "ui-js": "latest",
+    "ui-js": "0.0.1006",
     "url-loader": "latest",
     "webpack": "latest",
-    "webpack-dev-server": "latest",
-    "minimatch": "latest"
+    "webpack-dev-server": "latest"
   }
 }

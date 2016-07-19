@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectTasksOptions" suppressed-tasks="Babel;Stylus">
+  <component name="ProjectTasksOptions" suppressed-tasks="Babel;Stylus;Pug/Jade">
     <TaskOptions isEnabled="true">
       <option name="arguments" value="--source-maps --out-file $FileNameWithoutExtension$.js --presets es2015,stage-0 $FilePath$" />
       <option name="checkSyntaxErrors" value="true" />
@@ -15,7 +15,7 @@
       </option>
       <option name="outputFromStdout" value="false" />
       <option name="program" value="C:/Program Files/nodejs/babel.cmd" />
-      <option name="scopeName" value="server" />
+      <option name="scopeName" value="server and modules" />
       <option name="trackOnlyRoot" value="true" />
       <option name="workingDir" value="$FileDir$" />
       <envs />

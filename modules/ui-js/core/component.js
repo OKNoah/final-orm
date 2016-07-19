@@ -13,7 +13,7 @@ Directive = require('./directive');
 Tree = require('./tree');
 
 module.exports = Component = (function() {
-  var compiledComponents, lastId, styleNodesMap;
+  var compiledComponents, lastId, shadowStyles;
 
   function Component() {}
 
@@ -39,15 +39,29 @@ module.exports = Component = (function() {
 
   compiledComponents = [];
 
+  shadowStyles = new Map();
+
   Component.create = function(Class) {
-    var key, ref, value;
     if (indexOf.call(compiledComponents, Class) >= 0) {
       return Class;
     }
+    this.extend(Class);
+    compiledComponents.push(compiledComponents);
+    Class.initedComponents = [];
+    Class.isComponent = true;
+    Class.id = lastId++;
+    Class.compile();
+    return Class;
+  };
+
+  Component.extend = function(Class) {
+    var key, ref, value;
     for (key in this) {
       if (!hasProp.call(this, key)) continue;
       value = this[key];
-      Class[key] = Class[key] || value;
+      if (Class[key] == null) {
+        Class[key] = value;
+      }
     }
     if (Class.prototype) {
       ref = this.prototype;
@@ -58,11 +72,6 @@ module.exports = Component = (function() {
         }
       }
     }
-    compiledComponents.push(compiledComponents);
-    Class.initedComponents = [];
-    Class.isComponent = true;
-    Class.id = lastId++;
-    Class.compile();
     return Class;
   };
 
@@ -93,15 +102,13 @@ module.exports = Component = (function() {
     this.compiledTemplate = this.tree.template;
   };
 
-  styleNodesMap = new Map();
-
   Component.compileStyles = function() {
-    var components, css, i, len, ref, style, styleNode;
-    if (!styleNodesMap.has(this)) {
+    var components, css, i, len, ref, shadowStyle, styleNode;
+    if (!shadowStyles.has(this)) {
       styleNode = document.createElement('style');
       styleNode.setAttribute('shadow-style', this.selector);
       document.head.appendChild(styleNode);
-      styleNodesMap.set(this, styleNode);
+      shadowStyles.set(this, styleNode);
     }
     this.styles = this.styles.map((function(_this) {
       return function(style) {
@@ -111,11 +118,11 @@ module.exports = Component = (function() {
     css = '';
     ref = this.styles;
     for (i = 0, len = ref.length; i < len; i++) {
-      style = ref[i];
+      shadowStyle = ref[i];
       components = slice.call(ui.components).concat(slice.call(this.components));
-      css += style(this.id, slice.call(ui.components).concat(slice.call(this.components)));
+      css += shadowStyle(this.id, slice.call(ui.components).concat(slice.call(this.components)));
     }
-    styleNode = styleNodesMap.get(this);
+    styleNode = shadowStyles.get(this);
     styleNode.innerHTML = css;
   };
 
@@ -209,7 +216,7 @@ module.exports = Component = (function() {
     return component;
   };
 
-  Component.reloadStyle = function() {
+  Component.reloadStyles = function() {
     this.compileStyles();
   };
 

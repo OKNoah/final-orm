@@ -141,11 +141,11 @@
       <root url="file://$PROJECT_DIR$/server/index.js" />
       <root url="file://$PROJECT_DIR$/server/core/server/errors/api-error.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/index.js" />
-      <root url="file://$PROJECT_DIR$/modules/ui-js-hot-loader/component-patcher.js" />
+      <root url="file://$PROJECT_DIR$/modules/ui-js-loader/component-patcher.js" />
       <root url="file://$PROJECT_DIR$/server/core/server/connection.js" />
-      <root url="file://$PROJECT_DIR$/modules/ui-js-hot-loader/hot-loader.js" />
+      <root url="file://$PROJECT_DIR$/modules/ui-js-loader/hot-loader.js" />
       <root url="file://$PROJECT_DIR$/server/core/server/index.js" />
-      <root url="file://$PROJECT_DIR$/modules/ui-js-hot-loader/index.js" />
+      <root url="file://$PROJECT_DIR$/modules/ui-js-loader/index.js" />
       <root url="file://$PROJECT_DIR$/server/core/orm/model.js" />
       <root url="file://$PROJECT_DIR$/server/index.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/render/dom-render.js" />

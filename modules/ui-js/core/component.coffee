@@ -19,23 +19,26 @@ module.exports = class Component
 
 	lastId = 0
 	compiledComponents = []
+	shadowStyles = new Map()
 
 
 	@create: (Class)->
 		if Class in compiledComponents then return Class
-
-		for own key, value of @
-			Class[key] = Class[key] or value
-
-		if Class.prototype
-			for key, value of @prototype when key isnt 'constructor'
-				Class.prototype[key] = value
-
+		@extend(Class)
 		compiledComponents.push(compiledComponents)
 		Class.initedComponents = []
 		Class.isComponent = yes
 		Class.id = lastId++
 		Class.compile()
+		return Class
+
+
+	@extend: (Class)->
+		for own key, value of @
+			unless Class[key]? then Class[key] = value
+		if Class.prototype
+			for key, value of @prototype when key isnt 'constructor'
+				Class.prototype[key] = value
 		return Class
 
 
@@ -65,24 +68,21 @@ module.exports = class Component
 		return
 
 
-	styleNodesMap = new Map()
-
-
 	@compileStyles: ->
-		unless styleNodesMap.has(@)
+		unless shadowStyles.has(@)
 			styleNode = document.createElement('style')
 			styleNode.setAttribute('shadow-style', @selector)
 			document.head.appendChild(styleNode)
-			styleNodesMap.set(@, styleNode)
+			shadowStyles.set(@, styleNode)
 
 		@styles = @styles.map (style)=> ShadowStyle.compile(style)
 
 		css = ''
-		for style in @styles
+		for shadowStyle in @styles
 			components = [ui.components..., @components...]
-			css += style(@id, [ui.components..., @components...])
+			css += shadowStyle(@id, [ui.components..., @components...])
 
-		styleNode = styleNodesMap.get(@)
+		styleNode = shadowStyles.get(@)
 		styleNode.innerHTML = css
 		return
 
@@ -143,8 +143,9 @@ module.exports = class Component
 		@define(component, 'host', host)
 		@define(component, 'locals', locals)
 		@define(component, 'app', app or component)
-
 		host.component = component
+
+		# construct
 		component.constructor()
 
 		@tree.init(shadowRoot, component, locals)
@@ -159,7 +160,7 @@ module.exports = class Component
 		return component
 
 
-	@reloadStyle: ->
+	@reloadStyles: ->
 		@compileStyles()
 		return
 

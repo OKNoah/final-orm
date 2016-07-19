@@ -1,9 +1,10 @@
 import DOM from 'ui-js/dom'
+import style from './button.styl'
 
 
 export default class Button {
 
-	static styles = [require('./button.styl')]
+	static styles = [style]
 	static selector = 'button'
 	static template = `
 		<div .content

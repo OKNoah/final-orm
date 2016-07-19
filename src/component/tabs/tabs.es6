@@ -17,7 +17,6 @@ export default class Tabs {
 		</div>
 	`
 
-
 	constructor() {
 		this.tabs = []
 	}
@@ -31,6 +30,13 @@ export default class Tabs {
 	}
 
 
+	remove(tab) {
+		let index = this.tabs.indexOf(tab)
+		if (index !== -1) this.tabs.splice(index, 1)
+		this.activateByIndex(index - 1)
+	}
+
+
 	activate(targetTab) {
 		let targetIndex = this.tabs.indexOf(targetTab)
 		this.activateByIndex(targetIndex)
@@ -38,6 +44,9 @@ export default class Tabs {
 
 
 	activateByIndex(targetIndex) {
+		targetIndex = Math.max(targetIndex, 0)
+		targetIndex = Math.min(targetIndex, this.tabs.length - 1)
+
 		this.tabs.forEach((tab, index)=> {
 			if (index < targetIndex) tab.toPrev()
 			else if (index > targetIndex)tab.toNext()

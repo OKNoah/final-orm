@@ -3,21 +3,18 @@ import Promise from 'ui-js/core/promise'
 
 export default class Audio {
 
-
-	constructor() {
-		this.audioContext = new AudioContext()
-		this.soundBuffersLoadPromises = {}
-	}
+	static audioContext = new AudioContext()
+	static soundBuffersLoadPromises = {}
 
 
-	playSound(url, volume = 1) {
+	static playSound(url, volume = 1) {
 		this.loadSound(url).then((buffer)=>
 			this.playSoundBuffer(buffer, volume)
 		)
 	}
 
 
-	playSoundBuffer(buffer, volume) {
+	static playSoundBuffer(buffer, volume) {
 		let gainNode = this.audioContext.createGain()
 		gainNode.gain.value = volume
 		let source = this.audioContext.createBufferSource()
@@ -28,7 +25,7 @@ export default class Audio {
 	}
 
 
-	loadSound(url) {
+	static loadSound(url) {
 		if (this.soundBuffersLoadPromises[url]) {
 			return this.soundBuffersLoadPromises[url]
 		}
@@ -50,4 +47,6 @@ export default class Audio {
 
 
 }
+
+
 

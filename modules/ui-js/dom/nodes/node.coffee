@@ -1,4 +1,4 @@
-EventEmitter = require('ui-js/core/event-emitter') 
+EventEmitter = require('ui-js/core/event-emitter')
 NodeMutation = require('../mutations/node-mutation')
 
 
@@ -49,12 +49,13 @@ module.exports = class Node extends EventEmitter
 
 
 	destroy: (destroyChildren = yes, needRemove = no)->
-		@emit('destroy')
 		@removeAllEventHandlers()
+
 		if destroyChildren
 			for child in @children then child.destroy(yes, no)
 
 		if needRemove then @remove()
+		@emit('destroy')
 		return
 
 

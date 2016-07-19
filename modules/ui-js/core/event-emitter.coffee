@@ -1,8 +1,11 @@
-module.exports = class EventEmitter 
+eventHandlers = "eventHandlers #{Math.random()}"
+
+
+module.exports = class EventEmitter
 
 
 	on: (type, handler)->
-		allHandlers = @eventHandlers_ ?= {}
+		allHandlers = @[eventHandlers] ?= {}
 		handlers = allHandlers[type] or= []
 		handlers.push(handler)
 		return @
@@ -19,8 +22,8 @@ module.exports = class EventEmitter
 
 
 	off: (type, handler)->
-		unless @eventHandlers_ then return
-		allHandlers = @eventHandlers_
+		unless @[eventHandlers] then return
+		allHandlers = @[eventHandlers]
 		handlers = allHandlers[type]
 		unless handlers then return
 		unless handler then delete allHandlers[type]
@@ -32,8 +35,8 @@ module.exports = class EventEmitter
 
 
 	emit: (type, data)->
-		unless @eventHandlers_ then return
-		handlers = @eventHandlers_[type]
+		unless @[eventHandlers] then return
+		handlers = @[eventHandlers][type]
 		unless handlers then return
 		for handler in handlers.slice()
 			handler(data)
@@ -41,12 +44,12 @@ module.exports = class EventEmitter
 
 
 	hasEventHandlers: (type)->
-		unless @eventHandlers_?[type] then return false
-		return @eventHandlers_?[type].length > 0
+		unless @[eventHandlers]?[type] then return false
+		return @[eventHandlers]?[type].length > 0
 
 
 	removeAllEventHandlers: ->
-		delete @eventHandlers_
+		delete @[eventHandlers]
 		return
 
 		

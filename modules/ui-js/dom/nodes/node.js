@@ -67,7 +67,6 @@ module.exports = Node = (function(superClass) {
     if (needRemove == null) {
       needRemove = false;
     }
-    this.emit('destroy');
     this.removeAllEventHandlers();
     if (destroyChildren) {
       ref = this.children;
@@ -79,6 +78,7 @@ module.exports = Node = (function(superClass) {
     if (needRemove) {
       this.remove();
     }
+    this.emit('destroy');
   };
 
   Node.prototype.clone = function() {

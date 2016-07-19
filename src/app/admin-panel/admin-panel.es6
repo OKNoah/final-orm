@@ -54,15 +54,19 @@ export default class AdminPanel {
 
 	constructor() {
 		this.sectors = Sector.list()
-		this.roulette = null
+		// this.roulette = null
 		this.selectedSector = null
 		this.initHandlers()
+	}
+
+	test(){
+		console.log('test!!')
 	}
 
 
 	initHandlers() {
 		this.on('init', ()=> {
-			this.roulette.on('sectorclick', this.selectSector)
+			// this.roulette.on('sectorclick', this.selectSector)
 		})
 
 		this.sectors.on('update', ()=> {

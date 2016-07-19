@@ -14,6 +14,7 @@ export default class Modal extends Popup {
 			</div>
 		</div>
 	`
+
 }
 
 
