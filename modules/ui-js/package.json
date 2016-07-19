@@ -1,7 +1,8 @@
 {
   "name": "ui-js",
-  "version": "0.0.10010",
+  "version": "0.0.10011",
   "description": "Frontend MVVM framework like Angular 2 and React, but better",
+  "homepage": "https://github.com/uMaxmaxmaximus/ui-js/tree/master/modules/ui-js",
   "keywords": [
     "angular",
     "angular2",

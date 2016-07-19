@@ -9,8 +9,6 @@ Frontend MVVM framework like Angular 2 and React, but better =)
 - Extend components cuz its just javascript classes.
 - Enjoy =)
 
-P.S. Link to [GitHub](https://github.com/uMaxmaxmaximus/ui-js/tree/master/modules/ui-js) 
-
 
 Basic example:
 ---

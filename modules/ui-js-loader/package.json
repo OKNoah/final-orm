@@ -1,7 +1,8 @@
 {
   "name": "ui-js-loader",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Webpack loader for UI-js framework",
+  "homepage": "https://github.com/uMaxmaxmaximus/ui-js/tree/master/modules/ui-js-loader",
   "keywords": [
     "ui-js",
     "webpack",
