@@ -1,6 +1,7 @@
 {
   "name": "ui-js",
-  "version": "0.0.1006",
+  "version": "0.0.1007",
+  "description": "Frontend MVVM framework like Angular 2, but better",
   "keywords": [
     "angular",
     "angular2",

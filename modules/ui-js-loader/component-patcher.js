@@ -80,6 +80,7 @@ var ComponentPatcher = function () {
 
 						if (this.__inited) {
 							var inherits = this.__getInherits();
+							this.__updateStylesInInherits(inherits);
 
 							if (changedLogic) this.__reload(inherits); // full reload
 							else {
@@ -93,7 +94,8 @@ var ComponentPatcher = function () {
 				}, {
 					key: '__reload',
 					value: function __reload(inherits) {
-						console.log('reload logic inherits', inherits);
+						this.reload();
+						// console.log('reload logic inherits', inherits)
 						var _iteratorNormalCompletion = true;
 						var _didIteratorError = false;
 						var _iteratorError = undefined;
@@ -121,7 +123,8 @@ var ComponentPatcher = function () {
 				}, {
 					key: '__reloadTemplate',
 					value: function __reloadTemplate(inherits) {
-						console.log('reload template inherits', inherits);
+						this.reloadTemplate();
+						// console.log('reload template inherits', inherits)
 						var _iteratorNormalCompletion2 = true;
 						var _didIteratorError2 = false;
 						var _iteratorError2 = undefined;
@@ -149,7 +152,8 @@ var ComponentPatcher = function () {
 				}, {
 					key: '__reloadStyles',
 					value: function __reloadStyles(inherits) {
-						console.log('reload styles inherits', inherits);
+						this.reloadStyles();
+						// console.log('reload styles inherits', inherits)
 						var _iteratorNormalCompletion3 = true;
 						var _didIteratorError3 = false;
 						var _iteratorError3 = undefined;
@@ -178,7 +182,7 @@ var ComponentPatcher = function () {
 					key: '__getInherits',
 					value: function __getInherits() {
 						var SuperWrapper = arguments.length <= 0 || arguments[0] === undefined ? this : arguments[0];
-						var inherits = arguments.length <= 1 || arguments[1] === undefined ? [this] : arguments[1];
+						var inherits = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
 						var _iteratorNormalCompletion4 = true;
 						var _didIteratorError4 = false;
 						var _iteratorError4 = undefined;
@@ -259,6 +263,11 @@ var ComponentPatcher = function () {
 						this.prototype.constructor = this;
 
 						_component2.default.extend(Class);
+					}
+				}, {
+					key: '__updateStylesInInherits',
+					value: function __updateStylesInInherits(inherits) {
+						console.dir(inherits);
 					}
 				}, {
 					key: '__checkTemplate',

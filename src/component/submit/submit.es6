@@ -3,6 +3,10 @@ import Button from '../button/button'
 
 export default class Submit extends Button {
 
+	static styles = [...Button.styles, `
+		*{ color: red !important }
+	`]
+
 	static selector = 'submit'
 
 	constructor() {

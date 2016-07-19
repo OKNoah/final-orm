@@ -1,6 +1,19 @@
 {
   "name": "ui-js-loader",
-  "version": "0.0.11",
+  "version": "0.0.14",
+  "description": "Webpack loader for UI-js framework",
+  "keywords": [
+    "ui-js",
+    "webpack",
+    "loader",
+    "hot-loader",
+    "webpack-hot",
+    "ui-js-loader",
+    "ui-js-hot-loader",
+    "hot",
+    "module",
+    "replacement"
+  ],
   "dependencies": {
     "source-map": "latest"
   }

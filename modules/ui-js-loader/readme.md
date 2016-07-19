@@ -1,4 +1,4 @@
-Webpack loader for ui-js framework https://www.npmjs.com/package/ui-js
+Webpack loader for [UI-js](https://www.npmjs.com/package/ui-js) framework
 ===
 
 Features:
@@ -8,9 +8,12 @@ Features:
 
 TODO:
 ---
-Pre compile component templates (string) to Virtual DOM elements
 
-like this:
+1) Pre compile component templates (string) to Virtual DOM elements, like React.
+2) Pre compile styles to shadow styles for Shadow DOM.
+
+
+Now this is the runtime, but I want to be able to produce precompile to accelerate the launch of the application, like this:
 ```javascript
 class Button {
 	
@@ -23,6 +26,7 @@ class Button {
   
 }
 ```
+
 compile to:
 ```javascript
 class Button {
@@ -38,3 +42,6 @@ class Button {
   	
 }
 ```
+
+
+

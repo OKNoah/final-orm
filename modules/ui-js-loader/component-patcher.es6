@@ -1,6 +1,10 @@
 import Component from 'ui-js/core/component'
 
 
+
+
+
+
 export default class ComponentPatcher {
 
 	static allWrappers = []
@@ -68,6 +72,7 @@ export default class ComponentPatcher {
 
 				if (this.__inited) {
 					let inherits = this.__getInherits()
+					this.__updateStylesInInherits(inherits)
 
 					if (changedLogic) this.__reload(inherits) // full reload
 					else {
@@ -81,24 +86,27 @@ export default class ComponentPatcher {
 
 
 			static __reload(inherits) {
-				console.log('reload logic inherits', inherits)
+				this.reload()
+				// console.log('reload logic inherits', inherits)
 				for (let inherit of inherits) inherit.reload()
 			}
 
 
 			static __reloadTemplate(inherits) {
-				console.log('reload template inherits', inherits)
+				this.reloadTemplate()
+				// console.log('reload template inherits', inherits)
 				for (let inherit of inherits) inherit.reloadTemplate()
 			}
 
 
 			static __reloadStyles(inherits) {
-				console.log('reload styles inherits', inherits)
+				this.reloadStyles()
+				// console.log('reload styles inherits', inherits)
 				for (let inherit of inherits) inherit.reloadStyles()
 			}
 
 
-			static __getInherits(SuperWrapper = this, inherits = [this]) {
+			static __getInherits(SuperWrapper = this, inherits = []) {
 				for (let Wrapper of ComponentPatcher.allWrappers) {
 					if (this.__isInherit(Wrapper, SuperWrapper)) {
 						if (inherits.indexOf(Wrapper) === -1) {
@@ -138,6 +146,11 @@ export default class ComponentPatcher {
 				this.prototype.constructor = this
 
 				Component.extend(Class)
+			}
+
+
+			static __updateStylesInInherits(inherits) {
+				console.dir(inherits)
 			}
 
 
