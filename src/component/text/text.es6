@@ -1,7 +1,7 @@
 export default class Text {
 
 	static style = require('./text.styl')
-	static selector = 'text'
+	static tag = 'text'
 
 	static template = `
 		<label .container

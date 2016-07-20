@@ -3,7 +3,7 @@ import style from './tabs.styl'
 
 export default class Tabs {
 
-	static selector = 'tabs'
+	static tag = 'tabs'
 	static style = style
 
 	static template = `

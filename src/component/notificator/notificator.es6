@@ -3,8 +3,8 @@ import EventEmitter from 'ui-js/core/event-emitter'
 
 export default class Notificator {
 
+	static tag = 'notificator'
 	static style = require('./notificator.styl')
-	static selector = 'notificator'
 	static template = `
 		<div .message
 			*for='message in messages'

@@ -1,7 +1,7 @@
 export default class Pagination {
 
 	static style = require('./pagination.styl')
-	static selector = 'pagination'
+	static tag = 'pagination'
 
 	static template = `
 		<ul *if='moreThenOne(pagesCount)'>

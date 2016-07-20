@@ -4,7 +4,7 @@ import style from './info.styl'
 
 export default class Info {
 
-	static selector = 'info'
+	static tag = 'info'
 	static style = style
 
 	static template = `

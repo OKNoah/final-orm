@@ -34,7 +34,7 @@ module.exports = ShadowStyle = (function() {
     }
     componentTags = components.map((function(_this) {
       return function(component) {
-        return component.selector;
+        return component.tag;
       };
     })(this));
     parts = selector.split(/\s+|>/).map((function(_this) {

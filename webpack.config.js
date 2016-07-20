@@ -20,14 +20,15 @@ module.exports = {
 
 	module: {
 		loaders: [
+			loader('src/**/*.html', 'html'),
 			loader('src/**/*.jade', 'jade'),
 			loader('src/**/*.coffee', 'coffee'),
 			loader('src/**/*.es6', 'ui-js!babel?{"presets":["es2015","stage-0"],"plugins":["transform-decorators-legacy"]}'),
 			loader('src/**/*.css', 'css!autoprefixer?browsers=last 2 version'),
 			loader('src/**/*.styl', 'css!autoprefixer?browsers=last 2 version!stylus'),
 			loader('src/**/*.{jpeg,jpg,png,gif,svg}', 'url?limit=10000&name=images/[hash].[ext]!img?progressive=true'),
-			loader('src/**/*.{mp3,mp4,wmv}', 'url?limit=10000&name=media/[hash].[ext]'),
 			loader('src/**/*.{eot,otf,svg,ttf,woff}', 'url?limit=10000&name=fonts/[hash].[ext]'),
+			loader('src/**/*.{mp3,mp4,wmv}', 'url?limit=10000&name=media/[hash].[ext]'),
 		]
 	},
 

@@ -1,7 +1,7 @@
 export default class File {
 
 	static style = require('./file.styl')
-	static selector = 'file'
+	static tag = 'file'
 
 	static template = `
 		<button .button>

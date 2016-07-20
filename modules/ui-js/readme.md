@@ -49,17 +49,13 @@ Component example:
 ---
 
 ```javascript
-// webpack loader as css text
-let style = require('./button.css')
-
-
 export default class Button {
 
   // this is custom html element name
   static selector = 'button'
 
-  // this is shadow styles (isolated, even * selector)
-  static styles = [style]
+  // this is shadow style (isolated, even * selector)
+  static style = require('./button.css') // webpack loader as css text
 
   // components to be used in a template
   static components = []

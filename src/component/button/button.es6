@@ -4,8 +4,8 @@ import style from './button.styl'
 
 export default class Button {
 
+	static tag = 'button'
 	static style = style
-	static selector = 'button'
 	static template = `
 		<div .content
 		.__left='state is LEFT'

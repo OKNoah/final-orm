@@ -3,7 +3,7 @@ import Text from '../text/text'
 
 export default class Pass extends Text {
 
-	static selector = 'pass'
+	static tag = 'pass'
 
 	constructor() {
 		super()

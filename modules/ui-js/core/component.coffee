@@ -7,7 +7,7 @@ Tree = require('./tree')
 
 module.exports = class Component
 
-	@selector = ''
+	@tag = ''
 	@template = ''
 	@style = ''
 	@components = []
@@ -77,7 +77,7 @@ module.exports = class Component
 	@compileStyle: ->
 		unless shadowStyles.has(@)
 			styleNode = document.createElement('style')
-			styleNode.setAttribute('shadow-style', @selector)
+			styleNode.setAttribute('shadow-style', @tag)
 			document.head.appendChild(styleNode)
 			shadowStyles.set(@, styleNode)
 
@@ -112,7 +112,7 @@ module.exports = class Component
 		components = globalComponents.concat(@components)
 
 		for component in components
-			tag = component.selector
+			tag = component.tag
 			if tag is node.tag then return component
 		return null
 
@@ -132,8 +132,8 @@ module.exports = class Component
 
 
 	@find: (node, shadowPrefix = off)->
-		selector = if shadowPrefix then "ui-#{@selector}" else @selector
-		return node.querySelectorAll(selector)
+		tag = if shadowPrefix then "ui-#{@tag}" else @tag
+		return node.querySelectorAll(tag)
 
 
 	@createTemplateNodes: ->
@@ -216,11 +216,11 @@ module.exports = class Component
 
 		context = @host.parent
 		while context
-			if context.component?.constructor?.selector is name
+			if context.component?.constructor?.tag is name
 				return context.component
 			context = context.parent
 		if optional then return null
-		throw Error "Not found parent component '#{name}' required in '#{@constructor.selector}'"
+		throw Error "Not found parent component '#{name}' required in '#{@constructor.tag}'"
 		return
 
 

@@ -6,7 +6,7 @@ import File from '../file/file'
 export default class Form {
 
 	static style = require('./form.styl')
-	static selector = 'form'
+	static tag = 'form'
 
 	static template = `
 		<form>

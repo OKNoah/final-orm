@@ -1,7 +1,7 @@
 export default class Gallery {
 
 	static style = require('./gallery.styl')
-	static selector = 'gallery'
+	static tag = 'gallery'
 	static template = `
 		
 		<popup .popup #popup (close)="onPopupClose()">

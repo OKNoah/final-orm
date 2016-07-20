@@ -16,7 +16,7 @@ module.exports = class ShadowStyle
 
 
 	@replace: (selector, id, components = [])->
-		componentTags = components.map (component)=> component.selector
+		componentTags = components.map (component)=> component.tag
 
 		parts = selector.split(/\s+|>/).map (part, index, parts)=>
 			# pseudo selector

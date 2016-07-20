@@ -19,7 +19,7 @@ module.exports = Component = (function() {
 
   function Component() {}
 
-  Component.selector = '';
+  Component.tag = '';
 
   Component.template = '';
 
@@ -108,7 +108,7 @@ module.exports = Component = (function() {
     var components, css, i, len, ref, shadowStyle, styleNode;
     if (!shadowStyles.has(this)) {
       styleNode = document.createElement('style');
-      styleNode.setAttribute('shadow-style', this.selector);
+      styleNode.setAttribute('shadow-style', this.tag);
       document.head.appendChild(styleNode);
       shadowStyles.set(this, styleNode);
     }
@@ -149,7 +149,7 @@ module.exports = Component = (function() {
     components = globalComponents.concat(this.components);
     for (i = 0, len = components.length; i < len; i++) {
       component = components[i];
-      tag = component.selector;
+      tag = component.tag;
       if (tag === node.tag) {
         return component;
       }
@@ -181,12 +181,12 @@ module.exports = Component = (function() {
   };
 
   Component.find = function(node, shadowPrefix) {
-    var selector;
+    var tag;
     if (shadowPrefix == null) {
       shadowPrefix = false;
     }
-    selector = shadowPrefix ? "ui-" + this.selector : this.selector;
-    return node.querySelectorAll(selector);
+    tag = shadowPrefix ? "ui-" + this.tag : this.tag;
+    return node.querySelectorAll(tag);
   };
 
   Component.createTemplateNodes = function() {
@@ -270,7 +270,7 @@ module.exports = Component = (function() {
     optional = !!match[2];
     context = this.host.parent;
     while (context) {
-      if (((ref = context.component) != null ? (ref1 = ref.constructor) != null ? ref1.selector : void 0 : void 0) === name) {
+      if (((ref = context.component) != null ? (ref1 = ref.constructor) != null ? ref1.tag : void 0 : void 0) === name) {
         return context.component;
       }
       context = context.parent;
@@ -278,7 +278,7 @@ module.exports = Component = (function() {
     if (optional) {
       return null;
     }
-    throw Error("Not found parent component '" + name + "' required in '" + this.constructor.selector + "'");
+    throw Error("Not found parent component '" + name + "' required in '" + this.constructor.tag + "'");
   };
 
   Component.prototype.emit = function(eventName, event) {

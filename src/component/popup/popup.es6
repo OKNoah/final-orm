@@ -5,7 +5,7 @@ import keyboard from 'ui-js/core/keyboard'
 export default class Popup {
 
 	static style = require('./popup.styl')
-	static selector = 'popup'
+	static tag = 'popup'
 
 	static template = `
 		<div .content #content>

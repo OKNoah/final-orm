@@ -1,7 +1,7 @@
 export default class Option {
 
 	static style = require('./option.styl')
-	static selector = 'option'
+	static tag = 'option'
 
 	static template = `
 		<content></content> 

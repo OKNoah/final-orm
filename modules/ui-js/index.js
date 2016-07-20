@@ -67,7 +67,7 @@ module.exports = window['ui'] = new (UI = (function() {
       return Directive.create(Class);
     });
     MainComponent = Component.create(MainComponent);
-    host = DOM.createElement(MainComponent.selector);
+    host = DOM.createElement(MainComponent.tag);
     MainComponent.init(host);
     render = (function(func, args, ctor) {
       ctor.prototype = func.prototype;

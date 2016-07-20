@@ -4,7 +4,7 @@ import Sector from '../../api/sector'
 
 export default class AdminPanel {
 
-	static selector = 'admin-panel'
+	static tag = 'admin-panel'
 	static style = style
 	static template = `
 

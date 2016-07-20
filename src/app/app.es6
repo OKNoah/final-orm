@@ -3,14 +3,14 @@ import Roulette from './roulette/roulette'
 import Platform from 'ui-js/core/platform'
 import server from '../core/server'
 import Audio from '../core/audio'
-import style from './app.styl'
 import Info from './info/info'
+import style from './app.styl'
 import ui from 'ui-js'
 
 
 export default class App {
 
-	static selector = 'my-app'
+	static tag = 'my-app'
 	static components = [Info, Roulette, AdminPanel]
 
 	static style = style

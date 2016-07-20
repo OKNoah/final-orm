@@ -1,6 +1,6 @@
 export default class TabTitle {
 
-	static selector = 'tab-title'
+	static tag = 'tab-title'
 	static style = require('./tab-title.styl')
 
 	static template = `

@@ -4,7 +4,7 @@ import style from './modal.styl'
 
 export default class Modal extends Popup {
 
-	static selector = 'modal'
+	static tag = 'modal'
 	static style = style
 
 	static template = `

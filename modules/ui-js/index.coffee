@@ -52,7 +52,7 @@ module.exports = window['ui'] = new class UI
 		@directives = @directives.map (Class)-> Directive.create(Class)
 
 		MainComponent = Component.create(MainComponent)
-		host = DOM.createElement(MainComponent.selector)
+		host = DOM.createElement(MainComponent.tag)
 		MainComponent.init(host)
 		render = new Render(host, renderOptions...)
 		return render

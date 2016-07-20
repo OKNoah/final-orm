@@ -4,7 +4,7 @@ import Text from '../text/text'
 export default class Textarea extends Text {
 
 	static style = require('./textarea.styl')
-	static selector = 'textarea'
+	static tag = 'textarea'
 	static template = `
 		<label .container
 		.__active='focused or value'

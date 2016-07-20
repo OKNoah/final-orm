@@ -7,7 +7,7 @@ export default class Submit extends Button {
 		*{ color: red !important }
 	`
 
-	static selector = 'submit'
+	static tag = 'submit'
 	// static template = Button.template + '!!!!!!'
 
 	constructor() {
