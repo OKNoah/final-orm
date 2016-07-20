@@ -4,7 +4,7 @@ import style from './tab.styl'
 export default class Tab {
 
 	static selector = 'tab'
-	static styles = [style]
+	static style = style
 	static template = `
 		<content></content>
 	`

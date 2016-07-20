@@ -1,6 +1,6 @@
 export default class Text {
 
-	static styles = [require('./text.styl')]
+	static style = require('./text.styl')
 	static selector = 'text'
 
 	static template = `

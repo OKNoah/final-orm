@@ -1,6 +1,6 @@
 export default class File {
 
-	static styles = [require('./file.styl')]
+	static style = require('./file.styl')
 	static selector = 'file'
 
 	static template = `

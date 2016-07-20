@@ -130,13 +130,13 @@ export default class ComponentPatcher {
 
 			static __copyPropsFrom(Class, inherits) {
 				let oldTemplate = this.template
-				let oldStyles = this.styles
 				let oldPrototype = this.prototype
 
 				let prototype = Object.getPrototypeOf(Class)
 				if (Object.setPrototypeOf) Object.setPrototypeOf(this, prototype)
 				else this.__proto__ = prototype
 
+				// TODO remove deleted props
 				for (let prop of Object.getOwnPropertyNames(Class)) {
 					let descriptor = Object.getOwnPropertyDescriptor(Class, prop)
 					Object.defineProperty(this, prop, descriptor)
@@ -146,26 +146,16 @@ export default class ComponentPatcher {
 				Component.extend(this)
 
 				if (this.__inited) {
-					this.__copyPropsToInherits(inherits, oldTemplate, oldStyles, oldPrototype)
+					this.__copyPropsToInherits(inherits, oldTemplate, oldPrototype)
 				}
 			}
 
 
-			static __copyPropsToInherits(inherits, oldTemplate, oldStyles, oldPrototype) {
+			static __copyPropsToInherits(inherits, oldTemplate, oldPrototype) {
 				for (let inherit of inherits) {
 					// template
 					if (inherit.template === oldTemplate) {
 						inherit.template = this.template
-					}
-
-					// styles
-					for (let index in oldStyles) {
-						let oldStyle = oldStyles[index]
-						let currentStyle = this.styles[index]
-						inherit.styles = inherit.styles.map(inheritStyle => {
-							if (oldStyle === inheritStyle) return currentStyle
-							return inheritStyle
-						})
 					}
 
 					// logic

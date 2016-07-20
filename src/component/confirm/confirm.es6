@@ -4,7 +4,7 @@ import keyboard from 'ui-js/core/keyboard'
 
 export default class Confirm {
 
-	static styles = [require('./confirm.styl')]
+	static style = require('./confirm.styl')
 	static selector = 'confirm'
 	static template = `
 		<modal #modal (exit)='reject()'>

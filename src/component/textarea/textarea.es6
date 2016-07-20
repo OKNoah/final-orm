@@ -3,7 +3,7 @@ import Text from '../text/text'
 
 export default class Textarea extends Text {
 
-	static styles = [require('./textarea.styl')]
+	static style = require('./textarea.styl')
 	static selector = 'textarea'
 	static template = `
 		<label .container

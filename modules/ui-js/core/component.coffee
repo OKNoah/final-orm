@@ -9,7 +9,7 @@ module.exports = class Component
 
 	@selector = ''
 	@template = ''
-	@styles = []
+	@style = ''
 	@components = []
 	@directives = []
 
@@ -47,7 +47,7 @@ module.exports = class Component
 		@compileComponents()
 		@compileDirectives()
 		@compileTemplate()
-		@compileStyles()
+		@compileStyle()
 		return
 
 
@@ -62,11 +62,10 @@ module.exports = class Component
 
 
 	@compileTemplate: ->
-#		unless @template instanceof Element
-#			templateNode = DOM.createElement('template')
-#			templateNode.html(@template)
-#			@template = templateNode
-
+		#		unless @template instanceof Element
+		#			templateNode = DOM.createElement('template')
+		#			templateNode.html(@template)
+		#			@template = templateNode
 		templateNode = DOM.createElement('template')
 		templateNode.html(@template)
 
@@ -75,23 +74,34 @@ module.exports = class Component
 		return
 
 
-	@compileStyles: ->
+	@compileStyle: ->
 		unless shadowStyles.has(@)
 			styleNode = document.createElement('style')
 			styleNode.setAttribute('shadow-style', @selector)
 			document.head.appendChild(styleNode)
 			shadowStyles.set(@, styleNode)
 
-		@styles = @styles.map (style)=> ShadowStyle.compile(style)
-
 		css = ''
-		for shadowStyle in @styles
+		for shadowStyle in @_getStyles()
 			components = [ui.components..., @components...]
 			css += shadowStyle(@id, [ui.components..., @components...])
 
 		styleNode = shadowStyles.get(@)
 		styleNode.innerHTML = css
 		return
+
+
+	@_getStyles: ->
+		styles = []
+		context = @prototype
+		while context
+			constructor = context.constructor
+			if constructor.hasOwnProperty('style')
+				style = constructor.style
+				shadowStyle = ShadowStyle.compile(style)
+				styles.unshift(shadowStyle)
+			context = Object.getPrototypeOf(context)
+		return styles
 
 
 	@getSubComponent: (node)->
@@ -167,8 +177,8 @@ module.exports = class Component
 		return component
 
 
-	@reloadStyles: ->
-		@compileStyles()
+	@reloadStyle: ->
+		@compileStyle()
 		return
 
 

@@ -23,7 +23,7 @@ module.exports = Component = (function() {
 
   Component.template = '';
 
-  Component.styles = [];
+  Component.style = '';
 
   Component.components = [];
 
@@ -81,7 +81,7 @@ module.exports = Component = (function() {
     this.compileComponents();
     this.compileDirectives();
     this.compileTemplate();
-    this.compileStyles();
+    this.compileStyle();
   };
 
   Component.compileComponents = function() {
@@ -104,7 +104,7 @@ module.exports = Component = (function() {
     this.compiledTemplate = this.tree.template;
   };
 
-  Component.compileStyles = function() {
+  Component.compileStyle = function() {
     var components, css, i, len, ref, shadowStyle, styleNode;
     if (!shadowStyles.has(this)) {
       styleNode = document.createElement('style');
@@ -112,13 +112,8 @@ module.exports = Component = (function() {
       document.head.appendChild(styleNode);
       shadowStyles.set(this, styleNode);
     }
-    this.styles = this.styles.map((function(_this) {
-      return function(style) {
-        return ShadowStyle.compile(style);
-      };
-    })(this));
     css = '';
-    ref = this.styles;
+    ref = this._getStyles();
     for (i = 0, len = ref.length; i < len; i++) {
       shadowStyle = ref[i];
       components = slice.call(ui.components).concat(slice.call(this.components));
@@ -126,6 +121,22 @@ module.exports = Component = (function() {
     }
     styleNode = shadowStyles.get(this);
     styleNode.innerHTML = css;
+  };
+
+  Component._getStyles = function() {
+    var constructor, context, shadowStyle, style, styles;
+    styles = [];
+    context = this.prototype;
+    while (context) {
+      constructor = context.constructor;
+      if (constructor.hasOwnProperty('style')) {
+        style = constructor.style;
+        shadowStyle = ShadowStyle.compile(style);
+        styles.unshift(shadowStyle);
+      }
+      context = Object.getPrototypeOf(context);
+    }
+    return styles;
   };
 
   Component.getSubComponent = function(node) {
@@ -218,8 +229,8 @@ module.exports = Component = (function() {
     return component;
   };
 
-  Component.reloadStyles = function() {
-    this.compileStyles();
+  Component.reloadStyle = function() {
+    this.compileStyle();
   };
 
   Component.reloadTemplate = function() {

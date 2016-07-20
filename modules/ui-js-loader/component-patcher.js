@@ -230,12 +230,12 @@ var ComponentPatcher = function () {
 					key: '__copyPropsFrom',
 					value: function __copyPropsFrom(Class, inherits) {
 						var oldTemplate = this.template;
-						var oldStyles = this.styles;
 						var oldPrototype = this.prototype;
 
 						var prototype = Object.getPrototypeOf(Class);
 						if (Object.setPrototypeOf) Object.setPrototypeOf(this, prototype);else this.__proto__ = prototype;
 
+						// TODO remove deleted props
 						var _iteratorNormalCompletion5 = true;
 						var _didIteratorError5 = false;
 						var _iteratorError5 = undefined;
@@ -267,14 +267,12 @@ var ComponentPatcher = function () {
 						_component2.default.extend(this);
 
 						if (this.__inited) {
-							this.__copyPropsToInherits(inherits, oldTemplate, oldStyles, oldPrototype);
+							this.__copyPropsToInherits(inherits, oldTemplate, oldPrototype);
 						}
 					}
 				}, {
 					key: '__copyPropsToInherits',
-					value: function __copyPropsToInherits(inherits, oldTemplate, oldStyles, oldPrototype) {
-						var _this = this;
-
+					value: function __copyPropsToInherits(inherits, oldTemplate, oldPrototype) {
 						var _iteratorNormalCompletion6 = true;
 						var _didIteratorError6 = false;
 						var _iteratorError6 = undefined;
@@ -286,21 +284,6 @@ var ComponentPatcher = function () {
 								// template
 								if (inherit.template === oldTemplate) {
 									inherit.template = this.template;
-								}
-
-								// styles
-
-								var _loop = function _loop(index) {
-									var oldStyle = oldStyles[index];
-									var currentStyle = _this.styles[index];
-									inherit.styles = inherit.styles.map(function (inheritStyle) {
-										if (oldStyle === inheritStyle) return currentStyle;
-										return inheritStyle;
-									});
-								};
-
-								for (var index in oldStyles) {
-									_loop(index);
 								}
 
 								// logic

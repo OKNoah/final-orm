@@ -1,6 +1,6 @@
 export default class Gallery {
 
-	static styles = [require('./gallery.styl')]
+	static style = require('./gallery.styl')
 	static selector = 'gallery'
 	static template = `
 		

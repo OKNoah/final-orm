@@ -5,7 +5,7 @@ import File from '../file/file'
 
 export default class Form {
 
-	static styles = [require('./form.styl')]
+	static style = require('./form.styl')
 	static selector = 'form'
 
 	static template = `
@@ -15,7 +15,6 @@ export default class Form {
 	`
 
 	constructor() {
-		console.log('create form   ')
 		this.value = {}
 		this.inputs = new Map()
 		this.inputsByName = {}

@@ -6,7 +6,7 @@
 
 export default class Select {
 
-	static styles = [require('./select.styl')]
+	static style = require('./select.styl')
 	static selector = 'select'
 
 	static template = `

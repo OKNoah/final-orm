@@ -10,8 +10,8 @@ window.THREE = THREE
 
 export default class Roulette {
 
-	static styles = [require('./roulette.styl')]
 	static selector = 'roulette'
+	static style = require('./roulette.styl')
 
 	static template = `
 		<div .controls>

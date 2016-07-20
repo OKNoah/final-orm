@@ -1,6 +1,6 @@
 export default class Pagination {
 
-	static styles = [require('./pagination.styl')]
+	static style = require('./pagination.styl')
 	static selector = 'pagination'
 
 	static template = `

@@ -11,9 +11,9 @@ import ui from 'ui-js'
 export default class App {
 
 	static selector = 'my-app'
-	static styles = [style]
 	static components = [Info, Roulette, AdminPanel]
 
+	static style = style
 	static template = `
 	
 		<Confirm #confirm></Confirm>

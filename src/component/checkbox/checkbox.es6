@@ -1,6 +1,6 @@
 export default class Checkbox {
 
-	static styles = [require('./checkbox.styl')]
+	static style = require('./checkbox.styl')
 	static selector = 'checkbox'
 	static template = `
 		<label .container .__active='value'>

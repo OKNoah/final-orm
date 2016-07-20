@@ -1,6 +1,6 @@
 export default class Option {
 
-	static styles = [require('./option.styl')]
+	static style = require('./option.styl')
 	static selector = 'option'
 
 	static template = `

@@ -4,7 +4,7 @@ import style from './tabs.styl'
 export default class Tabs {
 
 	static selector = 'tabs'
-	static styles = [style]
+	static style = style
 
 	static template = `
 		<div .header>

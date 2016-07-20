@@ -5,7 +5,7 @@ import Sector from '../../api/sector'
 export default class AdminPanel {
 
 	static selector = 'admin-panel'
-	static styles = [style]
+	static style = style
 	static template = `
 
 		<modal #loginForm> 

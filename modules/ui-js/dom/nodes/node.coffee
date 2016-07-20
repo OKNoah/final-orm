@@ -49,13 +49,12 @@ module.exports = class Node extends EventEmitter
 
 
 	destroy: (destroyChildren = yes, needRemove = no)->
-		@removeAllEventHandlers()
-
 		if destroyChildren
 			for child in @children then child.destroy(yes, no)
+		@emit('destroy')
 
 		if needRemove then @remove()
-		@emit('destroy')
+		@removeAllEventHandlers()
 		return
 
 
