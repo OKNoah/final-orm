@@ -15,6 +15,7 @@ export default class Form {
 	`
 
 	constructor() {
+		console.log('create form   ')
 		this.value = {}
 		this.inputs = new Map()
 		this.inputsByName = {}

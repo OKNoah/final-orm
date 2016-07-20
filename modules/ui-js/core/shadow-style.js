@@ -2,7 +2,7 @@
 var ShadowStyle;
 
 module.exports = ShadowStyle = (function() {
-  var cssBlockRegExp, partsRegExp;
+  var cache, cssBlockRegExp, partsRegExp;
 
   function ShadowStyle() {}
 
@@ -10,11 +10,21 @@ module.exports = ShadowStyle = (function() {
 
   partsRegExp = /([^,]+)/img;
 
+  cache = {};
+
   ShadowStyle.compile = function(style) {
+    var generator;
     if (typeof style === 'function') {
       return style;
     }
-    return this.createStyleGenerator(style.toString());
+    style = style.toString();
+    if (cache[style]) {
+      return cache[style];
+    }
+    generator = this.createStyleGenerator(style);
+    generator.style = style;
+    cache[style] = generator;
+    return generator;
   };
 
   ShadowStyle.replace = function(selector, id, components) {

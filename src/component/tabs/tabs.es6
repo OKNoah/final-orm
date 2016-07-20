@@ -1,7 +1,10 @@
+import style from './tabs.styl'
+
+
 export default class Tabs {
 
 	static selector = 'tabs'
-	static styles = [require('./tabs.styl')]
+	static styles = [style]
 
 	static template = `
 		<div .header>

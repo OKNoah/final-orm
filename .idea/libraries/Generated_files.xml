@@ -4,8 +4,8 @@
       <sourceFilesUrls>
         <item url="file://$PROJECT_DIR$/modules/ui-js/directives/html.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/directives/if.js" />
-        <item url="file://$PROJECT_DIR$/modules/ui-js/directives/pre.js" />
         <item url="file://$PROJECT_DIR$/server/core/orm/fields/field.js" />
+        <item url="file://$PROJECT_DIR$/modules/ui-js/directives/pre.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/data-bind/array-observer.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/data-bind/data-bind.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/data-bind/exp.js" />
@@ -17,8 +17,8 @@
         <item url="file://$PROJECT_DIR$/modules/ui-js/core/event-emitter.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/core/http.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/core/keyboard.js" />
-        <item url="file://$PROJECT_DIR$/modules/ui-js/core/platform.js" />
         <item url="file://$PROJECT_DIR$/server/models/user.js" />
+        <item url="file://$PROJECT_DIR$/modules/ui-js/core/platform.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/core/promise.js" />
         <item url="file://$PROJECT_DIR$/server/models/user.es6" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/core/shadow-style.js" />
@@ -41,14 +41,11 @@
         <item url="file://$PROJECT_DIR$/server/core/server/server.js" />
         <item url="file://$PROJECT_DIR$/server/core/orm/index.js" />
         <item url="file://$PROJECT_DIR$/server/core/server/task.js" />
-        <item url="file://$PROJECT_DIR$/server/index.js" />
         <item url="file://$PROJECT_DIR$/server/core/server/errors/api-error.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/index.js" />
-        <item url="file://$PROJECT_DIR$/modules/ui-js-hot-loader/component-patcher.js" />
+        <item url="file://$PROJECT_DIR$/modules/ui-js-loader/component-patcher.js" />
         <item url="file://$PROJECT_DIR$/server/core/server/connection.js" />
-        <item url="file://$PROJECT_DIR$/modules/ui-js-hot-loader/hot-loader.js" />
         <item url="file://$PROJECT_DIR$/server/core/server/index.js" />
-        <item url="file://$PROJECT_DIR$/modules/ui-js-hot-loader/index.js" />
         <item url="file://$PROJECT_DIR$/server/core/orm/model.js" />
         <item url="file://$PROJECT_DIR$/server/index.js" />
         <item url="file://$PROJECT_DIR$/modules/ui-js/render/dom-render.js" />
@@ -100,8 +97,8 @@
       <root url="file://$PROJECT_DIR$/server/core/orm/query-builder.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/directives/html.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/directives/if.js" />
-      <root url="file://$PROJECT_DIR$/modules/ui-js/directives/pre.js" />
       <root url="file://$PROJECT_DIR$/server/core/orm/fields/field.js" />
+      <root url="file://$PROJECT_DIR$/modules/ui-js/directives/pre.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/data-bind/array-observer.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/data-bind/data-bind.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/data-bind/exp.js" />
@@ -113,8 +110,8 @@
       <root url="file://$PROJECT_DIR$/modules/ui-js/core/event-emitter.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/core/http.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/core/keyboard.js" />
-      <root url="file://$PROJECT_DIR$/modules/ui-js/core/platform.js" />
       <root url="file://$PROJECT_DIR$/server/models/user.js" />
+      <root url="file://$PROJECT_DIR$/modules/ui-js/core/platform.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/core/promise.js" />
       <root url="file://$PROJECT_DIR$/server/models/user.es6" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/core/shadow-style.js" />
@@ -138,16 +135,15 @@
       <root url="file://$PROJECT_DIR$/server/core/server/server.js" />
       <root url="file://$PROJECT_DIR$/server/core/orm/index.js" />
       <root url="file://$PROJECT_DIR$/server/core/server/task.js" />
-      <root url="file://$PROJECT_DIR$/server/index.js" />
       <root url="file://$PROJECT_DIR$/server/core/server/errors/api-error.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/index.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js-loader/component-patcher.js" />
       <root url="file://$PROJECT_DIR$/server/core/server/connection.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js-loader/hot-loader.js" />
       <root url="file://$PROJECT_DIR$/server/core/server/index.js" />
-      <root url="file://$PROJECT_DIR$/modules/ui-js-loader/index.js" />
       <root url="file://$PROJECT_DIR$/server/core/orm/model.js" />
       <root url="file://$PROJECT_DIR$/server/index.js" />
+      <root url="file://$PROJECT_DIR$/modules/ui-js-loader/index.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/render/dom-render.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/render/html-render.js" />
       <root url="file://$PROJECT_DIR$/modules/ui-js/render/selection.js" />

@@ -13,5 +13,6 @@ export default class TabTitle {
 		this.on('click', ()=> this.tab.activate())
 		this.bindClass('__active', 'tab.status is tab.ACTIVE')
 	}
+
 }
 

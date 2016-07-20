@@ -34,8 +34,8 @@ module.exports = Tree = (function() {
     this.props = {};
     this.links = [];
     this.directives = [];
-    this.expAttributes = {};
     this.childTrees = [];
+    this.expAttributes = {};
     hasTerminal = this.compileDirectives();
     if (hasTerminal) {
       return;

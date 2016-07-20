@@ -1,17 +1,18 @@
+import style from './tab.styl'
+
+
 export default class Tab {
 
 	static selector = 'tab'
-	static styles = [require('./tab.styl')]
+	static styles = [style]
 	static template = `
 		<content></content>
 	`
 
-	PREV = 1
-	NEXT = 2
-	ACTIVE = 3
-
-
 	constructor() {
+		this.PREV = 1
+		this.NEXT = 2
+		this.ACTIVE = 3
 		this.status = this.NEXT
 		this.tabs = this.require('tabs')
 		this.bindClass('__prev', 'status is PREV')

@@ -12,7 +12,7 @@ export default class Button {
 		.__right='state is RIGHT'
 		.__bottom='state is BOTTOM'
 		.__top='state is TOP'>
-			<content></content>
+			<content></content>!!!
 		</div>
 	`
 
@@ -24,6 +24,7 @@ export default class Button {
 
 
 	constructor() {
+		this.state = this.NONE
 		this.state = this.NONE
 		this.on('mousedown', event => this.onMouseDown(event))
 	}

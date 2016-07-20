@@ -49,6 +49,7 @@ export default class Text {
 
 	onKeyDown(event) {
 		if (event.realEvent.keyCode == 13) {
+			event.prevent()
 			this.form.submit()
 		}
 	}

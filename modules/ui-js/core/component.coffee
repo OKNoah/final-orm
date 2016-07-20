@@ -1,4 +1,5 @@
 DOM = require('ui-js/dom')
+Element = require('ui-js/dom/nodes/element')
 ShadowStyle = require('./shadow-style')
 Directive = require('./directive')
 Tree = require('./tree')
@@ -61,8 +62,14 @@ module.exports = class Component
 
 
 	@compileTemplate: ->
-		templateNode = DOM.createElement('root')
+#		unless @template instanceof Element
+#			templateNode = DOM.createElement('template')
+#			templateNode.html(@template)
+#			@template = templateNode
+
+		templateNode = DOM.createElement('template')
 		templateNode.html(@template)
+
 		@tree = new Tree(templateNode, @)
 		@compiledTemplate = @tree.template
 		return

@@ -23,8 +23,8 @@ module.exports = class Tree
 		@props = {}
 		@links = []
 		@directives = []
-		@expAttributes = {}
 		@childTrees = []
+		@expAttributes = {}
 
 		hasTerminal = @compileDirectives()
 		if hasTerminal then return

@@ -72,21 +72,20 @@ var ComponentPatcher = function () {
 					value: function __setClass(Class) {
 						this.__activeClass = Class;
 
-						var changedTemplate = this.__checkTemplate(Class);
-						var changedStyles = this.__checkStyles(Class);
-						var changedLogic = this.__checkLogic(Class);
+						var templateHasDiff = this.__checkTemplate(Class);
+						var stylesHasDiff = this.__checkStyles(Class);
+						var logicHasDiff = this.__checkLogic(Class);
 
-						this.__copyProps(Class);
+						var inherits = this.__getInherits();
+						this.__copyPropsFrom(Class, inherits);
 
 						if (this.__inited) {
-							var inherits = this.__getInherits();
-							this.__updateStylesInInherits(inherits);
-
-							if (changedLogic) this.__reload(inherits); // full reload
-							else {
-									if (changedStyles) this.__reloadStyles(inherits);
-									if (changedTemplate) this.__reloadTemplate(inherits);
-								}
+							if (logicHasDiff) {
+								this.__reload(inherits);
+							} else {
+								if (stylesHasDiff) this.__reloadStyles(inherits);
+								if (templateHasDiff) this.__reloadTemplate(inherits);
+							}
 						}
 
 						this.__inited = true;
@@ -228,10 +227,13 @@ var ComponentPatcher = function () {
 						return false;
 					}
 				}, {
-					key: '__copyProps',
-					value: function __copyProps(Class) {
-						var prototype = Object.getPrototypeOf(Class);
+					key: '__copyPropsFrom',
+					value: function __copyPropsFrom(Class, inherits) {
+						var oldTemplate = this.template;
+						var oldStyles = this.styles;
+						var oldPrototype = this.prototype;
 
+						var prototype = Object.getPrototypeOf(Class);
 						if (Object.setPrototypeOf) Object.setPrototypeOf(this, prototype);else this.__proto__ = prototype;
 
 						var _iteratorNormalCompletion5 = true;
@@ -262,51 +264,59 @@ var ComponentPatcher = function () {
 
 						this.prototype.constructor = this;
 
-						_component2.default.extend(Class);
+						_component2.default.extend(this);
+
+						if (this.__inited) {
+							this.__copyPropsToInherits(inherits, oldTemplate, oldStyles, oldPrototype);
+						}
 					}
 				}, {
-					key: '__updateStylesInInherits',
-					value: function __updateStylesInInherits(inherits) {
-						console.dir(inherits);
-					}
-				}, {
-					key: '__checkTemplate',
-					value: function __checkTemplate(Class) {
-						var changedTemplate = this.__prevTemplate != Class.template + '';
-						this.__prevTemplate = Class.template + '';
-						return changedTemplate;
-					}
-				}, {
-					key: '__checkStyles',
-					value: function __checkStyles(Class) {
-						var changedStyles = this.__prevStyles != Class.styles + '';
-						this.__prevStyles = Class.styles + '';
-						return changedStyles;
-					}
-				}, {
-					key: '__checkLogic',
-					value: function __checkLogic(Class) {
-						var logic = this.__getLogic(Class);
-						var changedLogic = this.__prevLogic != logic;
-						this.__prevLogic = logic;
-						return changedLogic;
-					}
-				}, {
-					key: '__getLogic',
-					value: function __getLogic(Class) {
-						var code = '';
+					key: '__copyPropsToInherits',
+					value: function __copyPropsToInherits(inherits, oldTemplate, oldStyles, oldPrototype) {
+						var _this = this;
 
 						var _iteratorNormalCompletion6 = true;
 						var _didIteratorError6 = false;
 						var _iteratorError6 = undefined;
 
 						try {
-							for (var _iterator6 = Object.getOwnPropertyNames(Class)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-								var prop = _step6.value;
+							for (var _iterator6 = inherits[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+								var inherit = _step6.value;
 
-								if (prop === 'template' || prop === 'styles') continue;
-								var descriptor = Object.getOwnPropertyDescriptor(Class, prop);
-								code += this.__getDescriptorCode(descriptor);
+								// template
+								if (inherit.template === oldTemplate) {
+									inherit.template = this.template;
+								}
+
+								// styles
+
+								var _loop = function _loop(index) {
+									var oldStyle = oldStyles[index];
+									var currentStyle = _this.styles[index];
+									inherit.styles = inherit.styles.map(function (inheritStyle) {
+										if (oldStyle === inheritStyle) return currentStyle;
+										return inheritStyle;
+									});
+								};
+
+								for (var index in oldStyles) {
+									_loop(index);
+								}
+
+								// logic
+								var context = inherit.prototype;
+								while (context) {
+									var chainPrototype = Object.getPrototypeOf(context);
+									if (chainPrototype === oldPrototype) {
+										if (Object.setPrototypeOf) {
+											Object.setPrototypeOf(context, this.prototype);
+										} else {
+											context.__proto__ = this.prototype;
+										}
+										break;
+									}
+									context = chainPrototype;
+								}
 							}
 						} catch (err) {
 							_didIteratorError6 = true;
@@ -322,17 +332,47 @@ var ComponentPatcher = function () {
 								}
 							}
 						}
+					}
+				}, {
+					key: '__checkTemplate',
+					value: function __checkTemplate(Class) {
+						var template = Class.template + '';
+						var hasDiff = this.__oldTemplate !== template;
+						this.__oldTemplate = template;
+						return hasDiff;
+					}
+				}, {
+					key: '__checkStyles',
+					value: function __checkStyles(Class) {
+						var styles = Class.styles + '';
+						var hasDiff = this.__oldStyles !== styles;
+						this.__oldStyles = styles;
+						return hasDiff;
+					}
+				}, {
+					key: '__checkLogic',
+					value: function __checkLogic(Class) {
+						var logic = this.__getLogic(Class);
+						var hasDiff = this.__oldLogic !== logic;
+						this.__oldLogic = logic;
+						return hasDiff;
+					}
+				}, {
+					key: '__getLogic',
+					value: function __getLogic(Class) {
+						var code = '';
 
 						var _iteratorNormalCompletion7 = true;
 						var _didIteratorError7 = false;
 						var _iteratorError7 = undefined;
 
 						try {
-							for (var _iterator7 = Object.getOwnPropertyNames(Class.prototype)[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-								var _prop = _step7.value;
+							for (var _iterator7 = Object.getOwnPropertyNames(Class)[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+								var prop = _step7.value;
 
-								var _descriptor = Object.getOwnPropertyDescriptor(Class.prototype, _prop);
-								code += this.__getDescriptorCode(_descriptor);
+								if (prop === 'template' || prop === 'styles') continue;
+								var descriptor = Object.getOwnPropertyDescriptor(Class, prop);
+								code += this.__getDescriptorCode(descriptor);
 							}
 						} catch (err) {
 							_didIteratorError7 = true;
@@ -345,6 +385,32 @@ var ComponentPatcher = function () {
 							} finally {
 								if (_didIteratorError7) {
 									throw _iteratorError7;
+								}
+							}
+						}
+
+						var _iteratorNormalCompletion8 = true;
+						var _didIteratorError8 = false;
+						var _iteratorError8 = undefined;
+
+						try {
+							for (var _iterator8 = Object.getOwnPropertyNames(Class.prototype)[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+								var _prop = _step8.value;
+
+								var _descriptor = Object.getOwnPropertyDescriptor(Class.prototype, _prop);
+								code += this.__getDescriptorCode(_descriptor);
+							}
+						} catch (err) {
+							_didIteratorError8 = true;
+							_iteratorError8 = err;
+						} finally {
+							try {
+								if (!_iteratorNormalCompletion8 && _iterator8.return) {
+									_iterator8.return();
+								}
+							} finally {
+								if (_didIteratorError8) {
+									throw _iteratorError8;
 								}
 							}
 						}
@@ -369,7 +435,7 @@ var ComponentPatcher = function () {
 				}]);
 
 				return Wrapper;
-			}(), _class.__inited = false, _class.__prevStyles = null, _class.__prevTemplate = null, _class.__prevLogic = null, _class.__activeClass = null, _temp;
+			}(), _class.__inited = false, _class.__oldStyles = null, _class.__oldTemplate = null, _class.__oldLogic = null, _class.__activeClass = null, _temp;
 		}
 	}]);
 

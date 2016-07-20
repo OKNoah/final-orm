@@ -3,10 +3,16 @@ module.exports = class ShadowStyle
 	cssBlockRegExp = /([\s\S]+?)\s*(\{[\s\S]*?})/img
 	partsRegExp = /([^,]+)/img
 
+	cache = {}
 
 	@compile: (style)->
 		if typeof style is 'function' then return style
-		return @createStyleGenerator(style.toString())
+		style = style.toString()
+		if cache[style] then return cache[style]
+		generator = @createStyleGenerator(style)
+		generator.style = style
+		cache[style] = generator
+		return generator
 
 
 	@replace: (selector, id, components = [])->

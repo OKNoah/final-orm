@@ -51,30 +51,31 @@ export default class ComponentPatcher {
 			}
 
 			static __inited = false
-			static __prevStyles = null
-			static __prevTemplate = null
-			static __prevLogic = null
+			static __oldStyles = null
+			static __oldTemplate = null
+			static __oldLogic = null
 			static __activeClass = null
 
 
 			static __setClass(Class) {
 				this.__activeClass = Class
 
-				let changedTemplate = this.__checkTemplate(Class)
-				let changedStyles = this.__checkStyles(Class)
-				let changedLogic = this.__checkLogic(Class)
+				let templateHasDiff = this.__checkTemplate(Class)
+				let stylesHasDiff = this.__checkStyles(Class)
+				let logicHasDiff = this.__checkLogic(Class)
 
-				this.__copyProps(Class)
+				let inherits = this.__getInherits()
+				this.__copyPropsFrom(Class, inherits)
 
 				if (this.__inited) {
-					let inherits = this.__getInherits()
-					this.__updateStylesInInherits(inherits)
-
-					if (changedLogic) this.__reload(inherits) // full reload
-					else {
-						if (changedStyles) this.__reloadStyles(inherits)
-						if (changedTemplate) this.__reloadTemplate(inherits)
+					if (logicHasDiff) {
+						this.__reload(inherits)
 					}
+					else {
+						if (stylesHasDiff) this.__reloadStyles(inherits)
+						if (templateHasDiff) this.__reloadTemplate(inherits)
+					}
+
 				}
 
 				this.__inited = true
@@ -127,48 +128,86 @@ export default class ComponentPatcher {
 			}
 
 
-			static __copyProps(Class) {
-				let prototype = Object.getPrototypeOf(Class)
+			static __copyPropsFrom(Class, inherits) {
+				let oldTemplate = this.template
+				let oldStyles = this.styles
+				let oldPrototype = this.prototype
 
+				let prototype = Object.getPrototypeOf(Class)
 				if (Object.setPrototypeOf) Object.setPrototypeOf(this, prototype)
 				else this.__proto__ = prototype
-
 
 				for (let prop of Object.getOwnPropertyNames(Class)) {
 					let descriptor = Object.getOwnPropertyDescriptor(Class, prop)
 					Object.defineProperty(this, prop, descriptor)
 				}
-
 				this.prototype.constructor = this
 
-				Component.extend(Class)
+				Component.extend(this)
+
+				if (this.__inited) {
+					this.__copyPropsToInherits(inherits, oldTemplate, oldStyles, oldPrototype)
+				}
 			}
 
 
-			static __updateStylesInInherits(inherits) {
-				console.dir(inherits)
+			static __copyPropsToInherits(inherits, oldTemplate, oldStyles, oldPrototype) {
+				for (let inherit of inherits) {
+					// template
+					if (inherit.template === oldTemplate) {
+						inherit.template = this.template
+					}
+
+					// styles
+					for (let index in oldStyles) {
+						let oldStyle = oldStyles[index]
+						let currentStyle = this.styles[index]
+						inherit.styles = inherit.styles.map(inheritStyle => {
+							if (oldStyle === inheritStyle) return currentStyle
+							return inheritStyle
+						})
+					}
+
+					// logic
+					let context = inherit.prototype
+					while (context) {
+						let chainPrototype = Object.getPrototypeOf(context)
+						if (chainPrototype === oldPrototype) {
+							if (Object.setPrototypeOf) {
+								Object.setPrototypeOf(context, this.prototype)
+							} else {
+								context.__proto__ = this.prototype
+							}
+							break
+						}
+						context = chainPrototype
+					}
+
+				}
 			}
 
 
 			static __checkTemplate(Class) {
-				let changedTemplate = this.__prevTemplate != Class.template + ''
-				this.__prevTemplate = Class.template + ''
-				return changedTemplate
+				let template = Class.template + ''
+				let hasDiff = this.__oldTemplate !== template
+				this.__oldTemplate = template
+				return hasDiff
 			}
 
 
 			static __checkStyles(Class) {
-				let changedStyles = this.__prevStyles != Class.styles + ''
-				this.__prevStyles = Class.styles + ''
-				return changedStyles
+				let styles = Class.styles + ''
+				let hasDiff = this.__oldStyles !== styles
+				this.__oldStyles = styles
+				return hasDiff
 			}
 
 
 			static __checkLogic(Class) {
 				let logic = this.__getLogic(Class)
-				let changedLogic = this.__prevLogic != logic
-				this.__prevLogic = logic
-				return changedLogic
+				let hasDiff = this.__oldLogic !== logic
+				this.__oldLogic = logic
+				return hasDiff
 			}
 
 
