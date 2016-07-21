@@ -309,8 +309,8 @@ module.exports = Component = (function() {
     return ui.bind(this, path, this, exp, this.scope);
   };
 
-  Component.prototype.watch = function(exp, handler) {
-    return ui.watch(this, exp, handler, null, false);
+  Component.prototype.watch = function(exp, handler, firstCall) {
+    return ui.watch(this, exp, handler, null, firstCall);
   };
 
   return Component;

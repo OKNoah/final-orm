@@ -76,8 +76,8 @@ module.exports = window['ui'] = new class UI
 		return @globals[name] = value
 
 
-	watch: (context, exp, handler, scope, init = on)->
-		return new ExpObserver(context, exp, handler, scope, init)
+	watch: (context, exp, handler, scope, firstCall = on)->
+		return new ExpObserver(context, exp, handler, scope, firstCall)
 
 
 	watchArray: (arr, handler)->

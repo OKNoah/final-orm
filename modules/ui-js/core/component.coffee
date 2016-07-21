@@ -257,6 +257,6 @@ module.exports = class Component
 		return ui.bind(@, path, @, exp, @scope)
 
 
-	watch: (exp, handler)->
-		return ui.watch(@, exp, handler, null, off)
+	watch: (exp, handler, firstCall)->
+		return ui.watch(@, exp, handler, null, firstCall)
 		

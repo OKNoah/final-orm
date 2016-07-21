@@ -329,11 +329,13 @@ Component methods
 framework automatically extend  your components classes adding following fields:
 
 ```javascript
-class Button {
+class Component {
   
-  scope // Link to scope
-  host // Link to root element
-  app // Link to root component or application 
+  constructor(){
+    this.scope // Link to scope
+    this.host // Link to root element
+    this.app // Link to root component on application	
+  }
   
   
   on(eventName, handler){
@@ -368,9 +370,9 @@ class Button {
   
   
   watch(exp, handler){
-    // Watch expression with this, context,
-    // and call handler if expression value is change.
-    // Example we can use watch prop of component:
+    // Watch expression with this as context,
+    // and call handler if expression value will change.
+    // For example, we can use watch prop of component: 
     
     this.watch('prop', value => console.log(value))
     this.prop = 11 
@@ -414,7 +416,8 @@ class Button {
   	var tabs = this.require('tabs')
   	tabs // tabs component instance
   	
-  	// If we no need throw errors, we must add '?' symbol to the end
+  	// If we no need throw errors,
+  	// we must add '?' symbol at the end.
   	var form = this.require('form?')
   	form // or form component or null
   }

@@ -93,11 +93,11 @@ module.exports = window['ui'] = new (UI = (function() {
     return this.globals[name] = value;
   };
 
-  UI.prototype.watch = function(context, exp, handler, scope, init) {
-    if (init == null) {
-      init = true;
+  UI.prototype.watch = function(context, exp, handler, scope, firstCall) {
+    if (firstCall == null) {
+      firstCall = true;
     }
-    return new ExpObserver(context, exp, handler, scope, init);
+    return new ExpObserver(context, exp, handler, scope, firstCall);
   };
 
   UI.prototype.watchArray = function(arr, handler) {
