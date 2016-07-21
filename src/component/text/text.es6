@@ -1,7 +1,10 @@
+import style from './text.styl'
+
+
 export default class Text {
 
-	static style = require('./text.styl')
 	static tag = 'text'
+	static style = style
 
 	static template = `
 		<label .container
@@ -56,7 +59,7 @@ export default class Text {
 
 
 	reset() {
-		let input = this.locals.input
+		let input = this.scope.input
 		input.reset()
 		this.value = input.value
 	}

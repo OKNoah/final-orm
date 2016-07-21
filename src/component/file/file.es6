@@ -58,7 +58,7 @@ export default class File {
 
 
 	reset() {
-		this.locals.input.reset()
+		this.scope.input.reset()
 	}
 }
 

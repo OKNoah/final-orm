@@ -9,7 +9,7 @@ export default class Form {
 	static tag = 'form'
 
 	static template = `
-		<form>
+		<form .form>
 			<content></content>
 		</form>
 	`

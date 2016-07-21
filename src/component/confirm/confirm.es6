@@ -43,12 +43,12 @@ export default class Confirm {
 
 
 	open() {
-		this.locals.modal.open()
+		this.scope.modal.open()
 	}
 
 
 	close() {
-		this.locals.modal.close()
+		this.scope.modal.close()
 	}
 
 

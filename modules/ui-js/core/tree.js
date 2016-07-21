@@ -68,7 +68,7 @@ module.exports = Tree = (function() {
       return function(directive) {
         var returns;
         returns = typeof directive.compile === "function" ? directive.compile(_this.template, _this) : void 0;
-        return function(node, component, locals) {
+        return function(node, component, scope) {
           if (returns == null) {
             returns = [];
           }
@@ -76,7 +76,7 @@ module.exports = Tree = (function() {
             ctor.prototype = func.prototype;
             var child = new ctor, result = func.apply(child, args);
             return Object(result) === result ? result : child;
-          })(directive, [node, component, locals].concat(slice.call(returns)), function(){});
+          })(directive, [node, component, scope].concat(slice.call(returns)), function(){});
         };
       };
     })(this));
@@ -167,45 +167,45 @@ module.exports = Tree = (function() {
     }
   };
 
-  Tree.prototype.init = function(node, component, locals) {
+  Tree.prototype.init = function(node, component, scope) {
     var subComponent;
-    if (locals == null) {
-      locals = {};
+    if (scope == null) {
+      scope = {};
     }
     if (this.isTextNode) {
       if (this.hasTextExp) {
-        this.initTextExp(node, component, locals);
+        this.initTextExp(node, component, scope);
       }
       return component;
     }
     if (this.SubComponent) {
       subComponent = this.SubComponent.init(node, component.app);
-      this.initLinks(subComponent, locals);
-      this.initProps(subComponent, component, locals);
+      this.initLinks(subComponent, scope);
+      this.initProps(subComponent, component, scope);
     } else {
-      this.initLinks(node, locals);
-      this.initProps(node, component, locals);
+      this.initLinks(node, scope);
+      this.initProps(node, component, scope);
     }
-    this.initClasses(node, component, locals);
-    this.initExpAttributes(node, component, locals);
-    this.initEvents(node, component, locals, subComponent);
-    this.initChildren(node, component, locals);
-    this.initDirectives(node, component, locals);
+    this.initClasses(node, component, scope);
+    this.initExpAttributes(node, component, scope);
+    this.initEvents(node, component, scope, subComponent);
+    this.initChildren(node, component, scope);
+    this.initDirectives(node, component, scope);
     return component;
   };
 
-  Tree.prototype.initChildren = function(node, component, locals) {
+  Tree.prototype.initChildren = function(node, component, scope) {
     var child, childNode, childNodes, i, index, len, ref;
     childNodes = node.children.slice();
     ref = this.childTrees;
     for (index = i = 0, len = ref.length; i < len; index = ++i) {
       child = ref[index];
       childNode = childNodes[index];
-      child.init(childNode, component, locals);
+      child.init(childNode, component, scope);
     }
   };
 
-  Tree.prototype.initDirectives = function(node, component, locals) {
+  Tree.prototype.initDirectives = function(node, component, scope) {
     var directive, directives;
     directives = (function() {
       var i, len, ref, results;
@@ -213,7 +213,7 @@ module.exports = Tree = (function() {
       results = [];
       for (i = 0, len = ref.length; i < len; i++) {
         directive = ref[i];
-        results.push(directive(node, component, locals));
+        results.push(directive(node, component, scope));
       }
       return results;
     }).call(this);
@@ -228,16 +228,16 @@ module.exports = Tree = (function() {
     });
   };
 
-  Tree.prototype.initLinks = function(target, locals) {
+  Tree.prototype.initLinks = function(target, scope) {
     var i, len, link, ref;
     ref = this.links;
     for (i = 0, len = ref.length; i < len; i++) {
       link = ref[i];
-      locals[link] = target;
+      scope[link] = target;
     }
   };
 
-  Tree.prototype.initEvents = function(node, component, locals, subComponent) {
+  Tree.prototype.initEvents = function(node, component, scope, subComponent) {
     var eventData, eventName, fn, ref;
     ref = this.events;
     fn = (function(_this) {
@@ -252,11 +252,11 @@ module.exports = Tree = (function() {
             }
           }
           if (eventData.exp) {
-            locals['$event'] = event;
-            locals['this'] = subComponent || node;
-            ui["eval"](component, eventData.exp, locals);
-            delete locals['$event'];
-            delete locals['this'];
+            scope['$event'] = event;
+            scope['this'] = subComponent || node;
+            ui["eval"](component, eventData.exp, scope);
+            delete scope['$event'];
+            delete scope['this'];
           }
         });
       };
@@ -268,23 +268,23 @@ module.exports = Tree = (function() {
     }
   };
 
-  Tree.prototype.initClasses = function(node, component, locals) {
+  Tree.prototype.initClasses = function(node, component, scope) {
     var className, exp, ref;
     ref = this.classes;
     for (className in ref) {
       if (!hasProp.call(ref, className)) continue;
       exp = ref[className];
-      node.bindClass(className, exp, component, locals);
+      node.bindClass(className, exp, component, scope);
     }
   };
 
-  Tree.prototype.initProps = function(target, component, locals) {
+  Tree.prototype.initProps = function(target, component, scope) {
     var exp, fn, prop, ref;
     ref = this.props;
     fn = (function(_this) {
       return function(prop, exp) {
         var dataBind;
-        dataBind = ui.bind(target, prop, component, exp, locals);
+        dataBind = ui.bind(target, prop, component, exp, scope);
         return target.on('destroy', function() {
           return dataBind.destroy();
         });
@@ -297,23 +297,23 @@ module.exports = Tree = (function() {
     }
   };
 
-  Tree.prototype.initTextExp = function(node, component, locals) {
+  Tree.prototype.initTextExp = function(node, component, scope) {
     var exp;
     exp = node.value;
     ui.watch(component, exp, (function(_this) {
       return function(value) {
         return node.value = value;
       };
-    })(this), locals);
+    })(this), scope);
   };
 
-  Tree.prototype.initExpAttributes = function(node, component, locals) {
+  Tree.prototype.initExpAttributes = function(node, component, scope) {
     var exp, fn, name, ref;
     ref = this.expAttributes;
     fn = function(name) {
       return ui.watch(component, exp, function(value) {
         return node.attr(name, value);
-      }, locals);
+      }, scope);
     };
     for (name in ref) {
       if (!hasProp.call(ref, name)) continue;

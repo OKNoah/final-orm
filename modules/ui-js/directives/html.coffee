@@ -7,8 +7,8 @@
 #		return [exp, tree]
 #
 #
-#	constructor: (@node, @component, @locals, exp, @tree)->
-#		ui.watch(@component, exp, @changeHtml, @locals)
+#	constructor: (@node, @component, @scope, exp, @tree)->
+#		ui.watch(@component, exp, @changeHtml, @scope)
 #		return
 #
 #	destructor: ->
@@ -23,7 +23,7 @@
 #		#template.innerHTML = html
 #		#@node.innerHTML = html
 #		#subTree = @tree.create(template)
-#		#subTree.init(@node, @component, @locals)
+#		#subTree.init(@node, @component, @scope)
 #		return
 #
 #

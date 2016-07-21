@@ -2,6 +2,7 @@ Webpack loader for [UI-js](https://www.npmjs.com/package/ui-js) framework
 ===
 
 Link to framework [UI-js](https://www.npmjs.com/package/ui-js)
+Link to [GitHub](https://github.com/uMaxmaxmaximus/ui-js/issues) 
 
 Features:
 ---

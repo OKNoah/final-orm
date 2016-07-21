@@ -19,9 +19,9 @@ module.exports = class If
 		return [subTree, exp]
 
 
-	constructor: (@label, @component, @locals, @subThree, exp)->
+	constructor: (@label, @component, @scope, @subThree, exp)->
 		@node = null
-		ui.watch(@component, exp, @changeState, @locals)
+		ui.watch(@component, exp, @changeState, @scope)
 		return
 
 
@@ -40,7 +40,7 @@ module.exports = class If
 		if @node then return
 		@node = @subThree.template.clone()
 		@label.after(@node)
-		@subThree.init(@node, @component, @locals)
+		@subThree.init(@node, @component, @scope)
 		return
 
 

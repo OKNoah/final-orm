@@ -127,7 +127,7 @@ module.exports = Element = (function(superClass) {
     };
   };
 
-  Element.prototype.bindClass = function(className, exp, context, locals) {
+  Element.prototype.bindClass = function(className, exp, context, scope) {
     return new ExpObserver(context, exp, (function(_this) {
       return function(value) {
         if (value) {
@@ -136,7 +136,7 @@ module.exports = Element = (function(superClass) {
           return _this.removeClass(className);
         }
       };
-    })(this), locals, true);
+    })(this), scope, true);
   };
 
   Element.prototype.addClass = function(className) {

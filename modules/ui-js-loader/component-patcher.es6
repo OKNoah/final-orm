@@ -13,22 +13,21 @@ export default class ComponentPatcher {
 
 
 	static patch(Class, module) {
-		try {
-
-			if (module.hot.data) {
-				var Wrapper = module.hot.data.wrapper
-			} else {
-				var Wrapper = this.createWrapper()
-			}
-
-			module.hot.dispose(data => data.wrapper = Wrapper)
-			module.hot.accept()
-
-			Wrapper.__setClass(Class)
+		// try {
+		if (module.hot.data) {
+			var Wrapper = module.hot.data.wrapper
+		} else {
+			var Wrapper = this.createWrapper()
 		}
-		catch (e) {
-			console.error(e)
-		}
+
+		module.hot.dispose(data => data.wrapper = Wrapper)
+		module.hot.accept()
+
+		Wrapper.__setClass(Class)
+		// }
+		// catch (e) {
+		// 	console.error(e)
+		// }
 
 		return Wrapper
 	}
@@ -51,28 +50,41 @@ export default class ComponentPatcher {
 			}
 
 			static __inited = false
-			static __oldStyles = null
+			static __oldStyle = null
 			static __oldTemplate = null
 			static __oldLogic = null
 			static __activeClass = null
+			static __oldActiveClass = null
+			static __oldComponents = null
+			static __oldTag = null
 
 
 			static __setClass(Class) {
+				this.__oldActiveClass = this.__activeClass
 				this.__activeClass = Class
 
+				// TODO check directives
 				let templateHasDiff = this.__checkTemplate(Class)
-				let stylesHasDiff = this.__checkStyles(Class)
+				let componentsHasDiff = this.__checkComponents(Class)
+				let styleHasDiff = this.__checkStyle(Class)
 				let logicHasDiff = this.__checkLogic(Class)
+				let tagHasDiff = this.__checkTag(Class)
+
 
 				let inherits = this.__getInherits()
 				this.__copyPropsFrom(Class, inherits)
 
 				if (this.__inited) {
-					if (logicHasDiff) {
+
+					if (tagHasDiff) {
+						throw new Error('Page reload, cuz tag was changed')
+					}
+
+					if (logicHasDiff || componentsHasDiff) {
 						this.__reload(inherits)
 					}
 					else {
-						if (stylesHasDiff) this.__reloadStyles(inherits)
+						if (styleHasDiff) this.__reloadStyle(inherits)
 						if (templateHasDiff) this.__reloadTemplate(inherits)
 					}
 
@@ -84,22 +96,19 @@ export default class ComponentPatcher {
 
 			static __reload(inherits) {
 				this.reload()
-				// console.log('reload logic inherits', inherits)
 				for (let inherit of inherits) inherit.reload()
 			}
 
 
 			static __reloadTemplate(inherits) {
 				this.reloadTemplate()
-				// console.log('reload template inherits', inherits)
 				for (let inherit of inherits) inherit.reloadTemplate()
 			}
 
 
-			static __reloadStyles(inherits) {
-				this.reloadStyles()
-				// console.log('reload styles inherits', inherits)
-				for (let inherit of inherits) inherit.reloadStyles()
+			static __reloadStyle(inherits) {
+				this.reloadStyle()
+				for (let inherit of inherits) inherit.reloadStyle()
 			}
 
 
@@ -136,8 +145,8 @@ export default class ComponentPatcher {
 				if (Object.setPrototypeOf) Object.setPrototypeOf(this, prototype)
 				else this.__proto__ = prototype
 
-				// TODO remove deleted props
-				for (let prop of Object.getOwnPropertyNames(Class)) {
+				let newProps = Object.getOwnPropertyNames(Class)
+				for (let prop of newProps) {
 					let descriptor = Object.getOwnPropertyDescriptor(Class, prop)
 					Object.defineProperty(this, prop, descriptor)
 				}
@@ -146,8 +155,18 @@ export default class ComponentPatcher {
 				Component.extend(this)
 
 				if (this.__inited) {
+					let removedProps = this.__getRemovedProps(newProps)
+					for (let removedProp of removedProps) {
+						delete this[removedProp]
+					}
 					this.__copyPropsToInherits(inherits, oldTemplate, oldPrototype)
 				}
+			}
+
+
+			static __getRemovedProps(newProps) {
+				let currentProps = Object.getOwnPropertyNames(this.__oldActiveClass)
+				return currentProps.filter(prop => newProps.indexOf(prop) === -1)
 			}
 
 
@@ -185,10 +204,10 @@ export default class ComponentPatcher {
 			}
 
 
-			static __checkStyles(Class) {
-				let styles = Class.styles + ''
-				let hasDiff = this.__oldStyles !== styles
-				this.__oldStyles = styles
+			static __checkStyle(Class) {
+				let style = Class.style + ''
+				let hasDiff = this.__oldStyle !== style
+				this.__oldStyle = style
 				return hasDiff
 			}
 
@@ -201,11 +220,38 @@ export default class ComponentPatcher {
 			}
 
 
+			static __checkComponents(Class) {
+				let components = Class.components || []
+				let oldComponents = this.__oldComponents || []
+				let hasDiff = this.__componentsHasDiff(components, oldComponents)
+				this.__oldComponents = components.slice()
+				return hasDiff
+			}
+
+
+			static __componentsHasDiff(components, oldComponents) {
+				if (components.length !== oldComponents.length) {
+					return true
+				}
+				return components.some((component, index)=> {
+					return oldComponents[index] !== component
+				})
+			}
+
+
+			static __checkTag(Class) {
+				let tag = Class.tag
+				let hasDiff = this.__oldTag !== tag
+				this.__oldTag = tag
+				return hasDiff
+			}
+
+
 			static __getLogic(Class) {
 				let code = ''
 
 				for (let prop of Object.getOwnPropertyNames(Class)) {
-					if (prop === 'template' || prop === 'styles') continue
+					if (prop === 'template' || prop === 'style') continue
 					let descriptor = Object.getOwnPropertyDescriptor(Class, prop)
 					code += this.__getDescriptorCode(descriptor)
 				}

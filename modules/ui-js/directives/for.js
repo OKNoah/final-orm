@@ -30,10 +30,10 @@ module.exports = For = (function() {
     return [subTree, itemName, indexName, exp];
   };
 
-  function For(label1, component, locals1, subThree, itemName1, indexName1, exp) {
+  function For(label1, component, scope1, subThree, itemName1, indexName1, exp) {
     this.label = label1;
     this.component = component;
-    this.locals = locals1;
+    this.scope = scope1;
     this.subThree = subThree;
     this.itemName = itemName1;
     this.indexName = indexName1;
@@ -42,7 +42,7 @@ module.exports = For = (function() {
     this.array = [];
     this.iterations = [];
     this.observer = null;
-    ui.watch(this.component, exp, this.changeArray, this.locals);
+    ui.watch(this.component, exp, this.changeArray, this.scope);
     return;
   }
 
@@ -106,7 +106,7 @@ module.exports = For = (function() {
     ref = this.iterations;
     for (index = i = 0, len = ref.length; i < len; index = ++i) {
       iteration = ref[index];
-      iteration.locals[this.indexName] = index;
+      iteration.scope[this.indexName] = index;
     }
   };
 
@@ -120,8 +120,8 @@ module.exports = For = (function() {
     cnt = 0;
     while (cnt < addedCnt) {
       index = startIndex + cnt;
-      iteration = new Iteration(this.subThree, this.component, this.locals);
-      iteration.locals[this.itemName] = this.array[index];
+      iteration = new Iteration(this.subThree, this.component, this.scope);
+      iteration.scope[this.itemName] = this.array[index];
       newIterations.push(iteration);
       content.push(iteration.node);
       content.push(iteration.endLabel);
@@ -156,17 +156,17 @@ module.exports = For = (function() {
 })();
 
 Iteration = (function() {
-  function Iteration(subThree, component, locals) {
+  function Iteration(subThree, component, scope) {
     this.subThree = subThree;
     this.component = component;
-    this.locals = Object.create(locals);
+    this.scope = Object.create(scope);
     this.node = this.subThree.template.clone();
     this.endLabel = DOM.createComment(' *for iteration ');
     return;
   }
 
   Iteration.prototype.init = function(item) {
-    this.subThree.init(this.node, this.component, this.locals);
+    this.subThree.init(this.node, this.component, this.scope);
   };
 
   Iteration.prototype.destroy = function() {

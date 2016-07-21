@@ -4,7 +4,7 @@ Exp = require('./exp')
 
 module.exports = class DataBind
 
-	constructor: (objL, expL, objR, expR, locals)->
+	constructor: (objL, expL, objR, expR, scope)->
 		@destroyed = false
 
 		expL = new Exp(expL)
@@ -13,18 +13,18 @@ module.exports = class DataBind
 		if not expL.set
 			throw Error 'Invalid left-hand expression in DataBind'
 
-		value = expR(objR, locals) ? expL(objL, locals)
+		value = expR(objR, scope) ? expL(objL, scope)
 
 		expL.set(objL, value)
-		expR.set?(objR, value, locals)
+		expR.set?(objR, value, scope)
 
 		@observerR = new ExpObserver objR, expR, (value)->
 			expL.set(objL, value)
-		, locals
+		, scope
 
 		@observerL = new ExpObserver objL, expL, (value)->
 			if expR.set
-				expR.set(objR, value, locals)
+				expR.set(objR, value, scope)
 			else
 				value = expR(objR)
 				expL.set(objL, value)

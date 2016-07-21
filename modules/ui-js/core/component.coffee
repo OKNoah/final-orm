@@ -1,7 +1,7 @@
-DOM = require('ui-js/dom')
 Element = require('ui-js/dom/nodes/element')
 ShadowStyle = require('./shadow-style')
 Directive = require('./directive')
+DOM = require('ui-js/dom')
 Tree = require('./tree')
 
 
@@ -155,17 +155,17 @@ module.exports = class Component
 		shadowRoot.html(children)
 
 		component = Object.create(@prototype)
-		locals = Object.create(ui.globals)
+		scope = Object.create(ui.globals)
 
 		@define(component, 'host', host)
-		@define(component, 'locals', locals)
+		@define(component, 'scope', scope)
 		@define(component, 'app', app or component)
 		host.component = component
 
 		# construct
 		component.constructor()
 
-		@tree.init(shadowRoot, component, locals)
+		@tree.init(shadowRoot, component, scope)
 		@initedComponents.push(component)
 
 		host.one 'destroy', =>
@@ -187,14 +187,14 @@ module.exports = class Component
 
 		for component in @initedComponents.slice()
 			host = component.host
-			locals = component.locals
+			scope = component.scope
 			host.destroyShadowRoot()
 
 			children = @createTemplateNodes()
 			shadowRoot = host.createShadowRoot(@id)
 			shadowRoot.html(children)
 
-			@tree.init(shadowRoot, component, locals)
+			@tree.init(shadowRoot, component, scope)
 		return
 
 
@@ -209,18 +209,18 @@ module.exports = class Component
 		return
 
 
-	require: (name)->
-		match = name.match /(.+?)(\?)?$/
-		name = match[1]
+	require: (tag)->
+		match = tag.match /(.+?)(\?)?$/
+		tag = match[1]
 		optional = !!match[2]
 
 		context = @host.parent
 		while context
-			if context.component?.constructor?.tag is name
+			if context.component?.constructor?.tag is tag
 				return context.component
 			context = context.parent
 		if optional then return null
-		throw Error "Not found parent component '#{name}' required in '#{@constructor.tag}'"
+		throw Error "Not found parent component '#{tag}' for '#{@constructor.tag}'"
 		return
 
 
@@ -250,13 +250,13 @@ module.exports = class Component
 
 
 	bindClass: (className, exp)->
-		return @host.bindClass(className, exp, @, @locals)
+		return @host.bindClass(className, exp, @, @scope)
 
 
-	bind: (prop, exp)->
-		return ui.bind(@, prop, @, exp, @locals)
+	bind: (path, exp)->
+		return ui.bind(@, path, @, exp, @scope)
 
 
-	watch: (prop, handler)->
-		return ui.watch(@, prop, handler, null, off)
+	watch: (exp, handler)->
+		return ui.watch(@, exp, handler, null, off)
 		

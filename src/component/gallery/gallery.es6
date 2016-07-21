@@ -57,8 +57,8 @@ export default class Gallery {
 		this.dragging = false
 
 		this.active = false
-		this.bind('active', 'locals.popup.active')
-		this.bindClass('__active', 'locals.popup.active')
+		this.bind('active', 'scope.popup.active')
+		this.bindClass('__active', 'scope.popup.active')
 
 		this.initHandlers()
 		this.activateByIndex(0)
@@ -158,7 +158,7 @@ export default class Gallery {
 
 
 	open(urls = []) {
-		this.locals.popup.open()
+		this.scope.popup.open()
 		this.urls = urls
 		this.morOne = urls.length > 0
 		this.activateByIndex(0)
@@ -166,7 +166,7 @@ export default class Gallery {
 
 
 	close() {
-		this.locals.popup.close()
+		this.scope.popup.close()
 		this.reset()
 	}
 

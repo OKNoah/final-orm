@@ -16,6 +16,7 @@
             <path value="file://$PROJECT_DIR$/src/ui-js" />
             <path value="file://$PROJECT_DIR$/src/calc" />
             <path value="file://$PROJECT_DIR$/src/roulette" />
+            <path value="file://$PROJECT_DIR$/modules" />
           </resourceRoots>
         </entryData>
       </entry>

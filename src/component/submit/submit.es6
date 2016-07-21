@@ -3,12 +3,7 @@ import Button from '../button/button'
 
 export default class Submit extends Button {
 
-	static style = `
-		*{ color: red !important }
-	`
-
 	static tag = 'submit'
-	// static template = Button.template + '!!!!!!'
 
 	constructor() {
 		super()

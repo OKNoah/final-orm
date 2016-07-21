@@ -5,7 +5,7 @@ Exp = require('./exp')
 module.exports = class ExpObserver
 
 
-	constructor: (@context, @exp, @handler, @locals = null, init = off)->
+	constructor: (@context, @exp, @handler, @scope = null, init = off)->
 		@exp = new Exp(@exp)
 
 		@destroyed = false
@@ -14,14 +14,14 @@ module.exports = class ExpObserver
 
 		for path in @exp.paths
 			@observers.push(@createObserver(@context, path))
-			if @locals then @observers.push(@createObserver(@locals, path))
+			if @scope then @observers.push(@createObserver(@scope, path))
 
 		if init then @handler(@getValue())
 		return
 
 
 	getValue: ->
-		return @exp(@context, @locals)
+		return @exp(@context, @scope)
 
 
 	createObserver: (context, path)->

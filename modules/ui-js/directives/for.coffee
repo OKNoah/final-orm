@@ -26,11 +26,11 @@ module.exports = class For
 		return [subTree, itemName, indexName, exp]
 
 
-	constructor: (@label, @component, @locals, @subThree, @itemName, @indexName, exp)->
+	constructor: (@label, @component, @scope, @subThree, @itemName, @indexName, exp)->
 		@array = []
 		@iterations = []
 		@observer = null
-		ui.watch(@component, exp, @changeArray, @locals)
+		ui.watch(@component, exp, @changeArray, @scope)
 		return
 
 
@@ -68,7 +68,7 @@ module.exports = class For
 	updateIndexes: ->
 		unless @indexName then return
 		for iteration, index in @iterations
-			iteration.locals[@indexName] = index
+			iteration.scope[@indexName] = index
 		return
 
 
@@ -82,8 +82,8 @@ module.exports = class For
 		cnt = 0
 		while cnt < addedCnt
 			index = startIndex + cnt
-			iteration = new Iteration(@subThree, @component, @locals)
-			iteration.locals[@itemName] = @array[index]
+			iteration = new Iteration(@subThree, @component, @scope)
+			iteration.scope[@itemName] = @array[index]
 			newIterations.push(iteration)
 			content.push(iteration.node)
 			content.push(iteration.endLabel)
@@ -112,15 +112,15 @@ module.exports = class For
 class Iteration
 
 
-	constructor: (@subThree, @component, locals)->
-		@locals = Object.create(locals)
+	constructor: (@subThree, @component, scope)->
+		@scope = Object.create(scope)
 		@node = @subThree.template.clone()
 		@endLabel = DOM.createComment(' *for iteration ')
 		return
 
 
 	init: (item)->
-		@subThree.init(@node, @component, @locals)
+		@subThree.init(@node, @component, @scope)
 		return
 
 

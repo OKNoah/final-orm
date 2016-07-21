@@ -6,7 +6,7 @@ ExpObserver = require('./exp-observer');
 Exp = require('./exp');
 
 module.exports = DataBind = (function() {
-  function DataBind(objL, expL, objR, expR, locals) {
+  function DataBind(objL, expL, objR, expR, scope) {
     var ref, value;
     this.destroyed = false;
     expL = new Exp(expL);
@@ -14,17 +14,17 @@ module.exports = DataBind = (function() {
     if (!expL.set) {
       throw Error('Invalid left-hand expression in DataBind');
     }
-    value = (ref = expR(objR, locals)) != null ? ref : expL(objL, locals);
+    value = (ref = expR(objR, scope)) != null ? ref : expL(objL, scope);
     expL.set(objL, value);
     if (typeof expR.set === "function") {
-      expR.set(objR, value, locals);
+      expR.set(objR, value, scope);
     }
     this.observerR = new ExpObserver(objR, expR, function(value) {
       return expL.set(objL, value);
-    }, locals);
+    }, scope);
     this.observerL = new ExpObserver(objL, expL, function(value) {
       if (expR.set) {
-        return expR.set(objR, value, locals);
+        return expR.set(objR, value, scope);
       } else {
         value = expR(objR);
         return expL.set(objL, value);

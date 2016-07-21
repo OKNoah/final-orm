@@ -88,11 +88,11 @@ module.exports = class Element extends Node
 		}
 
 
-	bindClass: (className, exp, context, locals)->
+	bindClass: (className, exp, context, scope)->
 		return new ExpObserver context, exp, (value)=>
 			if value then @addClass(className)
 			else @removeClass(className)
-		, locals, yes
+		, scope, yes
 
 
 	addClass: (className)->

@@ -4,13 +4,13 @@ var Component, DOM, Directive, Element, ShadowStyle, Tree,
   hasProp = {}.hasOwnProperty,
   slice = [].slice;
 
-DOM = require('ui-js/dom');
-
 Element = require('ui-js/dom/nodes/element');
 
 ShadowStyle = require('./shadow-style');
 
 Directive = require('./directive');
+
+DOM = require('ui-js/dom');
 
 Tree = require('./tree');
 
@@ -203,18 +203,18 @@ module.exports = Component = (function() {
   };
 
   Component.init = function(host, app) {
-    var children, component, locals, shadowRoot;
+    var children, component, scope, shadowRoot;
     children = this.createTemplateNodes();
     shadowRoot = host.createShadowRoot(this.id);
     shadowRoot.html(children);
     component = Object.create(this.prototype);
-    locals = Object.create(ui.globals);
+    scope = Object.create(ui.globals);
     this.define(component, 'host', host);
-    this.define(component, 'locals', locals);
+    this.define(component, 'scope', scope);
     this.define(component, 'app', app || component);
     host.component = component;
     component.constructor();
-    this.tree.init(shadowRoot, component, locals);
+    this.tree.init(shadowRoot, component, scope);
     this.initedComponents.push(component);
     host.one('destroy', (function(_this) {
       return function() {
@@ -234,18 +234,18 @@ module.exports = Component = (function() {
   };
 
   Component.reloadTemplate = function() {
-    var children, component, host, i, len, locals, ref, shadowRoot;
+    var children, component, host, i, len, ref, scope, shadowRoot;
     this.compileTemplate();
     ref = this.initedComponents.slice();
     for (i = 0, len = ref.length; i < len; i++) {
       component = ref[i];
       host = component.host;
-      locals = component.locals;
+      scope = component.scope;
       host.destroyShadowRoot();
       children = this.createTemplateNodes();
       shadowRoot = host.createShadowRoot(this.id);
       shadowRoot.html(children);
-      this.tree.init(shadowRoot, component, locals);
+      this.tree.init(shadowRoot, component, scope);
     }
   };
 
@@ -263,14 +263,14 @@ module.exports = Component = (function() {
     }
   };
 
-  Component.prototype.require = function(name) {
+  Component.prototype.require = function(tag) {
     var context, match, optional, ref, ref1;
-    match = name.match(/(.+?)(\?)?$/);
-    name = match[1];
+    match = tag.match(/(.+?)(\?)?$/);
+    tag = match[1];
     optional = !!match[2];
     context = this.host.parent;
     while (context) {
-      if (((ref = context.component) != null ? (ref1 = ref.constructor) != null ? ref1.tag : void 0 : void 0) === name) {
+      if (((ref = context.component) != null ? (ref1 = ref.constructor) != null ? ref1.tag : void 0 : void 0) === tag) {
         return context.component;
       }
       context = context.parent;
@@ -278,7 +278,7 @@ module.exports = Component = (function() {
     if (optional) {
       return null;
     }
-    throw Error("Not found parent component '" + name + "' required in '" + this.constructor.tag + "'");
+    throw Error("Not found parent component '" + tag + "' for '" + this.constructor.tag + "'");
   };
 
   Component.prototype.emit = function(eventName, event) {
@@ -302,15 +302,15 @@ module.exports = Component = (function() {
   };
 
   Component.prototype.bindClass = function(className, exp) {
-    return this.host.bindClass(className, exp, this, this.locals);
+    return this.host.bindClass(className, exp, this, this.scope);
   };
 
-  Component.prototype.bind = function(prop, exp) {
-    return ui.bind(this, prop, this, exp, this.locals);
+  Component.prototype.bind = function(path, exp) {
+    return ui.bind(this, path, this, exp, this.scope);
   };
 
-  Component.prototype.watch = function(prop, handler) {
-    return ui.watch(this, prop, handler, null, false);
+  Component.prototype.watch = function(exp, handler) {
+    return ui.watch(this, exp, handler, null, false);
   };
 
   return Component;

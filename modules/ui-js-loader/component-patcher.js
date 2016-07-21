@@ -28,23 +28,23 @@ var ComponentPatcher = function () {
 	}, {
 		key: 'patch',
 		value: function patch(Class, module) {
-			try {
-
-				if (module.hot.data) {
-					var Wrapper = module.hot.data.wrapper;
-				} else {
-					var Wrapper = this.createWrapper();
-				}
-
-				module.hot.dispose(function (data) {
-					return data.wrapper = Wrapper;
-				});
-				module.hot.accept();
-
-				Wrapper.__setClass(Class);
-			} catch (e) {
-				console.error(e);
+			// try {
+			if (module.hot.data) {
+				var Wrapper = module.hot.data.wrapper;
+			} else {
+				var Wrapper = this.createWrapper();
 			}
+
+			module.hot.dispose(function (data) {
+				return data.wrapper = Wrapper;
+			});
+			module.hot.accept();
+
+			Wrapper.__setClass(Class);
+			// }
+			// catch (e) {
+			// 	console.error(e)
+			// }
 
 			return Wrapper;
 		}
@@ -70,20 +70,29 @@ var ComponentPatcher = function () {
 				_createClass(Wrapper, null, [{
 					key: '__setClass',
 					value: function __setClass(Class) {
+						this.__oldActiveClass = this.__activeClass;
 						this.__activeClass = Class;
 
+						// TODO check directives
 						var templateHasDiff = this.__checkTemplate(Class);
-						var stylesHasDiff = this.__checkStyles(Class);
+						var componentsHasDiff = this.__checkComponents(Class);
+						var styleHasDiff = this.__checkStyle(Class);
 						var logicHasDiff = this.__checkLogic(Class);
+						var tagHasDiff = this.__checkTag(Class);
 
 						var inherits = this.__getInherits();
 						this.__copyPropsFrom(Class, inherits);
 
 						if (this.__inited) {
-							if (logicHasDiff) {
+
+							if (tagHasDiff) {
+								throw new Error('Page reload, cuz tag was changed');
+							}
+
+							if (logicHasDiff || componentsHasDiff) {
 								this.__reload(inherits);
 							} else {
-								if (stylesHasDiff) this.__reloadStyles(inherits);
+								if (styleHasDiff) this.__reloadStyle(inherits);
 								if (templateHasDiff) this.__reloadTemplate(inherits);
 							}
 						}
@@ -94,7 +103,6 @@ var ComponentPatcher = function () {
 					key: '__reload',
 					value: function __reload(inherits) {
 						this.reload();
-						// console.log('reload logic inherits', inherits)
 						var _iteratorNormalCompletion = true;
 						var _didIteratorError = false;
 						var _iteratorError = undefined;
@@ -123,7 +131,6 @@ var ComponentPatcher = function () {
 					key: '__reloadTemplate',
 					value: function __reloadTemplate(inherits) {
 						this.reloadTemplate();
-						// console.log('reload template inherits', inherits)
 						var _iteratorNormalCompletion2 = true;
 						var _didIteratorError2 = false;
 						var _iteratorError2 = undefined;
@@ -149,10 +156,9 @@ var ComponentPatcher = function () {
 						}
 					}
 				}, {
-					key: '__reloadStyles',
-					value: function __reloadStyles(inherits) {
-						this.reloadStyles();
-						// console.log('reload styles inherits', inherits)
+					key: '__reloadStyle',
+					value: function __reloadStyle(inherits) {
+						this.reloadStyle();
 						var _iteratorNormalCompletion3 = true;
 						var _didIteratorError3 = false;
 						var _iteratorError3 = undefined;
@@ -160,7 +166,7 @@ var ComponentPatcher = function () {
 						try {
 							for (var _iterator3 = inherits[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
 								var inherit = _step3.value;
-								inherit.reloadStyles();
+								inherit.reloadStyle();
 							}
 						} catch (err) {
 							_didIteratorError3 = true;
@@ -235,13 +241,13 @@ var ComponentPatcher = function () {
 						var prototype = Object.getPrototypeOf(Class);
 						if (Object.setPrototypeOf) Object.setPrototypeOf(this, prototype);else this.__proto__ = prototype;
 
-						// TODO remove deleted props
+						var newProps = Object.getOwnPropertyNames(Class);
 						var _iteratorNormalCompletion5 = true;
 						var _didIteratorError5 = false;
 						var _iteratorError5 = undefined;
 
 						try {
-							for (var _iterator5 = Object.getOwnPropertyNames(Class)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+							for (var _iterator5 = newProps[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
 								var prop = _step5.value;
 
 								var descriptor = Object.getOwnPropertyDescriptor(Class, prop);
@@ -267,19 +273,53 @@ var ComponentPatcher = function () {
 						_component2.default.extend(this);
 
 						if (this.__inited) {
+							var removedProps = this.__getRemovedProps(newProps);
+							var _iteratorNormalCompletion6 = true;
+							var _didIteratorError6 = false;
+							var _iteratorError6 = undefined;
+
+							try {
+								for (var _iterator6 = removedProps[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+									var removedProp = _step6.value;
+
+									delete this[removedProp];
+								}
+							} catch (err) {
+								_didIteratorError6 = true;
+								_iteratorError6 = err;
+							} finally {
+								try {
+									if (!_iteratorNormalCompletion6 && _iterator6.return) {
+										_iterator6.return();
+									}
+								} finally {
+									if (_didIteratorError6) {
+										throw _iteratorError6;
+									}
+								}
+							}
+
 							this.__copyPropsToInherits(inherits, oldTemplate, oldPrototype);
 						}
 					}
 				}, {
+					key: '__getRemovedProps',
+					value: function __getRemovedProps(newProps) {
+						var currentProps = Object.getOwnPropertyNames(this.__oldActiveClass);
+						return currentProps.filter(function (prop) {
+							return newProps.indexOf(prop) === -1;
+						});
+					}
+				}, {
 					key: '__copyPropsToInherits',
 					value: function __copyPropsToInherits(inherits, oldTemplate, oldPrototype) {
-						var _iteratorNormalCompletion6 = true;
-						var _didIteratorError6 = false;
-						var _iteratorError6 = undefined;
+						var _iteratorNormalCompletion7 = true;
+						var _didIteratorError7 = false;
+						var _iteratorError7 = undefined;
 
 						try {
-							for (var _iterator6 = inherits[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-								var inherit = _step6.value;
+							for (var _iterator7 = inherits[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+								var inherit = _step7.value;
 
 								// template
 								if (inherit.template === oldTemplate) {
@@ -302,62 +342,6 @@ var ComponentPatcher = function () {
 								}
 							}
 						} catch (err) {
-							_didIteratorError6 = true;
-							_iteratorError6 = err;
-						} finally {
-							try {
-								if (!_iteratorNormalCompletion6 && _iterator6.return) {
-									_iterator6.return();
-								}
-							} finally {
-								if (_didIteratorError6) {
-									throw _iteratorError6;
-								}
-							}
-						}
-					}
-				}, {
-					key: '__checkTemplate',
-					value: function __checkTemplate(Class) {
-						var template = Class.template + '';
-						var hasDiff = this.__oldTemplate !== template;
-						this.__oldTemplate = template;
-						return hasDiff;
-					}
-				}, {
-					key: '__checkStyles',
-					value: function __checkStyles(Class) {
-						var styles = Class.styles + '';
-						var hasDiff = this.__oldStyles !== styles;
-						this.__oldStyles = styles;
-						return hasDiff;
-					}
-				}, {
-					key: '__checkLogic',
-					value: function __checkLogic(Class) {
-						var logic = this.__getLogic(Class);
-						var hasDiff = this.__oldLogic !== logic;
-						this.__oldLogic = logic;
-						return hasDiff;
-					}
-				}, {
-					key: '__getLogic',
-					value: function __getLogic(Class) {
-						var code = '';
-
-						var _iteratorNormalCompletion7 = true;
-						var _didIteratorError7 = false;
-						var _iteratorError7 = undefined;
-
-						try {
-							for (var _iterator7 = Object.getOwnPropertyNames(Class)[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-								var prop = _step7.value;
-
-								if (prop === 'template' || prop === 'styles') continue;
-								var descriptor = Object.getOwnPropertyDescriptor(Class, prop);
-								code += this.__getDescriptorCode(descriptor);
-							}
-						} catch (err) {
 							_didIteratorError7 = true;
 							_iteratorError7 = err;
 						} finally {
@@ -371,17 +355,74 @@ var ComponentPatcher = function () {
 								}
 							}
 						}
+					}
+				}, {
+					key: '__checkTemplate',
+					value: function __checkTemplate(Class) {
+						var template = Class.template + '';
+						var hasDiff = this.__oldTemplate !== template;
+						this.__oldTemplate = template;
+						return hasDiff;
+					}
+				}, {
+					key: '__checkStyle',
+					value: function __checkStyle(Class) {
+						var style = Class.style + '';
+						var hasDiff = this.__oldStyle !== style;
+						this.__oldStyle = style;
+						return hasDiff;
+					}
+				}, {
+					key: '__checkLogic',
+					value: function __checkLogic(Class) {
+						var logic = this.__getLogic(Class);
+						var hasDiff = this.__oldLogic !== logic;
+						this.__oldLogic = logic;
+						return hasDiff;
+					}
+				}, {
+					key: '__checkComponents',
+					value: function __checkComponents(Class) {
+						var components = Class.components || [];
+						var oldComponents = this.__oldComponents || [];
+						var hasDiff = this.__componentsHasDiff(components, oldComponents);
+						this.__oldComponents = components.slice();
+						return hasDiff;
+					}
+				}, {
+					key: '__componentsHasDiff',
+					value: function __componentsHasDiff(components, oldComponents) {
+						if (components.length !== oldComponents.length) {
+							return true;
+						}
+						return components.some(function (component, index) {
+							return oldComponents[index] !== component;
+						});
+					}
+				}, {
+					key: '__checkTag',
+					value: function __checkTag(Class) {
+						var tag = Class.tag;
+						var hasDiff = this.__oldTag !== tag;
+						this.__oldTag = tag;
+						return hasDiff;
+					}
+				}, {
+					key: '__getLogic',
+					value: function __getLogic(Class) {
+						var code = '';
 
 						var _iteratorNormalCompletion8 = true;
 						var _didIteratorError8 = false;
 						var _iteratorError8 = undefined;
 
 						try {
-							for (var _iterator8 = Object.getOwnPropertyNames(Class.prototype)[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-								var _prop = _step8.value;
+							for (var _iterator8 = Object.getOwnPropertyNames(Class)[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+								var prop = _step8.value;
 
-								var _descriptor = Object.getOwnPropertyDescriptor(Class.prototype, _prop);
-								code += this.__getDescriptorCode(_descriptor);
+								if (prop === 'template' || prop === 'style') continue;
+								var descriptor = Object.getOwnPropertyDescriptor(Class, prop);
+								code += this.__getDescriptorCode(descriptor);
 							}
 						} catch (err) {
 							_didIteratorError8 = true;
@@ -394,6 +435,32 @@ var ComponentPatcher = function () {
 							} finally {
 								if (_didIteratorError8) {
 									throw _iteratorError8;
+								}
+							}
+						}
+
+						var _iteratorNormalCompletion9 = true;
+						var _didIteratorError9 = false;
+						var _iteratorError9 = undefined;
+
+						try {
+							for (var _iterator9 = Object.getOwnPropertyNames(Class.prototype)[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+								var _prop = _step9.value;
+
+								var _descriptor = Object.getOwnPropertyDescriptor(Class.prototype, _prop);
+								code += this.__getDescriptorCode(_descriptor);
+							}
+						} catch (err) {
+							_didIteratorError9 = true;
+							_iteratorError9 = err;
+						} finally {
+							try {
+								if (!_iteratorNormalCompletion9 && _iterator9.return) {
+									_iterator9.return();
+								}
+							} finally {
+								if (_didIteratorError9) {
+									throw _iteratorError9;
 								}
 							}
 						}
@@ -418,7 +485,7 @@ var ComponentPatcher = function () {
 				}]);
 
 				return Wrapper;
-			}(), _class.__inited = false, _class.__oldStyles = null, _class.__oldTemplate = null, _class.__oldLogic = null, _class.__activeClass = null, _temp;
+			}(), _class.__inited = false, _class.__oldStyle = null, _class.__oldTemplate = null, _class.__oldLogic = null, _class.__activeClass = null, _class.__oldActiveClass = null, _class.__oldComponents = null, _class.__oldTag = null, _temp;
 		}
 	}]);
 

@@ -56,9 +56,9 @@ module.exports = class Tree
 		# compile
 		@directives = directives.map (directive)=>
 			returns = directive.compile?(@template, @)
-			return (node, component, locals)->
+			return (node, component, scope)->
 				unless returns? then returns = []
-				return new directive(node, component, locals, returns...)
+				return new directive(node, component, scope, returns...)
 
 		return hasTerminal
 
@@ -126,39 +126,39 @@ module.exports = class Tree
 		return
 
 
-	init: (node, component, locals = {})->
+	init: (node, component, scope = {})->
 		if @isTextNode
-			if @hasTextExp then @initTextExp(node, component, locals)
+			if @hasTextExp then @initTextExp(node, component, scope)
 			return component
 
 		if @SubComponent
 			subComponent = @SubComponent.init(node, component.app)
-			@initLinks(subComponent, locals)
-			@initProps(subComponent, component, locals)
+			@initLinks(subComponent, scope)
+			@initProps(subComponent, component, scope)
 		else
-			@initLinks(node, locals)
-			@initProps(node, component, locals)
+			@initLinks(node, scope)
+			@initProps(node, component, scope)
 
-		@initClasses(node, component, locals)
-		@initExpAttributes(node, component, locals)
-		@initEvents(node, component, locals, subComponent)
-		@initChildren(node, component, locals)
-		@initDirectives(node, component, locals)
+		@initClasses(node, component, scope)
+		@initExpAttributes(node, component, scope)
+		@initEvents(node, component, scope, subComponent)
+		@initChildren(node, component, scope)
+		@initDirectives(node, component, scope)
 
 		return component
 
 
-	initChildren: (node, component, locals)->
+	initChildren: (node, component, scope)->
 		childNodes = node.children.slice()
 		for child, index in @childTrees
 			childNode = childNodes[index]
-			child.init(childNode, component, locals)
+			child.init(childNode, component, scope)
 		return
 
 
-	initDirectives: (node, component, locals)->
+	initDirectives: (node, component, scope)->
 		directives = for directive in @directives
-			directive(node, component, locals)
+			directive(node, component, scope)
 		node.on 'destroy', ->
 			for directive in directives
 				directive.destructor?()
@@ -166,13 +166,13 @@ module.exports = class Tree
 		return
 
 
-	initLinks: (target, locals)->
+	initLinks: (target, scope)->
 		for link in @links
-			locals[link] = target
+			scope[link] = target
 		return
 
 
-	initEvents: (node, component, locals, subComponent)->
+	initEvents: (node, component, scope, subComponent)->
 		for own eventName, eventData of @events then do(eventData)=>
 			node.on eventName, (event)->
 				if event instanceof Event
@@ -182,41 +182,41 @@ module.exports = class Tree
 						return
 
 				if eventData.exp
-					locals['$event'] = event
-					locals['this'] = subComponent or node
-					ui.eval(component, eventData.exp, locals)
-					delete locals['$event']
-					delete locals['this']
+					scope['$event'] = event
+					scope['this'] = subComponent or node
+					ui.eval(component, eventData.exp, scope)
+					delete scope['$event']
+					delete scope['this']
 				return
 		return
 
 
-	initClasses: (node, component, locals)->
+	initClasses: (node, component, scope)->
 		for own className, exp of @classes
-			node.bindClass(className, exp, component, locals)
+			node.bindClass(className, exp, component, scope)
 		return
 
 
-	initProps: (target, component, locals)->
+	initProps: (target, component, scope)->
 		for own prop, exp of @props then do (prop, exp)=>
-			dataBind = ui.bind(target, prop, component, exp, locals)
+			dataBind = ui.bind(target, prop, component, exp, scope)
 			target.on 'destroy', -> dataBind.destroy()
 		return
 
 
-	initTextExp: (node, component, locals)->
+	initTextExp: (node, component, scope)->
 		exp = node.value
 		ui.watch component, exp, (value)=>
 			node.value = value
-		, locals
+		, scope
 		return
 
 
-	initExpAttributes: (node, component, locals)->
+	initExpAttributes: (node, component, scope)->
 		for own name, exp of @expAttributes then do(name)->
 			ui.watch component, exp, (value)->
 				node.attr(name, value)
-			, locals
+			, scope
 		return
 
 

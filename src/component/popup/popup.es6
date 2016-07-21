@@ -32,8 +32,8 @@ export default class Popup {
 	onMouseDown(event) {
 		let targets = [
 			this.host,
-			this.locals.scale,
-			this.locals.content
+			this.scope.scale,
+			this.scope.content
 		]
 
 		if (targets.indexOf(event.src) !== -1) {
@@ -44,8 +44,8 @@ export default class Popup {
 
 
 	openEffectFrom(target) {
-		let content = this.locals.content
-		let scale = this.locals.scale
+		let content = this.scope.content
+		let scale = this.scope.scale
 
 		let transform = this.getTransform(content, target)
 		let x = transform.x

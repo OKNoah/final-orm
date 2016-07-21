@@ -12,7 +12,7 @@ export default class Button {
 		.__right='state is RIGHT'
 		.__bottom='state is BOTTOM'
 		.__top='state is TOP'>
-			<content></content>!!!!
+			<content></content>
 		</div>
 	`
 

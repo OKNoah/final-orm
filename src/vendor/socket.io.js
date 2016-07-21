@@ -1420,7 +1420,7 @@ debug.skips = [];
 
 debug.enable = function(name) {
   try {
-    localStorage.debug = name;
+    scopetorage.debug = name;
   } catch(e){}
 
   var split = (name || '').split(/[\s,]+/)
@@ -1500,7 +1500,7 @@ function coerce(val) {
 // persist
 
 try {
-  if (window.localStorage) debug.enable(localStorage.debug);
+  if (window.scopetorage) debug.enable(scopetorage.debug);
 } catch(e){}
 
 },{}],11:[function(_dereq_,module,exports){
@@ -3637,7 +3637,7 @@ exports.colors = [
  * and the Firebug extension (any Firefox version) are known
  * to support "%c" CSS customizations.
  *
- * TODO: add a `localStorage` variable to explicitly enable/disable colors
+ * TODO: add a `scopetorage` variable to explicitly enable/disable colors
  */
 
 function useColors() {
@@ -3725,9 +3725,9 @@ function log() {
 function save(namespaces) {
   try {
     if (null == namespaces) {
-      localStorage.removeItem('debug');
+      scopetorage.removeItem('debug');
     } else {
-      localStorage.debug = namespaces;
+      scopetorage.debug = namespaces;
     }
   } catch(e) {}
 }
@@ -3742,13 +3742,13 @@ function save(namespaces) {
 function load() {
   var r;
   try {
-    r = localStorage.debug;
+    r = scopetorage.debug;
   } catch(e) {}
   return r;
 }
 
 /**
- * Enable namespaces listed in `localStorage.debug` initially.
+ * Enable namespaces listed in `scopetorage.debug` initially.
  */
 
 exports.enable(load());

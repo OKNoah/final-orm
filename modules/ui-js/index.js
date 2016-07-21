@@ -93,11 +93,11 @@ module.exports = window['ui'] = new (UI = (function() {
     return this.globals[name] = value;
   };
 
-  UI.prototype.watch = function(context, exp, handler, locals, init) {
+  UI.prototype.watch = function(context, exp, handler, scope, init) {
     if (init == null) {
       init = true;
     }
-    return new ExpObserver(context, exp, handler, locals, init);
+    return new ExpObserver(context, exp, handler, scope, init);
   };
 
   UI.prototype.watchArray = function(arr, handler) {
@@ -108,18 +108,18 @@ module.exports = window['ui'] = new (UI = (function() {
     return ArrayObserver.diff(arr, oldArr);
   };
 
-  UI.prototype.bind = function(objL, expL, objR, expR, locals) {
-    return new DataBind(objL, expL, objR, expR, locals);
+  UI.prototype.bind = function(objL, expL, objR, expR, scope) {
+    return new DataBind(objL, expL, objR, expR, scope);
   };
 
-  UI.prototype["eval"] = function(context, exp, locals) {
+  UI.prototype["eval"] = function(context, exp, scope) {
     exp = new Exp(exp);
-    return exp(context, locals);
+    return exp(context, scope);
   };
 
-  UI.prototype.set = function(context, exp, value, locals) {
+  UI.prototype.set = function(context, exp, value, scope) {
     exp = new Exp(exp);
-    return exp.set(context, value, locals);
+    return exp.set(context, value, scope);
   };
 
   UI.prototype.frame = function(handler, element) {

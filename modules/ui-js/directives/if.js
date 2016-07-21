@@ -23,14 +23,14 @@ module.exports = If = (function() {
     return [subTree, exp];
   };
 
-  function If(label, component, locals, subThree, exp) {
+  function If(label, component, scope, subThree, exp) {
     this.label = label;
     this.component = component;
-    this.locals = locals;
+    this.scope = scope;
     this.subThree = subThree;
     this.changeState = bind(this.changeState, this);
     this.node = null;
-    ui.watch(this.component, exp, this.changeState, this.locals);
+    ui.watch(this.component, exp, this.changeState, this.scope);
     return;
   }
 
@@ -52,7 +52,7 @@ module.exports = If = (function() {
     }
     this.node = this.subThree.template.clone();
     this.label.after(this.node);
-    this.subThree.init(this.node, this.component, this.locals);
+    this.subThree.init(this.node, this.component, this.scope);
   };
 
   If.prototype.destroy = function() {

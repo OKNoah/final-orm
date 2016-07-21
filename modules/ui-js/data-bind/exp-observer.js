@@ -6,12 +6,12 @@ PathObserver = require('./path-observer');
 Exp = require('./exp');
 
 module.exports = ExpObserver = (function() {
-  function ExpObserver(context1, exp, handler, locals, init) {
+  function ExpObserver(context1, exp, handler, scope, init) {
     var i, len, path, ref;
     this.context = context1;
     this.exp = exp;
     this.handler = handler;
-    this.locals = locals != null ? locals : null;
+    this.scope = scope != null ? scope : null;
     if (init == null) {
       init = false;
     }
@@ -23,8 +23,8 @@ module.exports = ExpObserver = (function() {
     for (i = 0, len = ref.length; i < len; i++) {
       path = ref[i];
       this.observers.push(this.createObserver(this.context, path));
-      if (this.locals) {
-        this.observers.push(this.createObserver(this.locals, path));
+      if (this.scope) {
+        this.observers.push(this.createObserver(this.scope, path));
       }
     }
     if (init) {
@@ -34,7 +34,7 @@ module.exports = ExpObserver = (function() {
   }
 
   ExpObserver.prototype.getValue = function() {
-    return this.exp(this.context, this.locals);
+    return this.exp(this.context, this.scope);
   };
 
   ExpObserver.prototype.createObserver = function(context, path) {

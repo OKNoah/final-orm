@@ -2,7 +2,7 @@ import AdminPanel from './admin-panel/admin-panel'
 import Roulette from './roulette/roulette'
 import Platform from 'ui-js/core/platform'
 import server from '../core/server'
-import Audio from '../core/audio'
+ import Audio from '../core/audio'
 import Info from './info/info'
 import style from './app.styl'
 import ui from 'ui-js'
@@ -11,7 +11,7 @@ import ui from 'ui-js'
 export default class App {
 
 	static tag = 'my-app'
-	static components = [Info, Roulette, AdminPanel]
+	static components = [Info, Roulette, AdminPanel ]
 
 	static style = style
 	static template = `
@@ -25,8 +25,6 @@ export default class App {
 		
 			<tab .home-page>
 				<tab-title>Рулетка</tab-title>
-				
-				<HomePage></HomePage>
 				<Roulette #roulette></Roulette>
 				<Admin-panel [roulette]='roulette'></Admin-panel>
 			</tab>
@@ -66,21 +64,11 @@ export default class App {
 	`
 
 	constructor() {
-		this.audio = new Audio()
 		this.platform = new Platform()
+		this.audio = new Audio()
 		this.fontSize = 60
 		this.bindHostClasses()
 		this.initHandlers()
-	}
-
-
-	static test() {
-		this.template = `OLOLO!!! {{lol}} ! ${this.template}`
-
-		console.time('reload')
-		this.reload()
-		console.timeEnd('reload')
-
 	}
 
 
@@ -117,27 +105,27 @@ export default class App {
 
 
 	gallery(urls) {
-		this.locals.gallery.open(urls)
+		this.scope.gallery.open(urls)
 	}
 
 
 	alert(message) {
-		this.locals.notificator.alert(message)
+		this.scope.notificator.alert(message)
 	}
 
 
 	error(message) {
-		this.locals.notificator.error(message)
+		this.scope.notificator.error(message)
 	}
 
 
 	warning(message) {
-		this.locals.notificator.warning(message)
+		this.scope.notificator.warning(message)
 	}
 
 
 	confirm(text) {
-		return this.locals.confirm.confirm(text)
+		return this.scope.confirm.confirm(text)
 	}
 
 
@@ -148,10 +136,4 @@ export default class App {
 	}
 
 }
-
-
-// setInterval(()=> {
-// 	App.test()
-// }, 3000)
-
 

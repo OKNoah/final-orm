@@ -1,7 +1,7 @@
 VAR_REF = '$$ref'
 VAR_CONTEXT = '$$context'
 VAR_VALUE = '$$val'
-VAR_LOCALS = '$$locals'
+VAR_SCOPE = '$$scope'
 VAR_HELPERS = '$$helpers'
 
 
@@ -21,7 +21,7 @@ ALIASES =
 	'typeof': 'typeof '
 	'instanceof': 'instanceof '
 	'@': 'this'
-	'#': 'locals'
+	'#': 'scope'
 # не знаю костыль ли это, или оптимизация, в общем мы не парсим пробельные символы
 # и при компиляции у нас все впритык друг к другу идет, а после instanceof нужен пробел
 # по этому чтобы не усложнять парсинг я просто создал ему алиас с пробелом
@@ -106,18 +106,18 @@ createExp = (code)->
 
 
 createGetter = (code)->
-	args = "#{VAR_CONTEXT},#{VAR_LOCALS},#{VAR_HELPERS}"
-	body = "var #{VAR_REF};if(!#{VAR_LOCALS})#{VAR_LOCALS}={};return #{code}"
+	args = "#{VAR_CONTEXT},#{VAR_SCOPE},#{VAR_HELPERS}"
+	body = "var #{VAR_REF};if(!#{VAR_SCOPE})#{VAR_SCOPE}={};return #{code}"
 	getter = new Function(args, body)
-	return (context, locals)-> getter(context, locals, Exp)
+	return (context, scope)-> getter(context, scope, Exp)
 
 
 createSetter = (code)->
 	try
-		args = "#{VAR_CONTEXT},#{VAR_VALUE},#{VAR_LOCALS},#{VAR_HELPERS}"
-		body = "var #{VAR_REF};if(!#{VAR_LOCALS})#{VAR_LOCALS}={};return #{code}=#{VAR_VALUE}"
+		args = "#{VAR_CONTEXT},#{VAR_VALUE},#{VAR_SCOPE},#{VAR_HELPERS}"
+		body = "var #{VAR_REF};if(!#{VAR_SCOPE})#{VAR_SCOPE}={};return #{code}=#{VAR_VALUE}"
 		setter = new Function(args, body)
-		return (context, value, locals)-> setter(context, value, locals, Exp)
+		return (context, value, scope)-> setter(context, value, scope, Exp)
 	catch
 		return null
 
@@ -536,7 +536,7 @@ class PathStructure extends Structure
 
 	compile: (setterMode = off)->
 		firstProp = @accessors[0].name.compile()
-		path = "(#{VAR_LOCALS}.#{firstProp}!=null?#{VAR_LOCALS}:#{VAR_CONTEXT})"
+		path = "(#{VAR_SCOPE}.#{firstProp}!=null?#{VAR_SCOPE}:#{VAR_CONTEXT})"
 
 		for accessor, index in @accessors
 			if index is 0 and accessor.type isnt 'call'

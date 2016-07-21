@@ -76,8 +76,8 @@ module.exports = window['ui'] = new class UI
 		return @globals[name] = value
 
 
-	watch: (context, exp, handler, locals, init = on)->
-		return new ExpObserver(context, exp, handler, locals, init)
+	watch: (context, exp, handler, scope, init = on)->
+		return new ExpObserver(context, exp, handler, scope, init)
 
 
 	watchArray: (arr, handler)->
@@ -88,18 +88,18 @@ module.exports = window['ui'] = new class UI
 		return ArrayObserver.diff(arr, oldArr)
 
 
-	bind: (objL, expL, objR, expR, locals)->
-		return new DataBind(objL, expL, objR, expR, locals)
+	bind: (objL, expL, objR, expR, scope)->
+		return new DataBind(objL, expL, objR, expR, scope)
 
 
-	eval: (context, exp, locals)->
+	eval: (context, exp, scope)->
 		exp = new Exp(exp)
-		return exp(context, locals)
+		return exp(context, scope)
 
 
-	set: (context, exp, value, locals)->
+	set: (context, exp, value, scope)->
 		exp = new Exp(exp)
-		return exp.set(context, value, locals)
+		return exp.set(context, value, scope)
 
 
 	frame: (handler, element)->
