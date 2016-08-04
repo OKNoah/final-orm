@@ -17,8 +17,8 @@ module.exports = class Node extends EventEmitter
 		return
 
 
-	init: (@realNode)->
-		@emit('init', @realNode)
+	setRealNode: (@realNode)->
+		ui.frame => @emit('init')
 		return
 
 

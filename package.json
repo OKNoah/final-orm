@@ -33,9 +33,8 @@
     "style-loader": "latest",
     "stylus": "latest",
     "stylus-loader": "latest",
-    "ui-js": "0.0.1006",
-    "url-loader": "latest",
     "webpack": "latest",
-    "webpack-dev-server": "latest"
+    "webpack-dev-server": "latest",
+    "three": "latest"
   }
 }

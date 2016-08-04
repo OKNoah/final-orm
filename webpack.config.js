@@ -7,7 +7,7 @@ var nib = require('nib')
 
 
 HTML = './src/index.jade'
-SCRIPT = './src/index.es6'
+SCRIPT = './src/index.js'
 STYLE = './src/index.styl'
 BUILD = './build/'
 HOST = '0.0.0.0'
@@ -23,7 +23,7 @@ module.exports = {
 			loader('src/**/*.html', 'html'),
 			loader('src/**/*.jade', 'jade'),
 			loader('src/**/*.coffee', 'coffee'),
-			loader('src/**/*.es6', 'ui-js!babel?{"presets":["es2015","stage-0"],"plugins":["transform-decorators-legacy"]}'),
+			loader('src/**/*.js', 'ui-js!babel?{"presets":["es2015","stage-0"],"plugins":["transform-decorators-legacy"]}!es-privates'),
 			loader('src/**/*.css', 'css!autoprefixer?browsers=last 2 version'),
 			loader('src/**/*.styl', 'css!autoprefixer?browsers=last 2 version!stylus'),
 			loader('src/**/*.{jpeg,jpg,png,gif,svg}', 'url?limit=10000&name=images/[hash].[ext]!img?progressive=true'),
@@ -41,7 +41,7 @@ module.exports = {
 
 	resolve: {
 		modulesDirectories: ['modules', 'node_modules'],
-		extensions: ['', '.js', '.es6', '.coffee']
+		extensions: ['', '.js', '.coffee']
 	},
 
 	resolveLoader: {

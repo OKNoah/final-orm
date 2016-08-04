@@ -1,4 +1,4 @@
-Exp = require('ui-js/data-bind/exp') 
+Exp = require('ui-js/data-bind/exp')
 Event = require('ui-js/dom/core/event')
 
 
@@ -102,7 +102,7 @@ module.exports = class Tree
 					prevent: !!matches[2]
 					exp: value
 
-#				console.log @events[event]
+				#				console.log @events[event]
 			else if classRegExp.test(name)
 				className = name.match(classRegExp)[1]
 				@classes[className] = value
@@ -132,9 +132,9 @@ module.exports = class Tree
 			return component
 
 		if @SubComponent
-			subComponent = @SubComponent.init(node, component.app)
-			@initLinks(subComponent, scope)
-			@initProps(subComponent, component, scope)
+			subComponent = @SubComponent.init node, component.app, @, component, scope, (instance)=>
+				@initLinks(instance, scope)
+				@initProps(instance, component, scope)
 		else
 			@initLinks(node, scope)
 			@initProps(node, component, scope)

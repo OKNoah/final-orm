@@ -202,17 +202,35 @@ module.exports = Component = (function() {
     });
   };
 
-  Component.init = function(host, app) {
-    var children, component, scope, shadowRoot;
-    children = this.createTemplateNodes();
+  Component.init = function(host, app, parentTree, parentComponent, parentScope, beforeConstruct) {
+    var component, scope, shadowRoot, templateNodes;
+    if (parentTree == null) {
+      parentTree = null;
+    }
+    if (parentComponent == null) {
+      parentComponent = null;
+    }
+    if (parentScope == null) {
+      parentScope = null;
+    }
+    if (beforeConstruct == null) {
+      beforeConstruct = null;
+    }
+    templateNodes = this.createTemplateNodes();
     shadowRoot = host.createShadowRoot(this.id);
-    shadowRoot.html(children);
+    shadowRoot.html(templateNodes);
     component = Object.create(this.prototype);
     scope = Object.create(ui.globals);
     this.define(component, 'host', host);
     this.define(component, 'scope', scope);
     this.define(component, 'app', app || component);
+    this.define(component, '$parentTree', parentTree);
+    this.define(component, '$parentComponent', parentComponent);
+    this.define(component, '$parentScope', parentScope);
     host.component = component;
+    if (typeof beforeConstruct === "function") {
+      beforeConstruct(component);
+    }
     component.constructor();
     this.tree.init(shadowRoot, component, scope);
     this.initedComponents.push(component);
@@ -223,7 +241,9 @@ module.exports = Component = (function() {
           component.destructor();
         }
         index = _this.initedComponents.indexOf(component);
-        _this.initedComponents.splice(index, 1);
+        if (index !== -1) {
+          _this.initedComponents.splice(index, 1);
+        }
       };
     })(this));
     return component;
@@ -234,7 +254,7 @@ module.exports = Component = (function() {
   };
 
   Component.reloadTemplate = function() {
-    var children, component, host, i, len, ref, scope, shadowRoot;
+    var component, host, i, len, ref, scope, shadowRoot, templateNodes;
     this.compileTemplate();
     ref = this.initedComponents.slice();
     for (i = 0, len = ref.length; i < len; i++) {
@@ -242,24 +262,31 @@ module.exports = Component = (function() {
       host = component.host;
       scope = component.scope;
       host.destroyShadowRoot();
-      children = this.createTemplateNodes();
+      templateNodes = this.createTemplateNodes();
       shadowRoot = host.createShadowRoot(this.id);
-      shadowRoot.html(children);
+      shadowRoot.html(templateNodes);
       this.tree.init(shadowRoot, component, scope);
     }
   };
 
   Component.reload = function() {
-    var app, component, host, i, len, ref;
+    var app, component, host, i, len, newHost, parentComponent, parentScope, parentTree, ref;
     this.compile();
     ref = this.initedComponents.slice();
     for (i = 0, len = ref.length; i < len; i++) {
       component = ref[i];
       host = component.host;
       app = component.app;
-      host.destroy(false);
+      parentTree = component.$parentTree;
+      parentComponent = component.$parentComponent;
+      parentScope = component.$parentScope;
+      newHost = host.clone();
+      host.before(newHost);
+      host.destroy();
       host.destroyShadowRoot();
-      this.init(host, app);
+      host.remove();
+      component.host = newHost;
+      parentTree.init(newHost, parentComponent, parentScope);
     }
   };
 

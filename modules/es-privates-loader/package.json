@@ -1,0 +1,26 @@
+{
+  "name": "es-privates-loader",
+  "version": "0.0.0",
+  "description": "Webpack loader for add private props to javascript",
+  "keywords": [
+    "privates",
+    "private",
+    "ES",
+    "ES6",
+    "ES7",
+    "ES8",
+    "ES5",
+    "class",
+    "oop",
+    "symbols",
+    "symbol",
+    "ECMA",
+    "ECMA5",
+    "ECMA6",
+    "ECMA7",
+    "ECMA8",
+    "webpack",
+    "webpack-loader"
+  ]
+}
+

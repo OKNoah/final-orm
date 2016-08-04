@@ -30,24 +30,20 @@ immediate = require('ui-js/polyfill/immediate')
 
 
 # main module
-module.exports = window['ui'] = new class UI
+module.exports = window['ui'] = class UI
 
-	EventEmitter: EventEmitter
-	Promise: Promise
-
-
-	constructor: ->
-		@directives = [Pre, For, If, Html, Draggable]
-		@components = []
-		@pipes = {}
-		@dom = DOM
-		@keyboard = keyboard
-		@systemGlobals = Object.create(null)
-		@globals = Object.create(@systemGlobals)
-		return
+	@EventEmitter = EventEmitter
+	@Promise = Promise
+	@directives = [Pre, For, If, Html, Draggable]
+	@components = []
+	@pipes = {}
+	@dom = DOM
+	@keyboard = keyboard
+	@systemGlobals = Object.create(null)
+	@globals = Object.create(@systemGlobals)
 
 
-	bootstrap: (MainComponent, Render = DOMRender, renderOptions...)->
+	@bootstrap: (MainComponent, Render = DOMRender, renderOptions...)->
 		@components = @components.map (Class)-> Component.create(Class)
 		@directives = @directives.map (Class)-> Directive.create(Class)
 
@@ -58,78 +54,82 @@ module.exports = window['ui'] = new class UI
 		return render
 
 
-	directive: (directive)->
+	@directive: (directive)->
 		@directives.push(directive)
 		return
 
 
-	component: (component)->
+	@component: (component)->
 		@components.push(component)
 		return
 
 
-	pipe: (name, pipe)->
+	@pipe: (name, pipe)->
 		return Exp.addPipe(name, pipe)
 
 
-	global: (name, value)->
+	@global: (name, value)->
 		return @globals[name] = value
 
 
-	watch: (context, exp, handler, scope, firstCall = on)->
+	@watch: (context, exp, handler, scope, firstCall = on)->
 		return new ExpObserver(context, exp, handler, scope, firstCall)
 
 
-	watchArray: (arr, handler)->
+	@watchArray: (arr, handler)->
 		return  new ArrayObserver(arr, handler)
 
 
-	diff: (arr, oldArr)->
+	@diff: (arr, oldArr)->
 		return ArrayObserver.diff(arr, oldArr)
 
 
-	bind: (objL, expL, objR, expR, scope)->
+	@bind: (objL, expL, objR, expR, scope)->
 		return new DataBind(objL, expL, objR, expR, scope)
 
 
-	eval: (context, exp, scope)->
+	@eval: (context, exp, scope)->
 		exp = new Exp(exp)
 		return exp(context, scope)
 
 
-	set: (context, exp, value, scope)->
+	@set: (context, exp, value, scope)->
 		exp = new Exp(exp)
 		return exp.set(context, value, scope)
 
 
-	frame: (handler, element)->
+	@frame: (handler, element)->
 		return animationFrame(handler, element)
 
 
-	immediate: (handler)->
+	@stopFrame: (id)->
+		return animationFrame.stop(id)
+
+
+	@immediate: (handler)->
 		return immediate(handler)
 
 
-	timeout: (handler, time)->
+	@timeout: (handler, time)->
 		if typeof time is 'function'
 			[handler,time] = [handler, time]
 		return setTimeout(handler, time)
 
 
-	on: (event, handler)->
+	@on: (event, handler)->
 		return ui.dom.on(event, handler)
 
 
-	init: (handler)->
+	@init: (handler)->
 		ui.dom.on('DOMContentLoaded', handler)
 		return
 
 
-	resize: (handler)->
+	@resize: (handler)->
 		return ui.dom.on('resize', handler)
 
 
-	imageInfo: (src, handler)->
+	@imageInfo: (src, handler)->
 		img = document.createElement('img')
 		img.onload = ->
 			info = {width: img.naturalWidth, height: img.naturalHeight}

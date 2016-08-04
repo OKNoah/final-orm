@@ -179,9 +179,12 @@ module.exports = Tree = (function() {
       return component;
     }
     if (this.SubComponent) {
-      subComponent = this.SubComponent.init(node, component.app);
-      this.initLinks(subComponent, scope);
-      this.initProps(subComponent, component, scope);
+      subComponent = this.SubComponent.init(node, component.app, this, component, scope, (function(_this) {
+        return function(instance) {
+          _this.initLinks(instance, scope);
+          return _this.initProps(instance, component, scope);
+        };
+      })(this));
     } else {
       this.initLinks(node, scope);
       this.initProps(node, component, scope);

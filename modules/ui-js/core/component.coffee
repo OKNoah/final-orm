@@ -149,10 +149,10 @@ module.exports = class Component
 		return
 
 
-	@init: (host, app)->
-		children = @createTemplateNodes()
+	@init: (host, app, parentTree = null, parentComponent = null, parentScope = null, beforeConstruct = null)->
+		templateNodes = @createTemplateNodes()
 		shadowRoot = host.createShadowRoot(@id)
-		shadowRoot.html(children)
+		shadowRoot.html(templateNodes)
 
 		component = Object.create(@prototype)
 		scope = Object.create(ui.globals)
@@ -160,9 +160,14 @@ module.exports = class Component
 		@define(component, 'host', host)
 		@define(component, 'scope', scope)
 		@define(component, 'app', app or component)
+
+		@define(component, '$parentTree', parentTree)
+		@define(component, '$parentComponent', parentComponent)
+		@define(component, '$parentScope', parentScope)
 		host.component = component
 
 		# construct
+		beforeConstruct?(component)
 		component.constructor()
 
 		@tree.init(shadowRoot, component, scope)
@@ -171,7 +176,7 @@ module.exports = class Component
 		host.one 'destroy', =>
 			component.destructor?()
 			index = @initedComponents.indexOf(component)
-			@initedComponents.splice(index, 1)
+			if index isnt -1  then @initedComponents.splice(index, 1)
 			return
 
 		return component
@@ -190,9 +195,9 @@ module.exports = class Component
 			scope = component.scope
 			host.destroyShadowRoot()
 
-			children = @createTemplateNodes()
+			templateNodes = @createTemplateNodes()
 			shadowRoot = host.createShadowRoot(@id)
-			shadowRoot.html(children)
+			shadowRoot.html(templateNodes)
 
 			@tree.init(shadowRoot, component, scope)
 		return
@@ -200,12 +205,22 @@ module.exports = class Component
 
 	@reload: ->
 		@compile()
+		# TODO replace @initedComponents to Map
 		for component in @initedComponents.slice()
 			host = component.host
 			app = component.app
-			host.destroy(no)
+			parentTree = component.$parentTree
+			parentComponent = component.$parentComponent
+			parentScope = component.$parentScope
+
+			newHost = host.clone()
+			host.before(newHost)
+			host.destroy()
 			host.destroyShadowRoot()
-			@init(host, app)
+			host.remove()
+
+			component.host = newHost
+			parentTree.init(newHost, parentComponent, parentScope)
 		return
 
 

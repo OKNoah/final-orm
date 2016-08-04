@@ -261,7 +261,7 @@ module.exports = DOMRender = (function() {
       this.splitTextNodes(realNode, renderResult);
     }
     node = renderResult.node;
-    node.init(realNode);
+    node.setRealNode(realNode);
     realNode.renderResult = renderResult;
     if (node.tag === 'input') {
       this.updateInputValue(node, realNode);

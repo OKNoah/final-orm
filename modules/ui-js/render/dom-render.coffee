@@ -208,7 +208,7 @@ module.exports = class DOMRender
 			@splitTextNodes(realNode, renderResult)
 
 		node = renderResult.node
-		node.init(realNode)
+		node.setRealNode(realNode)
 		realNode.renderResult = renderResult
 
 		if node.tag is 'input' then @updateInputValue(node, realNode)

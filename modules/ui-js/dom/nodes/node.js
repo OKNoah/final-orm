@@ -23,9 +23,13 @@ module.exports = Node = (function(superClass) {
     return;
   }
 
-  Node.prototype.init = function(realNode) {
+  Node.prototype.setRealNode = function(realNode) {
     this.realNode = realNode;
-    this.emit('init', this.realNode);
+    ui.frame((function(_this) {
+      return function() {
+        return _this.emit('init');
+      };
+    })(this));
   };
 
   Node.prototype.observe = function(observer) {

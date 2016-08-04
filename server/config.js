@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     port: 8080,
-    database: 'fvd',
+    database: 'test',
     storage: 'C:/localhost/ui-js/build/roulette/storage/'
 };
 

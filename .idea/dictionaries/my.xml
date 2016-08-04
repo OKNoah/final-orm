@@ -13,6 +13,7 @@
       <w>bezier</w>
       <w>bgsound</w>
       <w>circ</w>
+      <w>contextmenu</w>
       <w>cooldown</w>
       <w>crement</w>
       <w>crypto</w>
@@ -25,6 +26,7 @@
       <w>dragend</w>
       <w>dragstart</w>
       <w>dragstop</w>
+      <w>ecma</w>
       <w>extname</w>
       <w>filepath</w>
       <w>github</w>
@@ -55,6 +57,7 @@
       <w>ormjs</w>
       <w>pagedown</w>
       <w>pageup</w>
+      <w>phong</w>
       <w>pids</w>
       <w>polyfill</w>
       <w>polyfills</w>
@@ -67,6 +70,7 @@
       <w>skype</w>
       <w>sourcemaps</w>
       <w>srcs</w>
+      <w>standart</w>
       <w>styl</w>
       <w>templ</w>
       <w>textarea</w>
