@@ -31,7 +31,7 @@ export default class FieldType extends Field {
 		if (this.internal) return
 		let value = this.getByPath(data)
 
-		// if (this.isOptional(value)) return
+		if (this.isOptional(value)) return
 
 		if (!this.validateValue(value, basePath)) {
 			this.typeError(this.type, value, basePath)
