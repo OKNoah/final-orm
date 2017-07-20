@@ -1,1 +1,0 @@
-{"version":3,"sources":["index.es6"],"names":[],"mappings":";;AAAA;;AAEA;;AACA;;AAEA,QAAQ,GAAR,CAAY,gBAAZ","file":"index.js","sourcesContent":["import 'babel-polyfill'\r\n\r\nimport './api/user'\r\nimport './api/sector'\r\n\r\nconsole.log('server started')\r\n\r\n\r\n\r\n"]}

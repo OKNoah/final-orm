@@ -1,1 +1,0 @@
-{"version":3,"sources":["validation-error.es6"],"names":[],"mappings":";;;;;;;;;;;;IAAqB,e;;;;;;;;;;;;;;2MAEpB,I,GAAO,iB;;;;EAFqC,K;;kBAAxB,e","file":"validation-error.js","sourcesContent":["export default class ValidationError extends Error {\r\n\r\n\tname = 'ValidationError'\r\n\r\n}\r\n\r\n"]}

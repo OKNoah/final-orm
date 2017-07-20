@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="TypeScriptCompiler">
-    <option name="typeScriptCompilerParams" value="--target es5 --moduleResolution node" />
-    <option name="mainFilePath" value="C:\localhost\ui-js\server\index.ts" />
-    <option name="useMainFile" value="true" />
-    <option name="useConfig" value="true" />
-  </component>
-</project>
