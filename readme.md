@@ -44,7 +44,16 @@ Basic usage:
 create init class model.js
 ```javascript
 var orm = require('ormjs')
-var options = {database: 'test'}
+var options = {
+  database: 'test', // db name
+  // You can initialize the database using a url.
+  url: 'http://root:@localhost:8529',
+  // Or supply each of these values. You do not need both.
+  host: 'localhost',
+  port: '8529',
+  username: 'root',
+  password: ''
+}
 var Model = orm.connect(options)
 export default Model
 ```
