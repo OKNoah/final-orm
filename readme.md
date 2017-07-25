@@ -54,10 +54,15 @@ var options = {
   username: 'root',
   password: ''
 }
-var Model = orm.connect(options)
+
+var { Model, Edge } = orm.connect(options)
+
 export default Model
+
+export { Model, Edge }
 ```
-orm.connect() return Model class, and you need export and extend it
+
+`orm.connect()` returns `Model` and `Edge` classes, and you need export and extend it
 
 
 Define collection User (class name will be collection name)

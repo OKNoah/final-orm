@@ -1,5 +1,5 @@
 import arangojs from 'arangojs'
-import Schema from './schema'
+import Schema from '../schemas/schema'
 
 export default class Model {
   static options = null // connection options
@@ -53,7 +53,7 @@ export default class Model {
     try {
       await collection.create()
       await this._setIndexes(collection)
-    } catch () {
+    } catch (e) {
     }
     return this._collection = collection
   }
@@ -205,4 +205,3 @@ export default class Model {
     return this.constructor.restore(this)
   }
 }
-

@@ -1,4 +1,4 @@
-import Schema from '../schema'
+import Schema from '../schemas/schema'
 import Field from './field'
 
 export default class FieldSchemas extends Field {
@@ -22,14 +22,14 @@ export default class FieldSchemas extends Field {
     })
   }
 
-  convertToModelValue(array) {
+  convertToModelValue (array) {
     return array.map(document => {
       const model = {}
       return this.schema.documentToModel(model, document)
     })
   }
 
-  convertToDocumentValue(array) {
+  convertToDocumentValue (array) {
     return array.map(model => {
       const document = {}
       return this.schema.modelToDocument(model, document)

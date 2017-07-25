@@ -1,9 +1,9 @@
-import Model from './model'
-import FieldType from './fields/field-type'
-import FieldTypes from './fields/field-types'
-import FieldModel from './fields/field-model'
-import FieldModels from './fields/field-models'
-import FieldSchemas from './fields/field-schemas'
+import Model from '../models/model'
+import FieldType from '../fields/field-type'
+import FieldTypes from '../fields/field-types'
+import FieldModel from '../fields/field-model'
+import FieldModels from '../fields/field-models'
+import FieldSchemas from '../fields/field-schemas'
 
 export default class Schema {
   constructor (userSchema, basePath = [], isRootSchema = true) {
@@ -88,4 +88,3 @@ export default class Schema {
     return this.fields.values()
   }
 }
-
