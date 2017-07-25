@@ -1,15 +1,11 @@
 import FieldModel from './field-model'
 import Model from "../model"
 
-
 export default class FieldModels extends FieldModel {
-
-
 	constructor(basePath, path, Model, options, internal = false) {
 		super(basePath, path, Model, options, internal)
 		this.arraySymbol = Symbol()
 	}
-
 
 	validate(data, basePath) {
 		if (this.internal) return
@@ -25,7 +21,6 @@ export default class FieldModels extends FieldModel {
 		this.validateRealArray(array, basePath)
 	}
 
-
 	validateRealArray(array, basePath) {
 		if (!Array.isArray(array)) {
 			this.typeError(Array, array, basePath)
@@ -38,13 +33,11 @@ export default class FieldModels extends FieldModel {
 		})
 	}
 
-
 	documentToModel(model, document) {
 		let arrayIds = this.getByPath(document)
 		this.setBySymbol(model, this.symbol, arrayIds)
 		this.setAccessorByPath(model)
 	}
-
 
 	modelToDocument(model, document) {
 		if (this.internal) return
@@ -59,7 +52,6 @@ export default class FieldModels extends FieldModel {
 		}
 	}
 
-
 	getActualIds(model) {
 		var realArray = this.getBySymbol(model, this.arraySymbol)
 		if (realArray) {
@@ -70,12 +62,10 @@ export default class FieldModels extends FieldModel {
 		}
 	}
 
-
 	setAccessorByPath(model) {
 		this.setBySymbol(model, this.arraySymbol, null)
 		super.setAccessorByPath(model)
 	}
-
 
 	async fieldGetter(model) {
 		let realArray = this.getBySymbol(model, this.arraySymbol)
@@ -86,7 +76,6 @@ export default class FieldModels extends FieldModel {
 		return realArray
 	}
 
-
 	async getRealModels(arrayIds) {
 		let resultModels = await this.Model.getArr(arrayIds)
 		let subModels = {}
@@ -96,15 +85,8 @@ export default class FieldModels extends FieldModel {
 		return arrayIds.map(id => subModels[id])
 	}
 
-
 	fieldSetter(model, realArray) {
 		this.validateRealArray(realArray)
 		this.setBySymbol(model, this.arraySymbol, realArray)
 	}
-
-
 }
-
-
-
-

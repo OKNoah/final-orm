@@ -1,24 +1,17 @@
 ORMjs this is javascript OOP interface to Database.
-Its use ArangoDB, but later I will add drivers for other databases (such as mongodb).
+It uses ArangoDB, but later I will add drivers for other databases (such as mongodb).
 
 GitHub https://github.com/uMaxmaxmaximus/ui-js/tree/master/server/core/orm
 
-Conception: Using the ES7 operator `await`, `getters` and `promises`,
-we can navigate the graph objects tree.
+Conception: Using the ES7 operator `await`, `getters` and `promises`, we can navigate the graph objects tree.
 
-It recommended for use with the ES7 (async await) For a more beautiful syntax.
-BUT you can use and ES5.
+It recommended for use with the ES7 (async await) For a more beautiful syntax. BUT you can use and ES5.
 
-I think this is epic =) It is very very very very very elegant API for databases.
-What do you think about it? =)
+I think this is epic =) It is very very very very very elegant API for databases. What do you think about it? =)
 
-This is part of a large project, but I upload it to npm as a separate module.
-May be it will be useful to someone.
-
+This is part of a large project, but I upload it to npm as a separate module. May be it will be useful to someone.
 
 It uses ArangoDB https://www.arangodb.com/2015/10/benchmark-postgresql-mongodb-arangodb/
-
-
 
 API
 ---
@@ -37,7 +30,7 @@ Model.count(selector) // return count models matches of selector
 Model.have(selector) // returns true if there is at least one model suitable for selector
 ```
 
-instance
+instance:
 ```javascript
 Model.prototype.save() // alias  Model.save(this)
 Model.prototype.update() // alias  Model.update(this)
@@ -146,27 +139,25 @@ Usage:
 }())
 ```
 
-Example 1:
+Example 1: Instance methods
 ---
+
 ```javascript
 import Model from './model.js'
 
 
 class User extends Model {
-
   static schema = {
     name: String,
     age: Number,
     friends: [User]
   }
 
-
   async addFriend(user) {
     var friends = await this.friends
     friends.push(user)
     await this.save()
   }
-
 
   async removeAllFriends(){
     this.friends = []
@@ -197,6 +188,8 @@ Usage:
 
   user.name = 22
   await user.save() // ValidationError: Field `name` must be String, but have Number
+
+  await user.removeAllFriends() // since this method uses this.update, you must do user.save() first
 
 })()
 ```

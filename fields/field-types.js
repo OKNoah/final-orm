@@ -2,14 +2,11 @@ import FieldType from './field-type'
 
 
 export default class FieldTypes extends FieldType {
-
-
-	constructor(basePath, path, type, options, internal) {
+	constructor (basePath, path, type, options, internal) {
 		super(basePath, path, type, options, internal)
 	}
 
-
-	validate(data, basePath) {
+	validate (data, basePath) {
 		if (this.internal) return
 		let array = this.getByPath(data)
 
@@ -24,19 +21,16 @@ export default class FieldTypes extends FieldType {
 		})
 	}
 
-
-	convertToModelValue(array) {
+	convertToModelValue (array) {
 		return array.map(value =>
 			super.convertToModelValue(value)
 		)
 	}
 
-
-	convertToDocumentValue(array) {
+	convertToDocumentValue (array) {
 		return array.map(value =>
 			super.convertToDocumentValue(value)
 		)
 	}
-
 }
 
