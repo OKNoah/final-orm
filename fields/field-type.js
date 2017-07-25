@@ -1,17 +1,13 @@
 import Field from './field'
 
-
 export default class FieldType extends Field {
-
-
-	constructor(basePath, path, type, options, internal = false) {
+	constructor (basePath, path, type, options, internal = false) {
 		super(basePath, path, options, internal)
 		this.checkType(type)
 		this.type = type
 	}
 
-
-	checkType(type) {
+	checkType (type) {
 		if (type === Boolean) return
 		if (type === String) return
 		if (type === Number) return
@@ -26,8 +22,7 @@ export default class FieldType extends Field {
 		}
 	}
 
-
-	validate(data, basePath) {
+	validate (data, basePath) {
 		if (this.internal) return
 		let value = this.getByPath(data)
 
@@ -38,8 +33,7 @@ export default class FieldType extends Field {
 		}
 	}
 
-
-	validateValue(value, basePath) {
+	validateValue (value, basePath) {
 		let type = this.type
 		let options = this.options
 
@@ -59,11 +53,9 @@ export default class FieldType extends Field {
 			default:
 				return value instanceof type
 		}
-
 	}
 
-
-	validateNumber(value, options, basePath) {
+	validateNumber (value, options, basePath) {
 		if (typeof value !== 'number') return false
 
 		if (!Number.isFinite(value)) {
@@ -78,8 +70,7 @@ export default class FieldType extends Field {
 		return true
 	}
 
-
-	validateString(value, options, basePath) {
+	validateString (value, options, basePath) {
 		if (typeof value !== 'string') return false
 
 		if ('regExp' in options) if (!options.regExp.test(value)) {
@@ -94,8 +85,7 @@ export default class FieldType extends Field {
 		return true
 	}
 
-
-	validateEnum(value, options, basePath) {
+	validateEnum (value, options, basePath) {
 		let enums = options.enum
 		if (enums.indexOf(value) === -1) {
 			let enumText = JSON.stringify(enums)
@@ -105,8 +95,7 @@ export default class FieldType extends Field {
 		}
 	}
 
-
-	validateSet(value, options, basePath) {
+	validateSet (value, options, basePath) {
 		if (!(value instanceof Set)) return false
 		if ('set' in options) {
 			let sets = options.set
@@ -122,8 +111,7 @@ export default class FieldType extends Field {
 		return true
 	}
 
-
-	convertToModelValue(value) {
+	convertToModelValue (value) {
 		if (value == null) return value
 		let type = this.type
 
@@ -143,8 +131,7 @@ export default class FieldType extends Field {
 		return type.fromJSON(value)
 	}
 
-
-	convertToDocumentValue(value) {
+	convertToDocumentValue (value) {
 		if (value == null) return value
 
 		switch (this.type) {
@@ -163,9 +150,4 @@ export default class FieldType extends Field {
 		// for custom types
 		return value.toJSON()
 	}
-
-
 }
-
-
-

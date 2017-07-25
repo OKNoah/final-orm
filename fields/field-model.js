@@ -1,16 +1,12 @@
 import Field from './field'
 import Model from "../model"
 
-
 export default class FieldModel extends Field {
-
-
 	constructor(basePath, path, Model, options, internal = false) {
 		super(basePath, path, options, internal)
 		this.Model = Model
 		this.symbol = Symbol()
 	}
-
 
 	validate(data, basePath) {
 		if (this.internal) return
@@ -22,18 +18,15 @@ export default class FieldModel extends Field {
 		}
 	}
 
-
 	validateValue(value) {
 		return value instanceof this.Model
 	}
-
 
 	documentToModel(model, document) {
 		let id = this.getByPath(document)
 		this.setBySymbol(model, this.symbol, id)
 		this.setAccessorByPath(model)
 	}
-
 
 	modelToDocument(model, document) {
 		if (this.internal) return
@@ -47,7 +40,6 @@ export default class FieldModel extends Field {
 			this.setByPath(document, id)
 		}
 	}
-
 
 	setAccessorByPath(model) {
 		let path = this.path.slice()
@@ -67,12 +59,10 @@ export default class FieldModel extends Field {
 		})
 	}
 
-
 	fieldGetter(model) {
 		let id = this.getBySymbol(model, this.symbol)
 		return this.Model.get(id)
 	}
-
 
 	fieldSetter(model, value) {
 		if (!this.validateValue(value)) {
@@ -82,7 +72,6 @@ export default class FieldModel extends Field {
 		this.setBySymbol(model, this.symbol, id)
 	}
 
-
 	getBySymbol(context, symbol) {
 		let path = this.path.slice(0, -1)
 
@@ -91,7 +80,6 @@ export default class FieldModel extends Field {
 		}
 		return context[symbol]
 	}
-
 
 	setBySymbol(context, symbol, value) {
 		let path = this.path.slice(0, -1)
@@ -103,9 +91,4 @@ export default class FieldModel extends Field {
 
 		return context[symbol] = value
 	}
-
 }
-
-
-
-

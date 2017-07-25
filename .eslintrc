@@ -1,0 +1,33 @@
+{
+  "extends": ["eslint:recommended"],
+  // "plugins": ["async-await"],
+  "root": true,
+  "globals": {
+    "Symbol": false,
+    "Set": false
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "generators": true,
+      "spread": true,
+      "restParams": true,
+      "experimentalObjectRestSpread": true,
+      "async": true
+    }
+  },
+  "rules": {
+    "comma-dangle": [1, "never"],
+    "key-spacing": [0, {
+      "beforeColon": true,
+      "afterColon": true
+    }],
+    "space-before-function-paren": [2, "always"],
+    "spaced-comment": 0,
+    "max-len": 0,
+    "semi": 0,
+    "arrow-parens": 0
+  }
+}

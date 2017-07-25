@@ -1,47 +1,38 @@
 import Schema from '../schema'
 import Field from './field'
 
-
 export default class FieldSchemas extends Field {
+  constructor (basePath, path, userSchema, options, internal) {
+    super(basePath, path, options, internal)
+    this.schema = new Schema(userSchema, [...basePath, ...path, '..'], false)
+  }
 
+  validate (data, basePath) {
+    if (this.internal) return
+    const array = this.getByPath(data)
 
-	constructor(basePath, path, userSchema, options, internal) {
-		super(basePath, path, options, internal)
-		this.schema = new Schema(userSchema, [...basePath, ...path, '..'], false)
-	}
+    if (!Array.isArray(array)) {
+      this.typeError(Array, array, basePath)
+    }
 
+    array.forEach((value, index) => {
+      if (value !== Object(value)) this.typeError(Object, value, basePath, [index])
+      const subPath = [...basePath, ...this.path, index]
+      this.schema.validate(value, subPath)
+    })
+  }
 
-	validate(data, basePath) {
-		if (this.internal) return
-		let array = this.getByPath(data)
+  convertToModelValue(array) {
+    return array.map(document => {
+      const model = {}
+      return this.schema.documentToModel(model, document)
+    })
+  }
 
-		if (!Array.isArray(array)) {
-			this.typeError(Array, array, basePath)
-		}
-
-		array.forEach((value, index) => {
-			if (value !== Object(value)) this.typeError(Object, value, basePath, [index])
-			let subPath = [...basePath, ...this.path, index]
-			this.schema.validate(value, subPath)
-		})
-
-	}
-
-
-	convertToModelValue(array) {
-		return array.map(document => {
-			let model = {}
-			return this.schema.documentToModel(model, document)
-		})
-	}
-
-
-	convertToDocumentValue(array) {
-		return array.map(model => {
-			let document = {}
-			return this.schema.modelToDocument(model, document)
-		})
-	}
-
+  convertToDocumentValue(array) {
+    return array.map(model => {
+      const document = {}
+      return this.schema.modelToDocument(model, document)
+    })
+  }
 }
-
