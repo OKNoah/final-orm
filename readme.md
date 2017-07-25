@@ -84,7 +84,11 @@ class User extends Model {
 		name: String,
 		name: {$type: String},
 		name: {$type: String, test: /^\w+$/},
-		status: {$type: String, enum: ['sleep', 'eat']}, // enum
+		status: {
+      $type: String,
+      enum: ['sleep', 'eat'], // enum
+      optional: true // allows null value
+    }
 	}
 
 }

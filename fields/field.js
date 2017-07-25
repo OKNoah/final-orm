@@ -15,7 +15,7 @@ export default class Field {
 
 
 	isOptional(value) {
-		return (value == null) && this.options.optional
+		return (!value) && this.options.optional
 	}
 
 

@@ -1,7 +1,8 @@
 {
   "name": "ormjs",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "scripts": {
+    "prepublish": "npm build",
     "build": "./node_modules/babel-cli/bin/babel.js . -d dist --ignore node_modules dist"
   },
   "main": "dist/index.js",
