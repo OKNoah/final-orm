@@ -2,7 +2,7 @@ import Schema from '../schemas/schema'
 import FieldType from '../fields/field-type'
 
 export default class EdgeSchema extends Schema {
-  constructor (userSchema, basePath = [], isRootSchema = true) {
+  constructor (userSchema = null, basePath = [], isRootSchema = true) {
     super(userSchema, basePath, isRootSchema)
 
     if (isRootSchema) {

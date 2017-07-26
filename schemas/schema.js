@@ -6,7 +6,7 @@ import FieldModels from '../fields/field-models'
 import FieldSchemas from '../fields/field-schemas'
 
 export default class Schema {
-  constructor (userSchema, basePath = [], isRootSchema = true) {
+  constructor (userSchema = null, basePath = [], isRootSchema = true) {
     this.basePath = basePath
     this.fields = this.parseUserSchema(userSchema)
 
