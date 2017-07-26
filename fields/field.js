@@ -29,7 +29,7 @@ export default class Field {
     return normalOptions
   }
 
-  checkPath(path, basePath) {
+  checkPath (path, basePath) {
     for (const prop of path) {
       const match = prop.match(/^([_$])/)
       if (match) {
@@ -39,7 +39,7 @@ export default class Field {
     }
   }
 
-  pathsToString(subPaths) {
+  pathsToString (subPaths) {
     const props = [].concat(...subPaths)
 
     const prettyPath = props.map((prop, index)=> {
@@ -51,56 +51,56 @@ export default class Field {
     return prettyPath
   }
 
-  valueToString(value) {
+  valueToString (value) {
     if (Object(value) === value) return value.constructor.name
     if (typeof value === 'string') return `'${value}'`
     return value
   }
 
-  typeError(type, value, basePath, subPath) {
+  typeError (type, value, basePath, subPath) {
     var valueText = this.valueToString(value)
     const message = `must be ${type.name}, but have ${valueText}`
     this.throwError(message, basePath, subPath)
   }
 
-  throwError(message, basePath = this.basePath, subPath = []) {
+  throwError (message, basePath = this.basePath, subPath = []) {
     const subPaths = [basePath, this.path, subPath]
     const pathString = this.pathsToString(subPaths)
     throw new ValidationError(`Field '${pathString}' ${message}`)
   }
 
-  documentToModel(model, document) {
+  documentToModel (model, document) {
     let value = this.getByPath(document)
     value = this.convertToModelValue(value)
     this.setByPath(model, value)
   }
 
-  modelToDocument(mode, document) {
-    let value = this.getByPath(mode)
+  modelToDocument (model, document) {
+    let value = this.getByPath(model)
     value = this.convertToDocumentValue(value)
     this.setByPath(document, value)
   }
 
-  validate() {
+  validate () {
     throw 'validate is just virtual method'
   }
 
-  convertToModelValue() {
+  convertToModelValue () {
     throw 'convertToModelValue is just virtual method'
   }
 
-  convertToDocumentValue() {
+  convertToDocumentValue () {
     throw 'convertToDocumentValue is just virtual method'
   }
 
-  getByPath(context) {
+  getByPath (context) {
     for (const prop of this.path) {
       context = context[prop]
     }
     return context
   }
 
-  setByPath(context, value) {
+  setByPath (context, value) {
     const path = this.path.slice()
     const lastProp = path.pop()
 

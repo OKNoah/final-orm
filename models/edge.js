@@ -1,6 +1,5 @@
 import Model from './model'
 import EdgeSchema from '../schemas/edgeSchema'
-import FieldType from '../fields/field-type'
 
 export default class Edge extends Model {
   static _normalSchema = null
@@ -11,6 +10,10 @@ export default class Edge extends Model {
       this._normalSchema = new EdgeSchema(this.schema)
     }
     return this._normalSchema
+  }
+
+  static _getDocument (documentHandle) {
+    return this._call('edge', documentHandle)
   }
 
   static async _getCollection () {
@@ -36,7 +39,7 @@ export default class Edge extends Model {
     data._from = typeof from === 'object' ? from._id : from
     data._to = typeof to === 'object' ? to._id : to
     const documentHandle = await this._call('save', data)
-    const document = await this._call('document', documentHandle)
+    const document = await this._call('edge', documentHandle)
     return this._createModelByDocument(document)
   }
 }
