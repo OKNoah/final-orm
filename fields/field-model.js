@@ -1,5 +1,5 @@
 import Field from './field'
-import Model from "../model"
+import Model from '../models/model'
 
 export default class FieldModel extends Field {
 	constructor(basePath, path, Model, options, internal = false) {

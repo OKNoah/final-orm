@@ -4,7 +4,10 @@
   "root": true,
   "globals": {
     "Symbol": false,
-    "Set": false
+    "Set": false,
+    "test": false,
+    "expect": false,
+    "process": false
   },
   "parser": "babel-eslint",
   "parserOptions": {
