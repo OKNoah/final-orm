@@ -1,17 +1,12 @@
-ORMjs this is javascript OOP interface to Database.
-It uses ArangoDB, but later I will add drivers for other databases (such as mongodb).
+ORMjs this is javascript OOP interface for ArangoDB
 
-GitHub https://github.com/uMaxmaxmaximus/ui-js/tree/master/server/core/orm
+Based off of part of the ui-js code found here: https://github.com/uMaxmaxmaximus/ui-js/tree/master/server/core/orm
 
 Conception: Using the ES7 operator `await`, `getters` and `promises`, we can navigate the graph objects tree.
 
-It recommended for use with the ES7 (async await) For a more beautiful syntax. BUT you can use and ES5.
+It recommended for use with the ES7 (async await) For a more beautiful syntax. BUT you can use ES5.
 
-I think this is epic =) It is very very very very very elegant API for databases. What do you think about it? =)
-
-This is part of a large project, but I upload it to npm as a separate module. May be it will be useful to someone.
-
-It uses ArangoDB https://www.arangodb.com/2015/10/benchmark-postgresql-mongodb-arangodb/
+Never heard of ArangoDB? Check out these benchmarks: https://www.arangodb.com/2015/10/benchmark-postgresql-mongodb-arangodb/
 
 API
 ---
@@ -65,12 +60,12 @@ export { Model, Edge }
 `orm.connect()` returns `Model` and `Edge` classes, and you need export and extend it
 
 
-Define collection User (class name will be collection name)
+Define collection User (class name will be collection name), and edge collection "Like"
+
 ```javascript
-import Model from './model.js'
+import { Model, Edge } from './model.js'
 
 class User extends Model {
-
 	static schema = {
 		// basic types
 		name: String,
@@ -97,7 +92,12 @@ class User extends Model {
       optional: true // allows null value
     }
 	}
+}
 
+class Like extends Edge {
+  static schema = {
+    date: Date
+  }
 }
 ```
 
@@ -149,6 +149,11 @@ Usage:
 	await user.save() // save changes to db
 	await user.update() // load state from db
 	user.name // 'Ololo' because we save
+
+  // like via edge collection
+  const rose = await User.findOne({ name: 'Rose' })
+  // in edge collections, the usage is Edge.add(from, to, data)
+  Like.add(rose, user, { date: new Date() })
 
 }())
 ```

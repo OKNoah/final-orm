@@ -8,6 +8,12 @@
     "test": "./node_modules/jest/bin/jest.js",
     "postinstall": "npm run babel-build"
   },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ]
+  },
   "main": "dist/index.js",
   "keywords": [
     "database",

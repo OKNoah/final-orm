@@ -1,6 +1,0 @@
-{
-  "coveragePathIgnorePatterns": [
-    "/node_modules/",
-    "/dist/"
-  ]
-}

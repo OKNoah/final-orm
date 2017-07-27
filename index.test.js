@@ -53,3 +53,10 @@ test('create edge collection relationship', async () => {
   expect(await Likes.add(user, post, { date: Date() }))
   .toHaveProperty('_from')
 })
+
+test('find edge collections by example', async () => {
+  const user = await User.findOne({ name: username })
+  const edge = await Likes.findOne({ _from: user._id })
+
+  expect(edge).toHaveProperty('_from')
+})
