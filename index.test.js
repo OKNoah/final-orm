@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { randomBytes } from 'crypto'
-import ormjs from './index'
+import ormjs from './dist'
 
 dotenv.config()
 
