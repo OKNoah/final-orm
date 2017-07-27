@@ -15,7 +15,14 @@ const db = ormjs.connect({
 class User extends db.Model {
   static schema = {
     name: String,
-    created: String
+    created: String,
+    friends: { $type: [User], optional: true }
+  }
+
+  async addFriend (friend) {
+    const friends = await this.friends
+    friends.push(friend)
+    this.save()
   }
 }
 
@@ -37,7 +44,11 @@ test('initialize ormjs', () => {
 })
 
 test('create new model instance', async () => {
-  expect(await User.add({ name: username, created: Date() }))
+  expect(await User.add({
+    name: username,
+    created: Date(),
+    friends: []
+  }))
   .toHaveProperty('_id')
 })
 
@@ -59,4 +70,11 @@ test('find edge collections by example', async () => {
   const edge = await Likes.findOne({ _from: user._id })
 
   expect(edge).toHaveProperty('_from')
+})
+
+test('add subdocument with instance method', async () => {
+  const user = await User.findOne({ name: username })
+  await user.addFriend(user)
+
+  expect(user.friends).toHaveLength(1)
 })
