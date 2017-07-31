@@ -1,6 +1,6 @@
 {
   "name": "ormjs",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "scripts": {
     "prepublish": "npm run build",
     "babel-build": "./node_modules/.bin/babel . -d dist --ignore dist",
