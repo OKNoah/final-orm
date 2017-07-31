@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { randomBytes } from 'crypto'
-import ormjs from './dist'
+import ormjs from './index'
 
 dotenv.config()
 
@@ -15,7 +15,8 @@ const db = ormjs.connect({
 class User extends db.Model {
   static schema = {
     name: String,
-    created: String
+    created: String,
+    friends: { $type: [String], optional: true }
   }
 }
 
