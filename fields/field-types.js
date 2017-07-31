@@ -9,6 +9,9 @@ export default class FieldTypes extends FieldType {
 	validate (data, basePath) {
 		if (this.internal) return
 		let array = this.getByPath(data)
+		if (!array && this.options.optional) {
+			return
+		}
 
 		if (!Array.isArray(array)) {
 			this.typeError(Array, array, basePath)
@@ -22,12 +25,20 @@ export default class FieldTypes extends FieldType {
 	}
 
 	convertToModelValue (array) {
+		if (!array && this.options.optional) {
+			return
+		}
+
 		return array.map(value =>
 			super.convertToModelValue(value)
 		)
 	}
 
 	convertToDocumentValue (array) {
+		if (!array && this.options.optional) {
+			return
+		}
+
 		return array.map(value =>
 			super.convertToDocumentValue(value)
 		)
