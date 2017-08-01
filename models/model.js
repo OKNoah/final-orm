@@ -1,5 +1,6 @@
 import arangojs from 'arangojs'
 import Schema from '../schemas/schema'
+import { pick } from 'lodash'
 
 export default class Model {
   static options = null // connection options
@@ -161,19 +162,23 @@ export default class Model {
     return this.save(model)
   }
 
-  static async find (selector, skip = 0, limit = 100) {
+  static async find (selector, skip = 0, limit = 100, options = {}) {
     if (!selector) selector = {}
     limit = Math.min(Math.max(limit, 0), 100)
     selector._removed = false
     const cursor = await this._call('byExample', selector, {skip, limit})
     const documents = await cursor.all()
     return documents.map(document => {
-      return this._createModelByDocument(document)
+      let doc = null
+      if (options.$attributes) {
+        doc = pick(document, options.$attributes)
+      }
+      return this._createModelByDocument(doc || document)
     })
   }
 
-  static async findOne (selector, skip = 0) {
-    const models = await this.find(selector, skip, 1)
+  static async findOne (selector, options = {}) {
+    const models = await this.find(selector, 0, 1, options)
     const model = models[0]
     return model || null
   }

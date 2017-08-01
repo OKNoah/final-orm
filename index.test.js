@@ -61,3 +61,13 @@ test('find edge collections by example', async () => {
 
   expect(edge).toHaveProperty('_from')
 })
+
+test('find only certain attributes', async () => {
+  const user = await User.findOne({
+    name: username
+  }, {
+    $attributes: ['_id', 'created']
+  })
+
+  expect(user.name).toBe(undefined)
+})
