@@ -15,6 +15,8 @@ export default class Schema {
       this.fields.push(new FieldType(basePath, ['_key'], String, null, true))
       this.fields.push(new FieldType(basePath, ['_rev'], String, null, true))
       this.fields.push(new FieldType(basePath, ['_removed'], Boolean, null, true))
+      this.fields.push(new FieldType(basePath, ['createdAt'], String, null, true))
+      this.fields.push(new FieldType(basePath, ['updatedAt'], String, null, true))
     }
   }
 

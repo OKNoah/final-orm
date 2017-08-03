@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import { randomBytes } from 'crypto'
 import ormjs from './index'
+import moment from 'moment'
 
 dotenv.config()
 
@@ -43,7 +44,7 @@ test('create new model instance', async () => {
 })
 
 test('create test post', async () => {
-  expect(await Post.add({ body: 'This is a test post' }))
+  expect(await Post.add({ body: username }))
   .toHaveProperty('_id')
 })
 
@@ -70,4 +71,24 @@ test('find only certain attributes', async () => {
   })
 
   expect(user.name).toBe(undefined)
+})
+
+test('make sure all documents have createdAt field', async () => {
+  const user = await User.findOne({
+    name: username
+  })
+
+  expect(user).toHaveProperty('createdAt')
+  expect(moment(user.createdAt).isValid()).toBe(true)
+})
+
+test('make sure all documents have updateddAt field', async () => {
+  const post = await Post.findOne({
+    body: username
+  })
+
+  post.body = 'Updated!'
+
+  expect(post).toHaveProperty('updatedAt')
+  expect(moment(post.updatedAt).isValid()).toBe(true)
 })

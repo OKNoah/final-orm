@@ -121,6 +121,7 @@ export default class Model {
     this._validate(data)
     data = this._modelToDocument(data)
     data._removed = false
+    data.createdAt = new Date().toISOString()
     const documentHandle = await this._call('save', data)
     const document = await this._call('document', documentHandle)
     return this._createModelByDocument(document)
@@ -141,6 +142,7 @@ export default class Model {
   static async save (model) {
     this._validate(model)
     const document = this._modelToDocument(model)
+    document.updateddAt = new Date().toISOString()
     const newHandle = await this._call('update', model._id, document)
     model._rev = newHandle._rev
     return model
