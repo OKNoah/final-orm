@@ -36,6 +36,7 @@ export default class Edge extends Model {
     this._validate(data)
     data = this._modelToDocument(data)
     data._removed = false
+    data.createdAt = new Date().toISOString()
     data._from = typeof from === 'object' ? from._id : from
     data._to = typeof to === 'object' ? to._id : to
     const documentHandle = await this._call('save', data)
