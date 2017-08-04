@@ -27,11 +27,7 @@ class Post extends db.Model {
   }
 }
 
-class Likes extends db.Edge {
-  static schema = {
-    date: String
-  }
-}
+class Likes extends db.Edge {}
 
 test('initialize ormjs', () => {
   expect(db).toHaveProperty('Edge')
@@ -51,23 +47,29 @@ test('create test post', async () => {
 test('create edge collection relationship', async () => {
   const user = await User.findOne({ name: username })
   const post = await Post.findOne({ body: username })
+  const like = await Likes.add(user, post)
 
-  expect(await Likes.add(user, post, { date: Date() }))
-  .toHaveProperty('_from')
+  expect(like._from).toBe(user._id)
+})
+
+test('find collections by example', async () => {
+  const user = await User.findOne({ where: { name: username } })
+
+  expect(user).toHaveProperty('_key')
 })
 
 test('find edge collections by example', async () => {
-  const user = await User.findOne({ name: username })
-  const edge = await Likes.findOne({ _from: user._id })
+  const user = await User.findOne({ where: { name: username } })
+  console.log('user', user)
+  const edge = await Likes.findOne({ where: { _from: user._id } })
 
   expect(edge).toHaveProperty('_from')
 })
 
 test('find only certain attributes', async () => {
   const user = await User.findOne({
-    name: username
-  }, {
-    $attributes: ['_id', 'created']
+    where: { name: username },
+    attributes: ['_id', 'createdAt']
   })
 
   expect(user.name).toBe(undefined)
@@ -75,7 +77,7 @@ test('find only certain attributes', async () => {
 
 test('make sure all documents have createdAt field', async () => {
   const user = await User.findOne({
-    name: username
+    where: { name: username }
   })
 
   expect(user).toHaveProperty('createdAt')

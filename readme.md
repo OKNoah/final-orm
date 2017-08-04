@@ -8,6 +8,8 @@ It recommended for use with the ES7 (async await) For a more beautiful syntax. B
 
 Never heard of ArangoDB? Check out these benchmarks: https://www.arangodb.com/2015/10/benchmark-postgresql-mongodb-arangodb/
 
+Please see `./index.test.js` for most up-to-date examples.
+
 API
 ---
 
@@ -19,8 +21,8 @@ Model.remove(model) // remove model
 Model.restore(model) // restore removed model
 Model.save(model) // save modified model to db
 Model.update(model) // update modified model from db
-Model.find(selector, offset = 0, limit = 100) // find models by selector obj
-Model.findOne(selector, offset = 0) // find one model by selector obj
+Model.find({ where: { key: value }, skip: 0, limit: 10 }) // find models by where obj
+Model.findOne({ where: { key: value } }) // find one model by selector obj
 Model.count(selector) // return count models matches of selector
 Model.have(selector) // returns true if there is at least one model suitable for selector
 ```
@@ -151,7 +153,7 @@ Usage:
 	user.name // 'Ololo' because we save
 
   // like via edge collection
-  const rose = await User.findOne({ name: 'Rose' })
+  const rose = await User.findOne({ where: { name: 'Rose' } })
   // in edge collections, the usage is Edge.add(from, to, data)
   Like.add(rose, user, { date: new Date() })
 

@@ -32,7 +32,7 @@ export default class Edge extends Model {
     return this._collection = edge
   }
 
-  static async add (from, to, data) {
+  static async add (from, to, data = {}) {
     this._validate(data)
     data = this._modelToDocument(data)
     data._removed = false

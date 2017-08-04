@@ -165,23 +165,39 @@ export default class Model {
     return this.save(model)
   }
 
-  static async find (selector, skip = 0, limit = 100, options = {}) {
-    if (!selector) selector = {}
-    limit = Math.min(Math.max(limit, 0), 100)
-    selector._removed = false
-    const cursor = await this._call('byExample', selector, {skip, limit})
-    const documents = await cursor.all()
-    return documents.map(document => {
-      let doc = null
-      if (options.$attributes) {
-        doc = pick(document, options.$attributes)
+  static async find (args) {
+    const db = await this._getDatabase()
+    const { skip, limit, where, attributes } = args
+    const item = this.name.toLowerCase()
+    let query = `for ${item} in ${this.name}`
+    if (where) {
+      for (const key in where) {
+        query += ` filter ${item}.${key} == "${where[key]}"`
       }
-      return this._createModelByDocument(doc || document)
+    }
+    if (limit || skip) {
+      query += ` limit ${skip ? skip + ', ' : ''}${limit || 100}`
+    }
+    if (attributes) {
+      query += ` return {`
+      attributes.map((attribute, index) => {
+        query += `${attribute}: ${item}.${attribute}${index + 1 !== attributes.length && ', '} `
+      })
+      query += `}`
+    } else {
+      query += ` return ${item}`
+    }
+    const cursor = await db.query(query)
+    const documents = await cursor.all()
+    return documents.map((doc) => {
+      return this._createModelByDocument(doc)
     })
   }
 
-  static async findOne (selector, options = {}) {
-    const models = await this.find(selector, 0, 1, options)
+  static async findOne (args) {
+    args.skip = 0
+    args.limit = 1
+    const models = await this.find(args)
     const model = models[0]
     return model || null
   }
