@@ -167,7 +167,7 @@ export default class Model {
 
   static async find (args) {
     const db = await this._getDatabase()
-    const { skip, limit, where, attributes } = args
+    const { skip, limit, where, attributes, sort } = args
     const item = this.name.toLowerCase()
     let query = `for ${item} in ${this.name}`
     if (where) {
@@ -177,6 +177,9 @@ export default class Model {
     }
     if (limit || skip) {
       query += ` limit ${skip ? skip + ', ' : ''}${limit || 100}`
+    }
+    if (sort) {
+      query += ` sort ${sort}`
     }
     if (attributes) {
       query += ` return {`
@@ -194,7 +197,7 @@ export default class Model {
     })
   }
 
-  static async findOne (args) {
+  static async findOne (args = {}) {
     args.skip = 0
     args.limit = 1
     const models = await this.find(args)
