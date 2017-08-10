@@ -1,4 +1,4 @@
-import arangojs from 'arangojs'
+import arangojs, { aql } from 'arangojs'
 import Schema from '../schemas/schema'
 import { pick } from 'lodash'
 
@@ -9,6 +9,7 @@ export default class Model {
   static _normalSchema = null
   static _collection = null
   static _database = null
+  static aql = aql
 
   static _getSchema () {
     if (!this._normalSchema) {

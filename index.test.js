@@ -50,7 +50,7 @@ test('create test post', async () => {
 
 test('create edge collection relationship', async () => {
   const user = await User.findOne({ name: username })
-  const post = await Post.findOne({ body: 'This is a test post' })
+  const post = await Post.findOne({ body: username })
 
   expect(await Likes.add(user, post, { date: Date() }))
   .toHaveProperty('_from')
@@ -91,4 +91,12 @@ test('make sure all documents have updateddAt field', async () => {
 
   expect(post).toHaveProperty('updatedAt')
   expect(moment(post.updatedAt).isValid()).toBe(true)
+})
+
+test('use aql query', async () => {
+  const { aql, _database } = await db.Model
+
+  const cursor = await _database.query(aql`for u in User limit 10 return u`)
+  const users = await cursor.all()
+  expect(users.length).toBe(10)
 })
