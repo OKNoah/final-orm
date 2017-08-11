@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import { randomBytes } from 'crypto'
+import { sortBy, isEqual } from 'lodash'
 import ormjs from './index'
 import moment from 'moment'
 
@@ -86,7 +87,9 @@ test('make sure all documents have createdAt field', async () => {
 
 test('make sure all documents have updatedAt field', async () => {
   const post = await Post.findOne({
-    body: username
+    where: {
+      body: username
+    }
   })
 
   post.body = 'Updated!'
@@ -102,4 +105,15 @@ test('use aql query', async () => {
   const cursor = await _database.query(aql`for u in User limit 10 return u`)
   const users = await cursor.all()
   expect(users.length).toBe(10)
+})
+
+test('check list is sorted', async () => {
+  const posts = await Post.find({
+    sort: 'post.createdAt asc',
+    limit: 100
+  })
+
+  const sorted = await sortBy(posts, ['createdAt'])
+
+  expect(isEqual(posts, sorted)).toBe(true)
 })
