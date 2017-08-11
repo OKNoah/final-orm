@@ -15,23 +15,18 @@ const db = ormjs.connect({
 
 class User extends db.Model {
   static schema = {
-    name: String,
-    created: String,
-    friends: { $type: [String], optional: true }
+    name: String
   }
 }
 
 class Post extends db.Model {
   static schema = {
-    body: String
+    body: String,
+    creator: User
   }
 }
 
-class Likes extends db.Edge {
-  static schema = {
-    date: String
-  }
-}
+class Likes extends db.Edge {}
 
 test('initialize ormjs', () => {
   expect(db).toHaveProperty('Edge')
@@ -39,35 +34,42 @@ test('initialize ormjs', () => {
 })
 
 test('create new model instance', async () => {
-  expect(await User.add({ name: username, created: Date() }))
+  expect(await User.add({ name: username }))
   .toHaveProperty('_id')
 })
 
 test('create test post', async () => {
-  expect(await Post.add({ body: username }))
+  const user = await User.findOne({ where: { name: username } })
+
+  expect(await Post.add({ body: username, creator: user }))
   .toHaveProperty('_id')
 })
 
 test('create edge collection relationship', async () => {
-  const user = await User.findOne({ name: username })
-  const post = await Post.findOne({ body: username })
+  const user = await User.findOne({ where: { name: username } })
+  const post = await Post.findOne({ where: {body: username } })
+  const like = await Likes.add(user, post)
 
-  expect(await Likes.add(user, post, { date: Date() }))
-  .toHaveProperty('_from')
+  expect(like._from).toBe(user._id)
+})
+
+test('find collections by example', async () => {
+  const user = await User.findOne({ where: { name: username } })
+
+  expect(user).toHaveProperty('_key')
 })
 
 test('find edge collections by example', async () => {
-  const user = await User.findOne({ name: username })
-  const edge = await Likes.findOne({ _from: user._id })
+  const user = await User.findOne({ where: { name: username } })
+  const edge = await Likes.findOne({ where: { _from: user._id } })
 
-  expect(edge).toHaveProperty('_from')
+  expect(edge._from).toBe(user._id)
 })
 
 test('find only certain attributes', async () => {
   const user = await User.findOne({
-    name: username
-  }, {
-    $attributes: ['_id', 'created']
+    where: { name: username },
+    attributes: ['_id', 'createdAt']
   })
 
   expect(user.name).toBe(undefined)
@@ -75,19 +77,20 @@ test('find only certain attributes', async () => {
 
 test('make sure all documents have createdAt field', async () => {
   const user = await User.findOne({
-    name: username
+    where: { name: username }
   })
 
   expect(user).toHaveProperty('createdAt')
   expect(moment(user.createdAt).isValid()).toBe(true)
 })
 
-test('make sure all documents have updateddAt field', async () => {
+test('make sure all documents have updatedAt field', async () => {
   const post = await Post.findOne({
     body: username
   })
 
   post.body = 'Updated!'
+  await post.save()
 
   expect(post).toHaveProperty('updatedAt')
   expect(moment(post.updatedAt).isValid()).toBe(true)
