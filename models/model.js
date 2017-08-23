@@ -169,7 +169,7 @@ export default class Model {
     const db = await this._getDatabase()
     const { skip, limit, where, attributes, sort } = args
     const item = this.name.toLowerCase()
-    let query = `for ${item} in ${this.name}`
+    let query = `for ${item} in ${this.name} filter ${item}._removed != true`
     if (where) {
       for (const key in where) {
         query += ` filter ${item}.${key} == "${where[key]}"`

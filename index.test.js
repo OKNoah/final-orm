@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import { randomBytes } from 'crypto'
 import ormjs from './index'
 import moment from 'moment'
+import { isEqual, sortBy } from 'lodash'
 
 dotenv.config()
 
@@ -102,4 +103,27 @@ test('use aql query', async () => {
   const cursor = await _database.query(aql`for u in User limit 10 return u`)
   const users = await cursor.all()
   expect(users.length).toBe(10)
+})
+
+test('check list is sorted', async () => {
+  const posts = await Post.find({
+    sort: 'post.createdAt asc',
+    limit: 100
+  })
+
+  const sorted = await sortBy(posts, ['createdAt'])
+
+  expect(isEqual(posts, sorted)).toBe(true)
+})
+
+test('remove item', async () => {
+  const userToRemove = await User.findOne({
+    where: { name: username }
+  })
+  await userToRemove.remove()
+  const user = await User.findOne({
+    where: { name: username }
+  })
+
+  expect(user).toBe(null)
 })
