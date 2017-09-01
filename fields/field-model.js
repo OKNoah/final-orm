@@ -8,7 +8,7 @@ export default class FieldModel extends Field {
 		this.symbol = Symbol()
 	}
 
-	validate(data, basePath) {
+	validate (data, basePath) {
 		if (this.internal) return
 		if (data instanceof Model) return
 		let subModel = this.getByPath(data)

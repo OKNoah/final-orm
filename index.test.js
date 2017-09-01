@@ -16,7 +16,10 @@ const db = ormjs.connect({
 
 class User extends db.Model {
   static schema = {
-    name: String
+    name: String,
+    profile: {
+      vegan: { $type: Boolean, optional: true }
+    }
   }
 }
 

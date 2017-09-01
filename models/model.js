@@ -1,6 +1,6 @@
 import arangojs, { aql } from 'arangojs'
 import Schema from '../schemas/schema'
-import { pick } from 'lodash'
+import { get } from 'lodash'
 
 export default class Model {
   static options = null // connection options
@@ -37,6 +37,7 @@ export default class Model {
     try {
       await db.createDatabase(dbName)
     } catch (e) {
+      // throw new Error(get(e, 'response.body.errorMessage', e))
     }
 
     db.useDatabase(dbName)
@@ -79,8 +80,8 @@ export default class Model {
       }
 
       return await collection[method](...args)
-    } catch (error) {
-      console.error(error)
+    } catch (e) {
+      throw new Error(get(e, 'response.body.errorMessage', e))
     }
   }
 

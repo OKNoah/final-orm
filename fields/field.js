@@ -95,7 +95,7 @@ export default class Field {
 
   getByPath (context) {
     for (const prop of this.path) {
-      context = context[prop]
+      context = context ? context[prop] : undefined
     }
     return context
   }
