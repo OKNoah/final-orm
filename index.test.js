@@ -17,6 +17,7 @@ const db = ormjs.connect({
 class User extends db.Model {
   static schema = {
     name: String,
+    interests: { $type: [String], optional: true },
     profile: {
       vegan: { $type: Boolean, optional: true }
     }
@@ -117,6 +118,42 @@ test('check list is sorted', async () => {
   const sorted = await sortBy(posts, ['createdAt'])
 
   expect(isEqual(posts, sorted)).toBe(true)
+})
+
+test('Update with arangojs', async () => {
+  const { _collection } = await User
+
+  const user = await User.findOne({
+    where: { name: username }
+  })
+
+  await _collection.update(user, {
+    interests: ['fun', 'games']
+  })
+
+  const updatedUser = await User.findOne({
+    where: { name: username }
+  })
+
+  expect(updatedUser).toHaveProperty('interests')
+})
+
+test('Remove last arangojs update', async () => {
+  const { _collection } = await User
+
+  const user = await User.findOne({
+    where: { name: username }
+  })
+
+  await _collection.update(user, {
+    interests: null
+  })
+
+  const updatedUser = await User.findOne({
+    where: { name: username }
+  })
+
+  expect(updatedUser).toHaveProperty('interests')
 })
 
 test('remove item', async () => {
