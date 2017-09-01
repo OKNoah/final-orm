@@ -25,7 +25,7 @@ export default class FieldTypes extends FieldType {
 	}
 
 	convertToModelValue (array) {
-		if (!array && this.options.optional) {
+		if (!array) {
 			return
 		}
 
@@ -35,7 +35,7 @@ export default class FieldTypes extends FieldType {
 	}
 
 	convertToDocumentValue (array) {
-		if (!array && this.options.optional) {
+		if (!array) {
 			return
 		}
 
