@@ -16,7 +16,7 @@ const db = ormjs.connect({
 
 class User extends db.Model {
   static schema = {
-    name: String,
+    name: { $type: String, index: true, unique: true },
     profile: {
       vegan: { $type: Boolean, optional: true }
     }
@@ -40,6 +40,15 @@ test('initialize ormjs', () => {
 test('create new model instance', async () => {
   expect(await User.add({ name: username }))
   .toHaveProperty('_id')
+})
+
+test('check name must be unique', async () => {
+  try {
+    await User.add({ name: username })
+  } catch (error) {
+    expect(error)
+    .not.toHaveProperty('_id')
+  }
 })
 
 test('create test post', async () => {

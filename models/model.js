@@ -48,6 +48,7 @@ export default class Model {
 
   static async _getCollection () {
     if (this._collection) {
+      await this._setIndexes(this._collection)
       return this._collection
     }
 
@@ -63,7 +64,7 @@ export default class Model {
 
   static async _setIndexes (collection) {
     const schema = this._getSchema()
-    for (const field of schema) {
+    for (const field of schema.fields) {
       if (!field.options.index) continue
 
       const path = field.path.join('.')
