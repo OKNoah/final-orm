@@ -145,7 +145,7 @@ export default class Model {
   static async save (model) {
     this._validate(model)
     const document = this._modelToDocument(model)
-    document.updateddAt = new Date().toISOString()
+    document.updatedAt = new Date().toISOString()
     const newHandle = await this._call('update', model._id, document)
     model._rev = newHandle._rev
     return model
@@ -169,31 +169,64 @@ export default class Model {
 
   static async find (args) {
     const db = await this._getDatabase()
-    const { skip, limit, where, attributes, sort } = args
+    const { skip, limit, where, attributes, sort, include } = args
     const item = this.name.toLowerCase()
-    let query = `for ${item} in ${this.name} filter ${item}._removed != true`
-    if (where) {
+
+    const getWhere = () => {
+      const wheres = []
       for (const key in where) {
-        query += ` filter ${item}.${key} == "${where[key]}"`
+        wheres.push(` filter ${item}.${key} == "${where[key]}"`)
       }
+
+      return wheres.join(' ')
     }
-    if (limit || skip) {
-      query += ` limit ${skip ? skip + ', ' : ''}${limit || 100}`
-    }
-    if (sort) {
-      query += ` sort ${sort}`
-    }
-    if (attributes) {
-      query += ` return {`
+
+    const getAttributesString = (attributes, results) =>
       attributes.map((attribute, index) => {
-        query += `${attribute}: ${item}.${attribute}${index + 1 !== attributes.length && ', '} `
-      })
-      query += `}`
-    } else {
-      query += ` return ${item}`
+          return `${attribute}: ${results}.${attribute}${index + 1 !== attributes.length && ', '} `
+      }).join(' ')
+
+    const getAttributes = () => {
+      const includeModel = include && include.model.name.toLowerCase()
+      const includes = include && `${include.as}s`
+
+      if (include) {
+        return `
+          let ${includes} = (
+            for ${includeModel} in ${include.model.name}
+              filter ${includeModel}._removed != true
+              filter ${item}.${include.as} == ${includeModel}._id
+              limit ${include.limit || '1'}
+                return ${include.attributes ?
+                  `{ ${getAttributesString(attributes, includeModel)} }`
+                : includeModel }
+          )
+          filter length(${includes}) != 0
+          return MERGE(
+            ${attributes ? `{ ${getAttributesString(attributes, item)} }` : item}, {
+            ${include.as}: ${includes}[${include.limit || '0'}]}
+          )
+        `
+      }
+      
+      return `return { ${getAttributesString(attributes, item)} }`
     }
+
+    let query = `
+      for ${item} in ${this.name} filter ${item}._removed != true
+      ${where ? getWhere() : ''}
+      ${(limit || skip) ? ` limit ${skip ? skip + ', ' : ''}${limit || 100}` : ''}
+      ${(sort) ? ` sort ${sort}` : ''}
+      ${(attributes || include) ? getAttributes() : `return ${item}`}
+    `
+
     const cursor = await db.query(query)
     const documents = await cursor.all()
+
+    if (include || attributes) {
+      return documents
+    }
+
     return documents.map((doc) => {
       return this._createModelByDocument(doc)
     })
