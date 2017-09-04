@@ -128,6 +128,19 @@ test('check list is sorted', async () => {
   expect(isEqual(posts, sorted)).toBe(true)
 })
 
+test('find with include', async () => {
+  const posts = await Post.find({
+    include: {
+      model: User,
+      as: 'creator'
+    }
+  })
+
+  expect(posts[0]).toHaveProperty('creator.name')
+  expect(posts[0]).toHaveProperty('_key')
+  expect(posts[0]).toHaveProperty('body')
+})
+
 test('remove item', async () => {
   const userToRemove = await User.findOne({
     where: { name: username }
