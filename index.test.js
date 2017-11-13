@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import { randomBytes } from 'crypto'
 import ormjs from './index'
 import moment from 'moment'
-import { isEqual, sortBy } from 'lodash'
+import { isEqual, sortBy, isEmpty } from 'lodash'
 
 dotenv.config()
 
@@ -151,4 +151,16 @@ test('remove item', async () => {
   })
 
   expect(user).toBe(null)
+})
+
+test('do not allow injection', async () => {
+  const users = await User.find({
+    where: { name: `123" || user._id == 'User/4627980' || user.name == "hi` },
+    limit: 100
+  })
+
+  console.log('users', users)
+
+  expect(isEmpty(users)).toBe(true)
+  // expect(statuses.includes(true) !== true).toBe(true)
 })

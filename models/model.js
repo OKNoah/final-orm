@@ -172,10 +172,11 @@ export default class Model {
     const { skip, limit, where, attributes, sort, include } = args
     const item = this.name.toLowerCase()
 
-    const getWhere = () => {
+    function getWhere () {
       const wheres = []
       for (const key in where) {
-        wheres.push(` filter ${item}.${key} == "${where[key]}"`)
+        const whereKey = JSON.stringify(where[key])
+        wheres.push(` filter ${item}.${key} == ${whereKey}`)
       }
 
       return wheres.join(' ')
@@ -186,7 +187,7 @@ export default class Model {
           return `${attribute}: ${results}.${attribute}${index + 1 !== attributes.length && ', '} `
       }).join(' ')
 
-    const getAttributes = () => {
+    function getAttributes () {
       const includeModel = include && include.model.name.toLowerCase()
       const includes = include && `${include.as}s`
 
