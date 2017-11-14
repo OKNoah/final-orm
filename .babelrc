@@ -1,9 +1,12 @@
 {
-  "presets": ["es2015"],
-  "plugins": [
-    "transform-runtime",
-    "transform-object-rest-spread",
-    "array-includes",
-    "transform-class-properties"
+  "presets": [
+    ["env",
+      {
+        "exclude": ["transform-es2015-classes"],
+        "targets": {
+          "node": "current"
+        }
+      }
+    ]
   ]
 }
