@@ -1,4 +1,6 @@
-ORMjs this is javascript OOP interface for ArangoDB
+# Final ORM
+
+Is a javascript OOP interface for ArangoDB
 
 Based off of part of the ui-js code found here: https://github.com/uMaxmaxmaximus/ui-js/tree/master/server/core/orm
 
@@ -40,7 +42,7 @@ Basic usage:
 
 create init class model.js
 ```javascript
-var orm = require('ormjs')
+var orm = require('final-orm')
 var options = {
   database: 'test', // db name
   // You can initialize the database using a url.
@@ -68,32 +70,32 @@ Define collection User (class name will be collection name), and edge collection
 import { Model, Edge } from './model.js'
 
 class User extends Model {
-	static schema = {
-		// basic types
-		name: String,
-		male: Boolean,
-		age: Number,
-		birth: Date,
-		tags: Set, // like array but items are unique
+  static schema = {
+    // basic types
+    name: String,
+    male: Boolean,
+    age: Number,
+    birth: Date,
+    tags: Set, // like array but items are unique
 
-		// structures
-		messages: [String], // array of types
-		prop1: {prop2: [{tags: [String]}] }, // sub schemas
+    // structures
+    messages: [String], // array of types
+    prop1: {prop2: [{tags: [String]}] }, // sub schemas
 
-		// relations with other (or self) db collections
-		bestFriend: User, // link to model
-		friends: [User], // link to array models
+    // relations with other (or self) db collections
+    bestFriend: User, // link to model
+    friends: [User], // link to array models
 
-		// field options
-		name: String,
-		name: {$type: String},
-		name: {$type: String, test: /^\w+$/},
-		status: {
+    // field options
+    name: String,
+    name: {$type: String},
+    name: {$type: String, test: /^\w+$/},
+    status: {
       $type: String,
       enum: ['sleep', 'eat'], // enum
       optional: true // allows null value
     }
-	}
+  }
 }
 
 class Like extends Edge {
@@ -114,10 +116,10 @@ import Model from './model.js'
 
 class User extends Model {
 
-	static schema = {
-		name: String,
-		age: Number,
-	}
+  static schema = {
+    name: String,
+    age: Number,
+  }
 
 }
 ```
@@ -127,30 +129,30 @@ Usage:
 ```javascript
 (async function () {
 
-	// adding user to db
-	var user = await User.add({
-		name: 'Ашот',
-		age: 24,
-  	})
+  // adding user to db
+  var user = await User.add({
+    name: 'Ашот',
+    age: 24,
+    })
 
-	user._id // 'User/434370324723'
-	user._removed // false
-	user.name // 'Ашот'
-	user.age // 24
+  user._id // 'User/434370324723'
+  user._removed // false
+  user.name // 'Ашот'
+  user.age // 24
 
-	// change field
-	user.name = 'Ololo'
-	console.log(user.name) // 'Ololo' field is changed
+  // change field
+  user.name = 'Ololo'
+  console.log(user.name) // 'Ololo' field is changed
 
-	// reset changes
-	await user.update() // load state from db
-	user.name // 'Ашот'
+  // reset changes
+  await user.update() // load state from db
+  user.name // 'Ашот'
 
-	// saving changes
-	user.name = 'Ololo' // change field
-	await user.save() // save changes to db
-	await user.update() // load state from db
-	user.name // 'Ololo' because we save
+  // saving changes
+  user.name = 'Ololo' // change field
+  await user.save() // save changes to db
+  await user.update() // load state from db
+  user.name // 'Ololo' because we save
 
   // like via edge collection
   const rose = await User.findOne({ where: { name: 'Rose' } })
@@ -224,19 +226,19 @@ import Model from './model.js'
 
 class Sector extends Model {
 
-	static schema = {
-		size: Number
-	}
+  static schema = {
+    size: Number
+  }
 
 }
 
 
 class User extends Model {
 
-	static schema = {
-		name: String,
-		sector: Sector,
-	}
+  static schema = {
+    name: String,
+    sector: Sector,
+  }
 
 }
 
@@ -247,25 +249,25 @@ Usage:
 ```javascript
 (async function () {
 
-	var sector = await Sector.add({
-		size: 236
-	})
+  var sector = await Sector.add({
+    size: 236
+  })
 
-	var user = await User.add({
-		name: 'Ашот',
-		sector: sector
-	})
+  var user = await User.add({
+    name: 'Ашот',
+    sector: sector
+  })
 
-	(await user.sector).size // 236
+  (await user.sector).size // 236
 
 
-	var sector2 = await Sector.add({
-		size: 1004
-	})
-	user.sector = sector2
-	await user.save()
+  var sector2 = await Sector.add({
+    size: 1004
+  })
+  user.sector = sector2
+  await user.save()
 
-	(await user.sector).size // 1004 because this another sector ^__^
+  (await user.sector).size // 1004 because this another sector ^__^
 
 
 })()
@@ -282,37 +284,37 @@ import Model from './model.js'
 
 class Color {
 
-	constructor(r, g, b) {
-		this.r = r
-		this.g = g
-		this.b = b
-	}
+  constructor(r, g, b) {
+    this.r = r
+    this.g = g
+    this.b = b
+  }
 
 
-	// convert to db document
-	toJSON() {
-		return {
-			r: this.r,
-			g: this.g,
-			b: this.b
-		}
-	}
+  // convert to db document
+  toJSON() {
+    return {
+      r: this.r,
+      g: this.g,
+      b: this.b
+    }
+  }
 
 
-	// restore from db document
-	static fromJSON(json) {
-		return new Color(json.r, json.g, json.b)
-	}
+  // restore from db document
+  static fromJSON(json) {
+    return new Color(json.r, json.g, json.b)
+  }
 
 }
 
 
 class User extends Model {
 
-	static schema = {
-		name: String,
-		color: Color
-	}
+  static schema = {
+    name: String,
+    color: Color
+  }
 
 }
 ```
@@ -322,12 +324,12 @@ Usage:
 ```javascript
 (async function () {
 
-	var user = await User.add({
-		name: 'Ашот',
-		color: new Color(0, 255, 0)
-	})
+  var user = await User.add({
+    name: 'Ашот',
+    color: new Color(0, 255, 0)
+  })
 
-	user.color instanceof Color //true
+  user.color instanceof Color //true
 
 }())
 ```
@@ -338,9 +340,9 @@ Schemas
 Number
 ```javascript
 schema = {
-	age: Number,
-	age: {$type: Number},
-	age: {$type: Number, min:0, max:100}
+  age: Number,
+  age: {$type: Number},
+  age: {$type: Number, min:0, max:100}
 }
 ```
 
@@ -348,9 +350,9 @@ schema = {
 String
 ```javascript
 schema = {
-	name: String,
-	name: {$type: String},
-	name: {$type: String, min:3, max:20, test:/^\w+$/}
+  name: String,
+  name: {$type: String},
+  name: {$type: String, min:3, max:20, test:/^\w+$/}
 }
 ```
 
@@ -358,9 +360,9 @@ schema = {
 Set
 ```javascript
 schema = {
-	tags: Set,
-	tags: {$type: Set},
-	tags: {$type: Set, set: ['animals', 'porn', 'movie']}
+  tags: Set,
+  tags: {$type: Set},
+  tags: {$type: Set, set: ['animals', 'porn', 'movie']}
 }
 ```
 
