@@ -119,13 +119,14 @@ test('use aql query', async () => {
 
 test('check list is sorted', async () => {
   const posts = await Post.find({
-    sort: 'post.createdAt asc',
+    sort: 'createdAt asc',
     limit: 100
   })
 
   const sorted = await sortBy(posts, ['createdAt'])
 
   expect(isEqual(posts, sorted)).toBe(true)
+  expect(isEqual(posts, sorted.reverse())).not.toBe(true)
 })
 
 test('find with include', async () => {
@@ -158,8 +159,6 @@ test('do not allow injection', async () => {
     where: { name: `123" || user._id == 'User/4627980' || user.name == "hi` },
     limit: 100
   })
-
-  console.log('users', users)
 
   expect(isEmpty(users)).toBe(true)
   // expect(statuses.includes(true) !== true).toBe(true)
