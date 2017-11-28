@@ -1,6 +1,6 @@
 {
   "name": "final-orm",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/OKNoah/final-orm"
@@ -9,7 +9,7 @@
   "author": "Noah Gray",
   "scripts": {
     "prepublish": "npm run build",
-    "build": "./node_modules/.bin/babel . -d dist --ignore dist --ignore node_modules",
+    "build": "rm -rf dist/ && mkdir dist && ./node_modules/.bin/babel . -d dist --ignore node_modules/ dist/",
     "test": "./node_modules/jest/bin/jest.js"
   },
   "jest": {
