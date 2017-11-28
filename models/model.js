@@ -213,13 +213,25 @@ export default class Model {
       return `return { ${getAttributesString(attributes, item)} }`
     }
 
-    let query = `
-      for ${item} in ${this.name} filter ${item}._removed != true
-      ${where ? getWhere() : ''}
-      ${(limit || skip) ? ` limit ${skip ? skip + ', ' : ''}${limit || 100}` : ''}
-      ${(sort) ? ` sort ${sort}` : ''}
-      ${(attributes || include) ? getAttributes() : `return ${item}`}
-    `
+    let query = `for ${item} in ${this.name} filter ${item}._removed != true`
+
+    if (where) {
+      query += getWhere()
+    }
+
+    if (limit || skip) {
+      query += ` limit ${skip ? skip + ', ' : ''}${limit || 100}`
+    }
+
+    if (sort) {
+      query += ` sort ${item}.${sort}`
+    }
+    
+    if (attributes || include) {
+      query += getAttributes()
+    } else {
+      query += ` return ${item}`
+    }
 
     const cursor = await db.query(query)
     const documents = await cursor.all()
