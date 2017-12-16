@@ -219,12 +219,12 @@ export default class Model {
       query += getWhere()
     }
 
-    if (limit || skip) {
-      query += ` limit ${skip ? skip + ', ' : ''}${limit || 100}`
-    }
-
     if (sort) {
       query += ` sort ${item}.${sort}`
+    }
+
+    if (limit || skip) {
+      query += ` limit ${skip ? skip + ', ' : ''}${limit || 100}`
     }
     
     if (attributes || include) {
