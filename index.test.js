@@ -25,8 +25,8 @@ class User extends db.Model {
 
 class Post extends db.Model {
   static schema = {
-    body: String,
-    creator: User
+    body: { $type: String, optional: true },
+    creator: { $type: User, optional: false }
   }
 }
 
@@ -38,8 +38,9 @@ test('initialize ormjs', () => {
 })
 
 test('create new model instance', async () => {
-  expect(await User.add({ name: username }))
-  .toHaveProperty('_id')
+  const newUser = await User.add({ name: username })
+
+  expect(newUser._id).toBeTruthy()
 })
 
 test('check name must be unique', async () => {
@@ -53,14 +54,15 @@ test('check name must be unique', async () => {
 
 test('create test post', async () => {
   const user = await User.findOne({ where: { name: username } })
+  const post = await Post.add({ body: username, creator: user })
 
-  expect(await Post.add({ body: username, creator: user }))
-  .toHaveProperty('_id')
+  expect(post.body === username).toBeTruthy()
+  expect(post.body.length > 4).toBeTruthy()
 })
 
 test('create edge collection relationship', async () => {
   const user = await User.findOne({ where: { name: username } })
-  const post = await Post.findOne({ where: {body: username } })
+  const post = await Post.findOne({ where: { body: username } })
   const like = await Likes.add(user, post)
 
   expect(like._from).toBe(user._id)
@@ -86,6 +88,7 @@ test('find only certain attributes', async () => {
   })
 
   expect(user.name).toBe(undefined)
+  expect(user._id).not.toBe(undefined)
 })
 
 test('make sure all documents have createdAt field', async () => {
@@ -137,22 +140,38 @@ test('find with include', async () => {
     }
   })
 
-  expect(posts[0]).toHaveProperty('creator.name')
+  expect(posts[0]).toHaveProperty('creator')
   expect(posts[0]).toHaveProperty('_key')
   expect(posts[0]).toHaveProperty('body')
 })
 
-test('remove item', async () => {
-  const userToRemove = await User.findOne({
-    where: { name: username }
-  })
-  await userToRemove.remove()
-  const user = await User.findOne({
-    where: { name: username }
+test('find and count include', async () => {
+  const included = await Post.findAndCount({
+    include: {
+      model: User,
+      as: 'creator'
+    }
   })
 
-  expect(user).toBe(null)
+  const { data: posts, meta: { count } } = included
+
+  expect(posts[0]).toHaveProperty('creator')
+  expect(posts[0]).toHaveProperty('_key')
+  expect(posts[0]).toHaveProperty('body')
+  expect(typeof count === 'number').toBeTruthy()
 })
+
+// test('remove item', async () => {
+//   const userToRemove = await User.findOne({
+//     where: { name: username }
+//   })
+//   await userToRemove.remove()
+//   const user = await User.findOne({
+//     where: { name: username }
+//   })
+
+//   expect(user).toBe(null)
+// })
 
 test('do not allow injection', async () => {
   const users = await User.find({
