@@ -1,6 +1,7 @@
 import arangojs, { aql } from 'arangojs'
 import Schema from '../schemas/schema'
-import { get } from 'lodash'
+import { get, keys } from 'lodash'
+import arangolize from 'arangolize'
 
 export default class Model {
   static options = null // connection options
@@ -167,90 +168,49 @@ export default class Model {
     return this.save(model)
   }
 
-  static async find (args) {
+  static async find (args, andCount = false) {
     const db = await this._getDatabase()
-    const { skip, limit, where, attributes, sort, include } = args
-    const item = this.name.toLowerCase()
-
-    function getWhere () {
-      const wheres = []
-      for (const key in where) {
-        const whereKey = JSON.stringify(where[key])
-        wheres.push(` filter ${item}.${key} == ${whereKey}`)
-      }
-
-      return wheres.join(' ')
-    }
-
-    const getAttributesString = (attributes, results) =>
-      attributes.map((attribute, index) => {
-          return `${attribute}: ${results}.${attribute}${index + 1 !== attributes.length && ', '} `
-      }).join(' ')
-
-    function getAttributes () {
-      const includeModel = include && include.model.name.toLowerCase()
-      const includes = include && `${include.as}s`
-
-      if (include) {
-        return `
-          let ${includes} = (
-            for ${includeModel} in ${include.model.name}
-              filter ${includeModel}._removed != true
-              filter ${item}.${include.as} == ${includeModel}._id
-              limit ${include.limit || '1'}
-                return ${include.attributes ?
-                  `{ ${getAttributesString(attributes, includeModel)} }`
-                : includeModel }
-          )
-          filter length(${includes}) != 0
-          return MERGE(
-            ${attributes ? `{ ${getAttributesString(attributes, item)} }` : item}, {
-            ${include.as}: ${includes}[${include.limit || '0'}]}
-          )
-        `
-      }
-      
-      return `return { ${getAttributesString(attributes, item)} }`
-    }
-
-    let query = `for ${item} in ${this.name} filter ${item}._removed != true`
-
-    if (where) {
-      query += getWhere()
-    }
-
-    if (sort) {
-      query += ` sort ${item}.${sort}`
-    }
-
-    if (limit || skip) {
-      query += ` limit ${skip ? skip + ', ' : ''}${limit || 100}`
-    }
-    
-    if (attributes || include) {
-      query += getAttributes()
-    } else {
-      query += ` return ${item}`
-    }
-
-    const cursor = await db.query(query)
-    const documents = await cursor.all()
-
-    if (include || attributes) {
-      return documents
-    }
-
-    return documents.map((doc) => {
-      return this._createModelByDocument(doc)
+    const { bindVars, query } = await arangolize({
+      collection: this.name,
+      ...args
     })
+
+    const cursor = await db.query({
+      query, 
+      bindVars
+    })
+    const docs = await cursor.all()
+    const documents = docs[0]
+
+    if (documents) {
+      const { limit, include } = args
+      const modeled = await Promise.all(documents.data.map(async (data) => {
+        let modelFromDoc = include ? data : this._createModelByDocument(data)
+
+        return modelFromDoc
+      }))
+
+      if (andCount) {
+        return {
+          data: modeled,
+          meta: documents.meta
+        }
+      }
+
+      return limit === 1 ? modeled[0] : modeled
+    }
   }
 
   static async findOne (args = {}) {
     args.skip = 0
     args.limit = 1
-    const models = await this.find(args)
-    const model = models[0]
-    return model || null
+    const model = await this.find(args)
+    return model
+  }
+
+  static async findAndCount (args = {}) {
+    const results = await this.find(args, true)
+    return results
   }
 
   static async count (selector) {
