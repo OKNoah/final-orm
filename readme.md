@@ -1,5 +1,7 @@
 # Final ORM
 
+> Please check out https://github.com/oknoah/final and https://github.com/oknoah/final/packages/arangolize for similar projects that MAY be more up to date
+
 Is a javascript OOP interface for ArangoDB
 
 Based off of part of the ui-js code found here: https://github.com/uMaxmaxmaximus/ui-js/tree/master/server/core/orm
@@ -24,6 +26,7 @@ Model.restore(model) // restore removed model
 Model.save(model) // save modified model to db
 Model.update(model) // update modified model from db
 Model.find({ where: { key: value }, skip: 0, limit: 10 }) // find models by where obj
+Model.findAndCount({ where: { key: value }, skip: 0, limit: 10 }) // find models by where obj and return as { data: [data], meta: { count: 123 } }
 Model.findOne({ where: { key: value } }) // find one model by selector obj
 Model.count(selector) // return count models matches of selector
 Model.have(selector) // returns true if there is at least one model suitable for selector
