@@ -1,6 +1,6 @@
 {
   "name": "final-orm",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0-alpha.9",
   "repository": {
     "type": "git",
     "url": "https://github.com/OKNoah/final-orm"
@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "arangojs": "^5.7.0",
-    "arangolize": "^0.9.5",
+    "arangolize": "^0.9.6",
     "core-decorators": "^0.20.0",
     "dotenv": "^4.0.0",
     "lodash": "^4.17.4",

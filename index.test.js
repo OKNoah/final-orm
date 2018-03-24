@@ -182,3 +182,14 @@ test('do not allow injection', async () => {
   expect(isEmpty(users)).toBe(true)
   // expect(statuses.includes(true) !== true).toBe(true)
 })
+
+test('find by include where', async () => {
+  const post = await Post.findOne({
+    include: {
+      as: 'creator',
+      where: {name: username}
+    }
+  })
+
+  expect(post.creator.name).toBe(username)
+})
