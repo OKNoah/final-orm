@@ -193,3 +193,18 @@ test('find by include where', async () => {
 
   expect(post.creator.name).toBe(username)
 })
+
+test('complex query', async () => {
+  const posts = await Post.findAndCount({
+    limit: 5,
+    skip: 0,
+    sort: 'createdAt DESC',
+    attributes: ['creator', 'createdAt'],
+    include: {
+      as: 'creator',
+      where: {name: username}
+    }
+  })
+
+  expect(posts.data[0].creator.name).toBe(username)
+})
