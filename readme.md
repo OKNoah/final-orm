@@ -48,13 +48,15 @@ create init class model.js
 var orm = require('final-orm')
 var options = {
   database: 'test', // db name
-  // You can initialize the database using a url.
+  // You can initialize the database using just a url.
   url: 'http://root:@localhost:8529',
   // Or supply each of these values. You do not need both.
   host: 'localhost',
   port: '8529',
   username: 'root',
-  password: ''
+  password: '',
+  // You can also supply a protocol. If localhost, it's `http` by default, otherwise `https`
+  protocol: 'tcp'
 }
 
 var { Model, Edge } = orm.connect(options)
