@@ -2,13 +2,11 @@
 
 > Please check out https://github.com/oknoah/final and https://github.com/oknoah/final/packages/arangolize for similar projects that MAY be more up to date
 
-Is a javascript OOP interface for ArangoDB
-
-Based off of part of the ui-js code found here: https://github.com/uMaxmaxmaximus/ui-js/tree/master/server/core/orm
+This is a javascript OOP interface for ArangoDB
 
 Conception: Using the ES7 operator `await`, `getters` and `promises`, we can navigate the graph objects tree.
 
-It recommended for use with the ES7 (async await) For a more beautiful syntax. BUT you can use ES5.
+It is recommended for use with the ES7 (async await) For a more beautiful syntax.
 
 Never heard of ArangoDB? Check out these benchmarks: https://www.arangodb.com/2015/10/benchmark-postgresql-mongodb-arangodb/
 
@@ -365,10 +363,6 @@ Set
 schema = {
   tags: Set,
   tags: {$type: Set},
-  tags: {$type: Set, set: ['animals', 'porn', 'movie']}
+  tags: {$type: Set, set: ['soviet', 'movies']}
 }
 ```
-
-
-
-
