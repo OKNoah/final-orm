@@ -29,7 +29,8 @@ export default class Model {
     const port = this.options.port || 8529
     const username = this.options.username || 'root'
     const password = this.options.password || ''
-    const url = this.options.url || `http://${username}:${password}@${host}:${port}`
+    const protocol = this.options.protocol || `${host === 'localhost' ? 'http' : 'https'}`
+    const url = this.options.url || `${protocol}://${username}:${password}@${host}:${port}`
 
     const db = arangojs({
       url

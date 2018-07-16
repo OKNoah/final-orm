@@ -6,11 +6,11 @@ import { isEqual, sortBy, isEmpty } from 'lodash'
 
 dotenv.config()
 
-const { NAME } = process.env
+const { NAME, TEST_EXTERNAL_HOST } = process.env
 
 const username = `test${randomBytes(8).toString('hex')}`
 
-const db = ormjs.connect({
+let db = ormjs.connect({
   database: NAME || 'test'
 })
 
@@ -207,4 +207,45 @@ test('complex query', async () => {
   })
 
   expect(posts.data[0].creator.name).toBe(username)
+})
+
+test('connect without localhost', async () => {
+  /*
+    The purpose of this test is to be sure other hosts work. I use ngrok like so
+
+    bash> ngrok http 127.0.0.1:8529
+
+    ngrok will output a WAN address like `123abc.ngrok.io` which you should make TEST_EXTERNAL_HOST in your env.
+
+    https://github.com/OKNoah/final-orm/issues/16
+  */
+  db = ormjs.connect({
+    host: TEST_EXTERNAL_HOST,
+    protocol: 'https',
+    port: 443,
+    user: 'root',
+    password: '',
+    database: NAME || 'test'
+  })
+
+  class User2 extends db.Model {
+    static schema = {
+      name: { $type: String, index: true, unique: true },
+      profile: {
+        vegan: { $type: Boolean, optional: true }
+      }
+    }
+  }
+
+  const newUserName = username + '123'
+
+  await User2.add({ name: newUserName })
+
+  const user = await User2.findOne({
+    where: { name: newUserName }
+  })
+
+  expect(TEST_EXTERNAL_HOST).not.toBe(undefined)
+  expect(user).toHaveProperty('createdAt')
+  expect(moment(user.createdAt).isValid()).toBe(true)
 })
